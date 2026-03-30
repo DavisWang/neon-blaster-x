@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Blaster X</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <canvas id="game-canvas" width="1440" height="900" aria-label="Neon Blaster X game canvas"></canvas>
+
+      <section id="title-screen" class="panel panel-center hidden">
+        <p class="eyebrow">Pwner Studios presents</p>
+        <h1>Neon Blaster X</h1>
+        <p class="subtitle">
+          A neon salvage shooter about tearing ships apart and rebuilding your own ship in real time.
+        </p>
+        <div class="button-row">
+          <button id="start-run" class="primary-button">New Game</button>
+          <button id="open-builder" class="secondary-button">Spaceship Builder</button>
+        </div>
+        <p class="hint">Keyboard: `WASD`, `Space` | Mouse: drag salvage | `R`: rotate dragged part</p>
+        <footer class="footer-note">By Pwner Studios</footer>
+      </section>
+
+      <section id="hud" class="panel hud">
+        <div class="hud-column">
+          <div class="hud-label">Hull Status</div>
+          <div id="hud-health" class="hud-value">Cockpit 100%</div>
+        </div>
+        <div class="hud-column">
+          <div class="hud-label">Run</div>
+          <div id="hud-score" class="hud-value">Kills 0 | Scrap 0</div>
+        </div>
+        <div class="hud-column hud-column-right">
+          <div id="hud-mode" class="hud-value">Builder Sandbox</div>
+          <div id="hud-hint" class="hud-label hidden"></div>
+        </div>
+      </section>
+
+      <section id="builder-sidebar" class="panel sidebar">
+        <div class="sidebar-head">
+          <div>
+            <p class="eyebrow">Builder Sandbox</p>
+            <h2>Ship Builder</h2>
+          </div>
+          <div class="sidebar-actions">
+            <button id="launch-from-builder" class="primary-button">Launch Run</button>
+            <button id="reset-builder" class="secondary-button">Reset Ship</button>
+            <button id="back-to-title" class="secondary-button">Title</button>
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <h3>Quality</h3>
+          <div id="quality-palette" class="palette-grid palette-grid-small"></div>
+        </div>
+        <div class="sidebar-group">
+          <h3>Blocks</h3>
+          <div id="block-palette" class="palette-grid"></div>
+        </div>
+        <div class="sidebar-group">
+          <h3>Builder Notes</h3>
+          <ul class="builder-notes">
+            <li>Cyan squares on the ship are open mount points. Drop a part onto one to snap it in.</li>
+            <li>Hull 1x2 and 1x3 pieces extend straight out from the socket they connect to.</li>
+            <li>Press `R` while dragging blasters, thrusters, or shields to change their facing before you drop them.</li>
+            <li>Drag any mounted non-cockpit part off the ship to detach it, or right-click it for a quick detach.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="game-over" class="panel panel-center hidden">
+        <p class="eyebrow">Run Lost</p>
+        <h2>Cockpit Destroyed</h2>
+        <p id="game-over-stats" class="subtitle">Kills 0 | Scrap attached 0</p>
+        <div class="button-row">
+          <button id="retry-run" class="primary-button">Retry</button>
+          <button id="return-title" class="secondary-button">Title</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.NBX_BOOT_MODE = "builder";
+      window.NBX_AUTO_ENEMIES = 0;
+    </script>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

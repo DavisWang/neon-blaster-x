@@ -1,0 +1,1511 @@
+[
+  {
+    "name": "Needle",
+    "role": "Interceptor / chaser",
+    "accent": "#79ffc1",
+    "quality": "blue",
+    "summary": "Long spine, tiny frontal profile, rear engine cluster.",
+    "steps": [
+      {
+        "type": "hull",
+        "variant": "triple",
+        "socket": {
+          "x": 0,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": -1,
+          "y": 3,
+          "side": "west"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 1,
+          "y": 3,
+          "side": "east"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 0,
+          "y": 4,
+          "side": "south"
+        }
+      }
+    ],
+    "blueprint": [
+      {
+        "id": "block-1",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null,
+        "cells": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-3",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "blue",
+        "orientation": "south",
+        "variant": "triple",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          }
+        ]
+      },
+      {
+        "id": "block-5",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 0,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-7",
+        "type": "thruster",
+        "x": -1,
+        "y": 3,
+        "quality": "blue",
+        "orientation": "east",
+        "variant": "single",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": 3
+          }
+        ]
+      },
+      {
+        "id": "block-9",
+        "type": "thruster",
+        "x": 1,
+        "y": 3,
+        "quality": "blue",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 3
+          }
+        ]
+      },
+      {
+        "id": "block-11",
+        "type": "thruster",
+        "x": 0,
+        "y": 4,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 4
+          }
+        ]
+      }
+    ],
+    "validation": {
+      "buildable": true,
+      "allConnected": true,
+      "blockCount": 6,
+      "cellCount": 8,
+      "openSocketCount": 6
+    },
+    "bounds": {
+      "minX": -1,
+      "maxX": 1,
+      "minY": -1,
+      "maxY": 4
+    }
+  },
+  {
+    "name": "Bulwark",
+    "role": "Tank / lane holder",
+    "accent": "#ffa56b",
+    "quality": "green",
+    "summary": "Wide shoulders, shield cheeks, compact center gun.",
+    "steps": [
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": -1,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": 1,
+          "y": 0,
+          "side": "east"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "shield",
+        "socket": {
+          "x": -3,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "shield",
+        "socket": {
+          "x": 3,
+          "y": 0,
+          "side": "east"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": -1,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 1,
+          "y": 1,
+          "side": "south"
+        }
+      }
+    ],
+    "blueprint": [
+      {
+        "id": "block-12",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null,
+        "cells": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-14",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "green",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": 0
+          },
+          {
+            "x": -2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-16",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "green",
+        "orientation": "east",
+        "variant": "double",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-18",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-20",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 0,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-22",
+        "type": "shield",
+        "x": -3,
+        "y": 0,
+        "quality": "green",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -3,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-24",
+        "type": "shield",
+        "x": 3,
+        "y": 0,
+        "quality": "green",
+        "orientation": "east",
+        "variant": "single",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 3,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-26",
+        "type": "thruster",
+        "x": -1,
+        "y": 1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": -1,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-28",
+        "type": "thruster",
+        "x": 1,
+        "y": 1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 1,
+            "y": 1
+          }
+        ]
+      }
+    ],
+    "validation": {
+      "buildable": true,
+      "allConnected": true,
+      "blockCount": 9,
+      "cellCount": 11,
+      "openSocketCount": 7
+    },
+    "bounds": {
+      "minX": -3,
+      "maxX": 3,
+      "minY": -1,
+      "maxY": 1
+    }
+  },
+  {
+    "name": "Manta",
+    "role": "Orbit skirmisher / area denial",
+    "accent": "#8cc6ff",
+    "quality": "blue",
+    "summary": "Wing-heavy frame with forward tips and a spread nose.",
+    "steps": [
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": -1,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": 1,
+          "y": 0,
+          "side": "east"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": -2,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 2,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "spread",
+        "socket": {
+          "x": 0,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": -2,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 2,
+          "y": 1,
+          "side": "south"
+        }
+      }
+    ],
+    "blueprint": [
+      {
+        "id": "block-29",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null,
+        "cells": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-31",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "blue",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": 0
+          },
+          {
+            "x": -2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-33",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "blue",
+        "orientation": "east",
+        "variant": "double",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-35",
+        "type": "hull",
+        "x": -2,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": -2,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-37",
+        "type": "hull",
+        "x": 2,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 2,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-39",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-41",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "spread",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 0,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-43",
+        "type": "thruster",
+        "x": -2,
+        "y": 1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": -2,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-45",
+        "type": "thruster",
+        "x": 2,
+        "y": 1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 2,
+            "y": 1
+          }
+        ]
+      }
+    ],
+    "validation": {
+      "buildable": true,
+      "allConnected": true,
+      "blockCount": 9,
+      "cellCount": 11,
+      "openSocketCount": 15
+    },
+    "bounds": {
+      "minX": -2,
+      "maxX": 2,
+      "minY": -1,
+      "maxY": 1
+    }
+  },
+  {
+    "name": "Fortress",
+    "role": "Lumbering wall / fortress",
+    "accent": "#d2ff72",
+    "quality": "purple",
+    "summary": "Closed hull ring with a front battery, side shields, and a heavy rear engine line.",
+    "steps": [
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": -1,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": 1,
+          "y": 0,
+          "side": "east"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": -1,
+          "y": -1,
+          "side": "west"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": 1,
+          "y": -1,
+          "side": "east"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": -2,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": -1,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 1,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 2,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": 2,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": -1,
+          "y": 2,
+          "side": "west"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": 1,
+          "y": 2,
+          "side": "east"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "single",
+        "socket": {
+          "x": -2,
+          "y": -2,
+          "side": "north"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "dual",
+        "socket": {
+          "x": 0,
+          "y": -2,
+          "side": "north"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "single",
+        "socket": {
+          "x": 2,
+          "y": -2,
+          "side": "north"
+        }
+      },
+      {
+        "type": "shield",
+        "socket": {
+          "x": -3,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "shield",
+        "socket": {
+          "x": 3,
+          "y": 0,
+          "side": "east"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": -1,
+          "y": 3,
+          "side": "south"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 0,
+          "y": 3,
+          "side": "south"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 1,
+          "y": 3,
+          "side": "south"
+        }
+      }
+    ],
+    "blueprint": [
+      {
+        "id": "block-46",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null,
+        "cells": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-48",
+        "type": "hull",
+        "x": 0,
+        "y": -1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 0,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-50",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": 0
+          },
+          {
+            "x": -2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-52",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "east",
+        "variant": "double",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-54",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-56",
+        "type": "hull",
+        "x": -1,
+        "y": -1,
+        "quality": "purple",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": -1
+          },
+          {
+            "x": -2,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-58",
+        "type": "hull",
+        "x": 1,
+        "y": -1,
+        "quality": "purple",
+        "orientation": "east",
+        "variant": "double",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": 2,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-60",
+        "type": "hull",
+        "x": -2,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": -2,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-62",
+        "type": "hull",
+        "x": -1,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": -1,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-64",
+        "type": "hull",
+        "x": 1,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 1,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-66",
+        "type": "hull",
+        "x": 2,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 2,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-68",
+        "type": "hull",
+        "x": 0,
+        "y": 2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 2
+          }
+        ]
+      },
+      {
+        "id": "block-70",
+        "type": "hull",
+        "x": -1,
+        "y": 2,
+        "quality": "purple",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": 2
+          },
+          {
+            "x": -2,
+            "y": 2
+          }
+        ]
+      },
+      {
+        "id": "block-72",
+        "type": "hull",
+        "x": 1,
+        "y": 2,
+        "quality": "purple",
+        "orientation": "east",
+        "variant": "double",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          }
+        ]
+      },
+      {
+        "id": "block-74",
+        "type": "blaster",
+        "x": -2,
+        "y": -2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": -2,
+            "y": -2
+          }
+        ]
+      },
+      {
+        "id": "block-76",
+        "type": "blaster",
+        "x": 0,
+        "y": -2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "dual",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 0,
+            "y": -2
+          }
+        ]
+      },
+      {
+        "id": "block-78",
+        "type": "blaster",
+        "x": 2,
+        "y": -2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 2,
+            "y": -2
+          }
+        ]
+      },
+      {
+        "id": "block-80",
+        "type": "shield",
+        "x": -3,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -3,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-82",
+        "type": "shield",
+        "x": 3,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "east",
+        "variant": "single",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 3,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-84",
+        "type": "thruster",
+        "x": -1,
+        "y": 3,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": -1,
+            "y": 3
+          }
+        ]
+      },
+      {
+        "id": "block-86",
+        "type": "thruster",
+        "x": 0,
+        "y": 3,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 3
+          }
+        ]
+      },
+      {
+        "id": "block-88",
+        "type": "thruster",
+        "x": 1,
+        "y": 3,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 1,
+            "y": 3
+          }
+        ]
+      }
+    ],
+    "validation": {
+      "buildable": true,
+      "allConnected": true,
+      "blockCount": 22,
+      "cellCount": 28,
+      "openSocketCount": 10
+    },
+    "bounds": {
+      "minX": -3,
+      "maxX": 3,
+      "minY": -2,
+      "maxY": 3
+    }
+  },
+  {
+    "name": "Vulture",
+    "role": "Raider / chaos piece",
+    "accent": "#ff6f9e",
+    "quality": "red",
+    "summary": "Asymmetric scavenger hull with an offset gun arm and uneven thrust.",
+    "steps": [
+      {
+        "type": "hull",
+        "variant": "double",
+        "socket": {
+          "x": -1,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 1,
+          "y": 0,
+          "side": "east"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 0,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "hull",
+        "variant": "single",
+        "socket": {
+          "x": 1,
+          "y": 1,
+          "side": "east"
+        }
+      },
+      {
+        "type": "blaster",
+        "variant": "dual",
+        "socket": {
+          "x": 1,
+          "y": -1,
+          "side": "north"
+        }
+      },
+      {
+        "type": "shield",
+        "socket": {
+          "x": -3,
+          "y": 0,
+          "side": "west"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": -2,
+          "y": 1,
+          "side": "south"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 1,
+          "y": 2,
+          "side": "south"
+        }
+      },
+      {
+        "type": "thruster",
+        "socket": {
+          "x": 2,
+          "y": 1,
+          "side": "east"
+        }
+      }
+    ],
+    "blueprint": [
+      {
+        "id": "block-89",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null,
+        "cells": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-91",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "red",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -1,
+            "y": 0
+          },
+          {
+            "x": -2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-93",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-95",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-97",
+        "type": "hull",
+        "x": 1,
+        "y": 1,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 1,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-99",
+        "type": "blaster",
+        "x": 1,
+        "y": -1,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "dual",
+        "attachSide": "south",
+        "cells": [
+          {
+            "x": 1,
+            "y": -1
+          }
+        ]
+      },
+      {
+        "id": "block-101",
+        "type": "shield",
+        "x": -3,
+        "y": 0,
+        "quality": "red",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "east",
+        "cells": [
+          {
+            "x": -3,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "id": "block-103",
+        "type": "thruster",
+        "x": -2,
+        "y": 1,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": -2,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "id": "block-105",
+        "type": "thruster",
+        "x": 1,
+        "y": 2,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north",
+        "cells": [
+          {
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      {
+        "id": "block-107",
+        "type": "thruster",
+        "x": 2,
+        "y": 1,
+        "quality": "red",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "west",
+        "cells": [
+          {
+            "x": 2,
+            "y": 1
+          }
+        ]
+      }
+    ],
+    "validation": {
+      "buildable": true,
+      "allConnected": true,
+      "blockCount": 10,
+      "cellCount": 11,
+      "openSocketCount": 7
+    },
+    "bounds": {
+      "minX": -3,
+      "maxX": 2,
+      "minY": -1,
+      "maxY": 2
+    }
+  }
+]
