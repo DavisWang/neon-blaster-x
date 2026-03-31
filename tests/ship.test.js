@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { CELL_SIZE } from "../src/data.js";
+import { getAmbientLoopDuration, getAmbientLoopEvents, getQualityFrequency } from "../src/audio.js";
 
 import {
   advancePendingGameOver,
@@ -18,6 +19,7 @@ import {
   countShipsWithinSpawnPressureWindow,
   createBlueprintBlock,
   createShipFromBlueprint,
+  ENEMY_BOSS_SHIP_DESIGN_DEFS,
   ENEMY_AI_PROFILE_EARLY_WEIGHTS,
   ENEMY_AI_PROFILE_WEIGHTS,
   ENEMY_SHIP_DESIGN_DEFS,
@@ -241,6 +243,27 @@ test("ship visual quality cycles high, medium, low with distinct glow profiles",
   assert.ok(medium.glowPasses.every((pass) => pass.lineScale === 1));
 });
 
+test("audio quality map follows an ascending scale across block qualities", () => {
+  const frequencies = QUALITY_IDS.map((qualityId) => getQualityFrequency(qualityId));
+
+  assert.deepEqual(
+    frequencies.map((value) => Number(value.toFixed(2))),
+    [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25, 587.33]
+  );
+  assert.ok(frequencies.every((value, index) => index === 0 || value > frequencies[index - 1]));
+});
+
+test("ambient loop events fit inside one 30-second chill loop", () => {
+  const duration = getAmbientLoopDuration();
+  const events = getAmbientLoopEvents();
+
+  assert.equal(duration, 30);
+  assert.ok(events.length >= 12);
+  assert.ok(events.every((event) => event.time >= 0 && event.time < duration));
+  assert.ok(events.some((event) => event.type === "pad"));
+  assert.ok(events.some((event) => event.type === "bell"));
+});
+
 test("new run starts use a bare cockpit unless the builder explicitly launches a ship", () => {
   const customBlueprint = [
     createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
@@ -295,6 +318,24 @@ test("enemy design pool exposes 28 distinct cockpit-connected ships across 4 arc
   }
 });
 
+test("fortress boss pool adds a late-game custom warheart without disturbing the standard 28-ship roster", () => {
+  assert.equal(ENEMY_BOSS_SHIP_DESIGN_DEFS.length, 1);
+  assert.equal(ENEMY_BOSS_SHIP_DESIGN_DEFS[0].id, "fortress-warheart");
+  assert.equal(getAvailableEnemyDesigns(5).some((definition) => definition.id === "fortress-warheart"), false);
+  assert.equal(getAvailableEnemyDesigns(6).some((definition) => definition.id === "fortress-warheart"), true);
+
+  const boss = createShipFromBlueprint(buildEnemyBlueprint("fortress-warheart", "purple"), { kind: "enemy" });
+  const connected = findConnectedBlockIds(boss);
+
+  assert.equal(
+    boss.blocks.every((block) => block.type === "cockpit" || connected.has(block.id)),
+    true
+  );
+  assert.equal(getShipBoundsArea(boss), 88);
+  assert.equal(boss.blocks.filter((block) => block.type === "thruster").length, 17);
+  assert.equal(boss.blocks.filter((block) => block.type === "blaster").length, 7);
+});
+
 test("enemy quality variance stays within one tier and keeps mirrored block pairs matched", () => {
   const rolls = [0.92, 0.08, 0.5, 0.88, 0.12, 0.48, 0.91, 0.09, 0.52, 0.86, 0.14];
   const rng = () => rolls.shift() ?? 0.5;
@@ -321,6 +362,22 @@ test("enemy quality variance stays within one tier and keeps mirrored block pair
     [...blocksByGroup.values()].every((group) => new Set(group.map((block) => block.quality)).size === 1),
     true
   );
+});
+
+test("fortress boss ai weights stay fortress-derived but skew harder into aggressive profiles", () => {
+  const fortressWeights = getEnemyAiProfileWeights("fortress", 1);
+  const bossWeights = getEnemyAiProfileWeights("fortress", 1, "fortress-warheart");
+  const fortressSoft =
+    fortressWeights.punchingBag + fortressWeights.slowReacting + fortressWeights.wontAttackFirst;
+  const bossSoft =
+    bossWeights.punchingBag + bossWeights.slowReacting + bossWeights.wontAttackFirst;
+
+  assert.ok(Math.abs(Object.values(bossWeights).reduce((sum, value) => sum + value, 0) - 1) < 0.000001);
+  assert.ok(bossWeights.aggressive > fortressWeights.aggressive);
+  assert.ok(bossWeights.berserker > fortressWeights.berserker);
+  assert.ok(bossWeights.aggressive > bossWeights.cautious);
+  assert.ok(bossSoft < fortressSoft);
+  assert.equal(chooseEnemyAiProfile("fortress", () => 0.76, 1, "fortress-warheart").id, "aggressive");
 });
 
 test("enemy archetypes now span meaningfully different footprints within each family", () => {

@@ -15,6 +15,7 @@ import {
   SIDE_VECTORS,
   SOCKET_SNAP_DISTANCE
 } from "./data.js";
+import { createAudioDirector } from "./audio.js";
 import {
   angleBetween,
   clamp,
@@ -114,6 +115,7 @@ const returnTitleButton = document.querySelector("#return-title");
 const launchFromBuilderButton = document.querySelector("#launch-from-builder");
 const resetBuilderButton = document.querySelector("#reset-builder");
 const backToTitleButton = document.querySelector("#back-to-title");
+const audioToggleButton = document.querySelector("#audio-toggle");
 
 const qualityPalette = document.querySelector("#quality-palette");
 const blockPalette = document.querySelector("#block-palette");
@@ -163,6 +165,8 @@ const state = {
     enemy: createShipFromBlueprint(generateEnemyBlueprint(2), { team: "enemy", x: 220, y: -110 })
   }
 };
+const audio = createAudioDirector();
+const QUALITY_INDEX_BY_ID = Object.fromEntries(QUALITY_TIERS.map((tier, index) => [tier.id, index]));
 
 function colorWithAlpha(color, alpha) {
   if (color.startsWith("hsl")) {
@@ -183,6 +187,36 @@ function getBlockColor(block, time) {
     return `hsl(${(time * 140) % 360} 100% 70%)`;
   }
   return getQuality(block).color;
+}
+
+function getRepresentativeShipQuality(blocks) {
+  const weightsByQuality = new Map();
+
+  for (const block of blocks) {
+    if (block.type === "cockpit" || !block.quality) {
+      continue;
+    }
+
+    const weight =
+      block.type === "blaster" ? 3 : block.type === "shield" ? 2 : 1;
+    weightsByQuality.set(block.quality, (weightsByQuality.get(block.quality) ?? 0) + weight);
+  }
+
+  let bestQuality = "red";
+  let bestScore = Number.NEGATIVE_INFINITY;
+  let bestIndex = QUALITY_INDEX_BY_ID.red ?? 1;
+
+  for (const tier of QUALITY_TIERS) {
+    const score = weightsByQuality.get(tier.id) ?? 0;
+    const index = QUALITY_INDEX_BY_ID[tier.id] ?? 0;
+    if (score > bestScore || (score === bestScore && index > bestIndex)) {
+      bestQuality = tier.id;
+      bestScore = score;
+      bestIndex = index;
+    }
+  }
+
+  return bestQuality;
 }
 
 function getRenderAngleForBlock(block) {
@@ -392,6 +426,17 @@ function syncHud() {
   if (state.game.gameOver) {
     gameOverStats.textContent = `Kills ${state.game.kills} | Scrap attached ${state.game.scrapAttached}`;
   }
+}
+
+function syncAudioToggle() {
+  if (!audioToggleButton) {
+    return;
+  }
+
+  const enabled = audio.isEnabled();
+  audioToggleButton.textContent = enabled ? "Audio On" : "Audio Off";
+  audioToggleButton.setAttribute("aria-pressed", String(enabled));
+  audioToggleButton.dataset.enabled = enabled ? "true" : "false";
 }
 
 function buildPalettes() {
@@ -931,6 +976,11 @@ function destroyShipBlock(ship, block, bulletDamage = 0) {
     if (ship.kind === "enemy") {
       state.game.kills += 1;
     }
+    audio.playShipDestruction({
+      qualityId: getRepresentativeShipQuality(deathBlocks),
+      shipId: ship.id,
+      isPlayer: ship.kind === "player"
+    });
     return;
   }
 
@@ -995,6 +1045,11 @@ function fireShipWeapons(ship, isFiring) {
     }
 
     runtimeBlock.cooldown = stats.cooldown;
+    audio.playBlaster({
+      qualityId: weapon.quality,
+      variant: weapon.variant ?? "single",
+      shipId: ship.id
+    });
     state.game.effects.push(makeEffect("muzzle", originWorld.x, originWorld.y, { radius: 16, ttl: 0.1, color: getBlockColor(weapon, state.time) }));
   }
 }
@@ -1971,6 +2026,10 @@ openHowToButton?.addEventListener("click", openHowTo);
 closeHowToButton?.addEventListener("click", closeHowTo);
 retryRunButton.addEventListener("click", startRun);
 returnTitleButton.addEventListener("click", returnToTitle);
+audioToggleButton?.addEventListener("click", async () => {
+  await audio.toggleEnabled();
+  syncAudioToggle();
+});
 launchFromBuilderButton.addEventListener("click", () => {
   if (state.game?.player) {
     state.playerBlueprint = serializeShipToBlueprint(state.game.player);
@@ -1982,6 +2041,9 @@ backToTitleButton.addEventListener("click", returnToTitle);
 
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("pointermove", updateMouse);
+window.addEventListener("pointerdown", () => {
+  audio.ensureUnlocked();
+}, { capture: true });
 
 canvas.addEventListener("pointerdown", (event) => {
   if (!state.game || state.game.gameOver || state.game.playerLost) {
@@ -2031,6 +2093,7 @@ canvas.addEventListener("contextmenu", (event) => {
 });
 
 window.addEventListener("keydown", (event) => {
+  audio.ensureUnlocked();
   const key = event.key.toLowerCase();
   if (key === "w") {
     state.input.up = true;
@@ -2077,6 +2140,7 @@ window.addEventListener("keyup", (event) => {
 
 resizeCanvas();
 buildPalettes();
+syncAudioToggle();
 if (autoMode === "run") {
   startRun();
 } else if (autoMode === "builder") {

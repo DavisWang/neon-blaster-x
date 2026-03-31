@@ -4,7 +4,7 @@ Neon Blaster X is a browser-first modular salvage shooter about winning ugly fig
 
 You start as a bare cockpit in neon space. Every enemy ship is both a threat and a parts bin. Break it apart, drag loose salvage onto your hull in real time, and turn a weak starter frame into a faster, heavier, stranger weapon platform before the next wave closes in.
 
-This repo is the current playable prototype of that loop. It is not just a concept doc or a rendering mockup. The game already runs locally, supports live rebuilding, ships a varied enemy roster, and has enough combat/salvage rules to feel like an actual system instead of a shell.
+This repo is the current playable build of that loop. It is not just a concept doc or a rendering mockup. The game already runs locally, supports live rebuilding, ships a varied enemy roster, and has enough combat/salvage rules to feel like an actual system instead of a shell.
 
 ## What Was Built
 
@@ -14,11 +14,11 @@ This repo is the current playable prototype of that loop. It is not just a conce
 | Player ship | cockpit-only start, built-in cockpit thrust/fire rules, live stat-bearing ship assembly |
 | Salvage loop | loose block pickup, drag attachment, snap rotation, mounted-part detach, persistent death-drop loot |
 | Combat | free-for-all bullets, shield reflection, collision damage, self-hit grace, per-block damage/destruction |
-| Enemy roster | `28` legal enemy designs across `Needle`, `Bulwark`, `Manta`, and `Fortress` |
+| Enemy roster | `28` standard enemy designs plus `Warheart`, a late custom fortress boss, across `Needle`, `Bulwark`, `Manta`, and `Fortress` |
 | Enemy behavior | `7` AI profiles from `Punching Bag` to `Berserker`, with provocation and retaliation rules |
 | Progression | elapsed-time-plus-kills spawn director, per-design unlocks, mixed enemy block quality up to `rainbow` |
 | Ship building | `Hull 1x1`, `Hull 1x2`, `Hull 1x3`, blasters, thrusters, shields, socket-aware connectivity |
-| Presentation | neon line-art rendering, quality-based color system, ship FX quality toggle, player-death line-art animation |
+| Presentation | neon line-art rendering, quality-based color system, ship FX quality toggle, player-death line-art animation, ambient music, and melodic combat SFX |
 | Validation | automated gameplay/model regressions via `npm test` |
 
 ## Why It’s Interesting
@@ -38,10 +38,12 @@ This repo is the current playable prototype of that loop. It is not just a conce
 - Cockpits regenerate slowly over roughly `120s`.
 - Player death now plays a short neon line-art breakup animation during the pending-loss window.
 - Pressing `Q` cycles ship-rendering glow quality without changing gameplay.
+- A small corner toggle now mutes or re-enables both music and SFX.
+- Audio now adds a chill `~30s` ambient loop plus soft melodic blaster and destruction feedback.
 
 ## Enemy Roster
 
-The runtime currently rolls from `28` distinct legal enemy designs across these `4` archetypes. Each spawn gets one progression-driven base quality, while mirrored non-cockpit block pairs can vary within base quality plus or minus `1`.
+The runtime currently rolls from `29` distinct legal enemy designs across these `4` archetypes: the standard `28`-ship fleet plus `Warheart`, a late custom fortress boss. Each spawn gets one progression-driven base quality, while mirrored non-cockpit block pairs can vary within base quality plus or minus `1`.
 
 | Archetype | Read | Role tendency |
 | --- | --- | --- |
@@ -49,6 +51,8 @@ The runtime currently rolls from `28` distinct legal enemy designs across these 
 | `Bulwark` | compact guards and wide shield barges | tanks and lane holders |
 | `Manta` | gliders, nets, and wing-heavy skirmishers | orbit pressure and area denial |
 | `Fortress` | dense bastions and hollow outer rings | slow walls and heavy anchors |
+
+`Warheart` inherits fortress AI weighting, but its boss-specific distribution is pulled harder toward `Aggressive` and `Berserker` so it reads like a true anchor threat instead of just a larger passive wall.
 
 ## Enemy AI Profiles
 
@@ -83,6 +87,7 @@ Open:
 | Run / Builder | `A` / `D` | rotate left / right |
 | Run / Builder | `Space` | fire |
 | Run / Builder | `Q` | cycle ship glow quality: `High` -> `Medium` -> `Low` |
+| Any shell | corner `Audio On/Off` button | toggle music and SFX together |
 | Run / Builder | Mouse drag on loose salvage | pick up and move salvage |
 | Builder | Mouse drag on mounted non-cockpit part | detach and immediately drag that part |
 | Builder | Right-click on mounted non-cockpit part | quick detach |
@@ -97,6 +102,7 @@ Open:
 | Durability | same-tier blasters destroy `Hull 1x1` in `7` hits across qualities; overmatch damage ramps sharply |
 | Shields | reflect bullets and sit closer to `Hull 1x3` durability than fortress-wall durability |
 | Enemy pressure | controlled by elapsed time plus kills, with a nearby visible cap of `3` enemy ships |
+| Audio | procedural browser audio with a chill `~30s` ambient loop, quality-mapped blaster notes, and soft ship-destruction cues |
 
 ## Test
 

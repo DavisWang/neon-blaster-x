@@ -15,6 +15,13 @@
 - [x] Add targeted source comments for non-obvious runtime contracts.
 - [x] Re-run validation before pushing the doc-sync pass.
 
+## Release Sync Pass
+
+- [x] Re-read the harness docs, current repo docs, and gameplay code as the source of truth.
+- [x] Refresh the existing-project intake and current work order for the release-ready repo sync request.
+- [x] Update stale release-facing docs so they match the shipped browser game instead of an older prototype state.
+- [x] Keep validation green and prepare the repo for commit and push.
+
 ## Correction Round: Player Death Line Art
 
 - [x] Trace the current player-loss and effects path.
@@ -42,6 +49,22 @@
 - [x] Add deterministic regression coverage for bounded quality variance and mirrored-quality preservation.
 - [x] Refresh only the request-affected runtime docs and change tracking.
 - [x] Re-run targeted validation for the enemy-quality pass.
+
+## Correction Round: Fortress Boss Pass
+
+- [x] Refresh the existing-project intake and current work order for the custom fortress boss request.
+- [x] Add the image-driven `Warheart` fortress boss as a dedicated late-game boss design without disturbing the standard `28`-ship roster.
+- [x] Inherit fortress AI weighting for the boss, but skew it harder toward `Aggressive` and `Berserker`.
+- [x] Add deterministic coverage for boss blueprint validity, late gating, and boss-specific AI weighting.
+- [x] Refresh only the request-affected runtime docs and change tracking, then re-run targeted validation.
+
+## Correction Round: Audio Pass
+
+- [x] Refresh the existing-project intake and current work order for the audio request.
+- [x] Add a browser-native ambient music loop plus melodic blaster and ship-destruction SFX.
+- [x] Add one small corner toggle that mutes or restores both music and SFX.
+- [x] Add deterministic coverage for the pure audio helper contracts.
+- [x] Refresh only the request-affected runtime docs and change tracking, then re-run targeted validation.
 
 ## Repo Push Prep
 

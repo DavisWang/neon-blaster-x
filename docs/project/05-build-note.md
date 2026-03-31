@@ -1,6 +1,6 @@
 # Build Note
 
-- Status: `ready_for_review`
+- Status: `ready_to_ship`
 - Run command: `python3 -m http.server 4199 --bind 127.0.0.1`
 - Browser target: desktop browser at [http://127.0.0.1:4199](http://127.0.0.1:4199)
 - Direct smoke pages:
@@ -12,13 +12,15 @@
   - title screen renders with branded menu and neon background
   - gameplay shell renders with HUD, centered ship, and browser-safe canvas layout
   - builder renders with the ship palette, quality palette, drag-to-detach builder flow, and sandbox ship
-- core ship/connectivity helpers pass local logic tests
+- current automated coverage passes at `73/73`
 - the shared start/reset default is cockpit-only again, while the first builder entry seeds a compact rainbow speed-test rig for targeted builder testing
-- current combat rules are free-for-all, enemy spawns now come from four validated archetypes expanded into `28` distinct legal ship designs with weighted AI personalities, and the roster now has much larger within-archetype variation in footprint, thrust layout, yaw authority, weapon density, hollow `Fortress` outlines, and mirrored base-quality-plus-or-minus-`1` block accents; enemy cockpits do not get the player's built-in blaster; AI steering, provocation, retaliation, idle patrol, and attack-first rules now vary by personality; the roster still opens soft, but the late-game mix has been rebalanced down to roughly `45%` total soft personalities, `Won't Attack First` now refuses to open on the player rather than on everyone, very late enemies can now reach `rainbow` quality, visible enemy pressure now opens a bit denser instead of stalling at `2`; enemies enter from outside the visible viewport; the enemy pool remains blaster-rich so weapon salvage appears often; ship-death salvage now spawns healthier, stays persistent as collectible loot, no longer silently despawns by player distance, no longer absorbs live combat shots, and uses closest-hit-first pickup; cockpit health now regenerates slowly while ships remain alive; player cockpit death now gets a short `~2s` neon line-art breakup animation before the loss panel fully takes over; the player loss panel waits about `3s` after cockpit destruction; and `Q` cycles rendering-only ship glow quality
+- browser audio now unlocks on first user gesture, plays a chill procedural `~30s` ambient loop, maps blaster fire up the quality ladder as melodic notes, and exposes one small corner toggle that mutes music and SFX together
+- current combat rules are free-for-all, enemy spawns now come from four validated archetypes expanded into the standard `28`-ship roster plus `Warheart`, a late custom fortress boss; the roster now has much larger within-archetype variation in footprint, thrust layout, yaw authority, weapon density, hollow `Fortress` outlines, mirrored base-quality-plus-or-minus-`1` block accents, and a dedicated boss-class fortress frame whose AI weighting stays fortress-derived but skews harder into `Aggressive` and `Berserker`; enemy cockpits do not get the player's built-in blaster; AI steering, provocation, retaliation, idle patrol, and attack-first rules now vary by personality; the roster still opens soft, but the late-game mix has been rebalanced down to roughly `45%` total soft personalities, `Won't Attack First` now refuses to open on the player rather than on everyone, very late enemies can now reach `rainbow` quality, visible enemy pressure now opens a bit denser instead of stalling at `2`; enemies enter from outside the visible viewport; the enemy pool remains blaster-rich so weapon salvage appears often; ship-death salvage now spawns healthier, stays persistent as collectible loot, no longer silently despawns by player distance, no longer absorbs live combat shots, and uses closest-hit-first pickup; cockpit health now regenerates slowly while ships remain alive; player cockpit death now gets a short `~2s` neon line-art breakup animation before the loss panel fully takes over; the player loss panel waits about `3s` after cockpit destruction; and `Q` cycles rendering-only ship glow quality
 
 ## Implemented Systems
 
 - static browser shell with title, gameplay, builder, and game-over states
+- procedural browser audio module for music and SFX, with a persistent mute toggle
 - modular ship data model with cockpit, hull, blaster, thruster, and shield blocks
 - cockpit-only shared default starter with open-side cockpit built-ins that disappear when the matching cockpit side is occupied
 - first builder entry seeded from a compact rainbow speed-test rig, without changing reset-button behavior
@@ -27,6 +29,7 @@
 - rigid-body-like ship motion driven by mounted thrusters, with thrust torque resolved around center of mass
 - enemy spawning from the validated `Needle`, `Bulwark`, `Manta`, and `Fortress` archetypes
 - `28` distinct legal enemy ship designs distributed across those `4` archetypes, with `7` designs per archetype
+- `Warheart`, a late custom fortress boss that sits outside the standard `28`-ship roster and uses fortress-derived but more aggressive AI weighting
 - enemy non-cockpit block qualities that can vary within base quality plus or minus `1`, while mirrored block pairs stay matched
 - approved compact additions now include `Dart`, `Ward`, `Skiff`, and `Fan`, with `Ward` intentionally shipping without the proposed shield
 - materially different within-archetype enemy variants, including small early-game hulls, a limited set of low-yaw or low-thrust ships, and hollow `Fortress` frames
@@ -47,10 +50,10 @@
 
 ## Known Compromises
 
-- the browser smoke pass still does not cover a full end-to-end combat and rebuild session
-- combat balance moved closer to the brief but still needs live tuning against player feel
-- richer procedural generation and audio remain out of scope
+- manual balance and feel tuning can still continue after ship, but they are no longer blocking the repo sync requested in this loop
+- the repo still relies mainly on deterministic model/runtime tests rather than a recorded long-form browser playthrough
+- richer adaptive music layers and mixer controls remain out of scope
 
 ## Next Owner
 
-- `Play Tester`
+- `Producer`

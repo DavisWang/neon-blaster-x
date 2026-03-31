@@ -22,6 +22,7 @@ Pilot a compact modular spaceship through neon-lit space, defeat hostile ships, 
 - `D`: rotate right
 - `Space`: fire blaster
 - `Q`: cycle ship visual quality between `High`, `Medium`, and `Low`
+- corner audio button: toggle ambient music and SFX together
 - Mouse click and drag: pick up salvageable parts and attach them to open sockets
 - Builder-only mouse drag on mounted non-cockpit part: detach and drag that part immediately
 - Builder-only right-click on mounted non-cockpit part: quick detach
@@ -34,6 +35,7 @@ Pilot a compact modular spaceship through neon-lit space, defeat hostile ships, 
 - The camera should keep the player ship readable at all times.
 - The cockpit is the primary visual anchor for the player ship.
 - The visual-quality toggle should be rendering-only. Lower settings should reduce glow / halo cost without changing gameplay behavior.
+- Audio should stay chill and atmospheric: one subtle ambient loop plus soft melodic combat feedback, not loud arcade noise.
 
 ## Ship Model
 
@@ -81,9 +83,10 @@ Every ship is built from 1x1 block units unless a block type explicitly spans mu
 - Combatants are free-for-all by default; enemies should be able to fight each other instead of only focusing the player.
 - Only the player cockpit should expose the built-in forward blaster; enemy cockpits should need attached weapon parts to shoot.
 - Enemy ships should spawn from a readable roster of validated archetypes: `Needle`, `Bulwark`, `Manta`, and `Fortress`.
-- Those archetypes should fan out into a larger modular design pool, so the runtime shows roughly `20-30` distinct legal enemy ships instead of one blueprint per archetype; the current shipped target is `28` total designs with `7` per archetype.
+- Those archetypes should fan out into a larger modular design pool, so the runtime shows roughly `20-30` distinct legal enemy ships instead of one blueprint per archetype; the current shipped target is `29` total designs: `28` standard ships plus `Warheart`, a late custom fortress boss.
 - The designs within each archetype should still vary materially in footprint, thrust layout, yaw authority, and weapon density instead of reading like one hull with minor gun swaps.
 - `Fortress` variants may include large hollow-outline builds as long as they remain legal and cockpit-connected.
+- Custom boss ships may override the base archetype's AI weighting, but they should start from that archetype's distribution and then bias it rather than replacing it wholesale.
 - The fleet should stay mostly symmetrical in silhouette and especially in thruster placement; deliberate low-yaw ships should be rare exceptions, not the norm.
 - Roughly `10%` of the fleet should have little-to-no yaw authority, roughly `20%` should be slow movers, and roughly `30%` should be highly mobile.
 - Each enemy spawn should also roll one AI personality from `Punching Bag`, `Slow Reacting`, `Won't Attack First`, `Cautious`, `Opportunist`, `Aggressive`, and `Berserker`.
@@ -95,6 +98,8 @@ Every ship is built from 1x1 block units unless a block type explicitly spans mu
 - Enemy ships should carry enough blasters that weapon salvage is a normal reward outcome, not a rare edge case.
 - Very late enemy quality progression may reach `rainbow`.
 - Weapons should have a short cooldown so holding `Space` creates continuous fire.
+- Blaster SFX should map quality tiers upward through a melodic scale from low to high quality.
+- Ship destruction should sound soft and harmonious enough to fit the ambient/chill tone.
 - Projectiles damage exposed blocks on impact.
 - After a short muzzle-clear grace window, a ship can be hit by its own bullets in edge cases.
 - Collisions between any ships cause damage based on impact speed, including enemy-enemy pairs.
@@ -129,19 +134,20 @@ Every ship is built from 1x1 block units unless a block type explicitly spans mu
 - one playable title screen
 - one gameplay mode
 - one minimal builder or salvage attachment loop
-- four enemy ship archetypes built from the current part set, expanded into `28` legal designs
+- four enemy ship archetypes built from the current part set, expanded into `28` standard legal designs plus `Warheart`, a custom fortress boss
 - seven AI personalities with a weighted soft-majority free-for-all mapping
 - one shared difficulty ramp that widens over time plus kills without relying mainly on sparse early spawns, while keeping the visible enemy cap at `3`
 - one loss condition
 - simple on-screen HUD for health, attached parts, and basic controls
 - browser-playable local build
+- one simple in-game audio toggle for music and SFX
 
 ## Later Ideas
 
 - boss-tier or scripted enemy archetypes
 - expanded procedural generation
 - longer progression or campaign structure
-- music and sound polish
+- richer adaptive music layers and a deeper mixer/settings pass
 - advanced group tactics and wave scripting
 - boss encounters
 - economy or meta-progression

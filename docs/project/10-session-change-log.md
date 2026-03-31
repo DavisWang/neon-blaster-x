@@ -6,6 +6,9 @@ This file captures the cumulative changes made across the iterative correction r
 
 | Round | What changed | Main files |
 | --- | --- | --- |
+| Release Sync Pass | re-read the current repo, refreshed the stale harness/release docs and README to the shipped browser game state, aligned the lingering run-shell HUD wording, and prepared the repo for push | `README.md`, `run.html`, `docs/project/00-existing-project-intake.md`, `docs/project/01-work-order.md`, `docs/project/05-build-note.md`, `docs/project/06-test-verdict.md`, `docs/project/07-mock-player-memo.md`, `docs/project/08-release-backlog-summary.md`, `docs/project/10-session-change-log.md`, `tasks/todo.md` |
+| Audio Pass | added a browser-native ambient loop, melodic quality-mapped blaster SFX, soft ship-destruction feedback, and an unobtrusive corner audio toggle across the live shells | `src/audio.js`, `src/main.js`, `index.html`, `run.html`, `builder.html`, `styles.css`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `tasks/todo.md` |
+| Fortress Boss Pass | added `Warheart`, a late custom fortress boss based on the supplied silhouette, kept the standard `28`-ship roster intact, and let the boss inherit fortress AI weighting with a stronger pull toward `Aggressive` and `Berserker` | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `tasks/todo.md` |
 | Docs + Code Comment Sync | re-read the live runtime, corrected the docs to match current behavior for pickup priority, cockpit regen, delayed loss flow, visual-quality toggling, and run-vs-builder start rules, and added targeted comments around the matching non-obvious code paths | `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `src/ship.js`, `tasks/todo.md` |
 | Enemy Quality Variance Pass | enemy ships now keep one progression-driven base quality per spawn, but non-cockpit blocks can roll within base quality plus or minus `1`, with mirrored block pairs forced to keep matching tiers | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `tasks/todo.md` |
 | Visible Cap + Collision Precision Pass | capped active visible enemy pressure at `3` other ships and replaced the old flat ship-separation shove with penetration-based overlap resolution plus normal-velocity separation so enemy ships clip through each other less severely | `src/data.js`, `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `tasks/todo.md`, `tasks/lessons.md` |
@@ -66,6 +69,7 @@ This file captures the cumulative changes made across the iterative correction r
 | Enemy roster | enemies now spawn from the validated `Needle`, `Bulwark`, `Manta`, and `Fortress` archetypes, with `7` live designs per archetype instead of one small generic template pool |
 | Enemy intra-archetype variety | each archetype now includes wider footprint swings plus a controlled minority of low-yaw / low-thrust outliers, smaller early-game ships, and hollow `Fortress` outlines instead of minor weapon-only remixes |
 | Enemy personalities | each archetype now rolls a weighted AI profile from `Punching Bag`, `Slow Reacting`, `Won't Attack First`, `Cautious`, `Opportunist`, `Aggressive`, and `Berserker` |
+| Fortress boss | `Warheart` now exists as a dedicated late-game fortress boss, and its AI weighting stays fortress-derived while leaning harder into aggressive profiles |
 | Soft AI behavior | soft ships can now truly avoid attacking the player first, fail to retaliate, or react so slowly that they function as safer salvage opportunities instead of competent ranged duelists |
 | Late AI pressure | late-game soft share now settles closer to `45%` per archetype instead of staying near `56-59%` |
 | Enemy quality ceiling | very late enemy quality progression can now reach `rainbow` |
@@ -82,10 +86,13 @@ This file captures the cumulative changes made across the iterative correction r
 | Cockpit regen | alive ships now regenerate cockpit HP on a `120s` full-refill slope |
 | Loss flow | cockpit destruction now enters a short pending-loss phase, with the game-over panel appearing about `3s` later instead of instantly |
 | Visual quality toggle | pressing `Q` now cycles `High`, `Medium`, and `Low` ship rendering quality without changing gameplay rules |
+| Audio | the browser build now plays a chill procedural ambient loop plus melodic blaster and ship-destruction SFX, with one corner toggle that mutes music and SFX together |
 
 ## Validation Coverage Added During These Rounds
 
 - socket-derived placement and snap-orientation regressions
+- deterministic audio-helper coverage for the quality note map and ambient loop timing
+- fortress boss legality, late-gate, and aggressive-skew AI regressions
 - enemy mixed-quality variance and mirrored-symmetry regressions
 - cockpit-only starter and cockpit-side capability regressions
 - side-thruster yaw regression

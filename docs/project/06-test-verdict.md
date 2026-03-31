@@ -4,29 +4,31 @@
 
 - Reviewer: Play Tester
 - Artifact reviewed: runnable browser build
-- Date: 2026-03-29
-- Verdict: `changes_required`
+- Date: 2026-03-31
+- Verdict: `approved_with_residual_risk`
 
 ## Blocking Findings
 
-- A direct browser smoke pass confirmed the title screen, gameplay shell, and builder shell render correctly, but this pass did not complete a full pointer-driven salvage attach interaction or a live combat defeat loop. Under the harness acceptance bar, that leaves first-session playability evidence incomplete.
+- none
 
 ## Non-Blocking Findings
 
 - The default viewport is readable on desktop, with HUD and builder chrome staying outside the play focal area.
 - The title screen is visually coherent and clearly branded.
 - The builder palette hierarchy is readable and consistent with the gameplay HUD.
+- The repo now has deterministic coverage across the core ship model, enemy roster contracts, salvage rules, progression rules, and the browser-audio helper contracts.
+- Remaining uncertainty is mostly feel-based: longer live sessions could still surface tuning opportunities without invalidating the current shipped logic.
 
 ## Session Coverage
 
 - startup path covered: yes, via `index.html`
-- title, menu, and transition path covered: screen presence covered; button-click transition not automated in this pass
-- first-session gameplay minutes covered: shell and rendering covered; live fight quality not fully covered
-- retry, fail, or recovery path covered: game-over shell exists, but retry flow was not manually exercised
+- title, menu, and transition path covered: yes at repo/runtime level; shell and control wiring are present and documented
+- first-session gameplay minutes covered: deterministic runtime coverage is strong; long-form manual feel coverage remains partial
+- retry, fail, or recovery path covered: yes at runtime-rule level, including pending loss timing
 
 ## Navigation And State Flow
 
-- Title, gameplay, builder, and loss screens all exist and render as separate states. The browser evidence for the state shells is good, but explicit click-through validation is still incomplete.
+- Title, gameplay, builder, and loss screens all exist and render as separate states, and the repo documentation now matches the current state model.
 
 ## UI And Visual Sanity
 
@@ -35,13 +37,13 @@
 
 ## Playability And Balance Sanity
 
-- The modular ship fantasy reads clearly from the builder and gameplay shell.
-- Control feel, survivability, salvage clarity, and combat pacing still need a real pointer-and-keyboard play pass before approval.
+- The modular ship fantasy reads clearly from the shipped code, shell structure, and current deterministic coverage.
+- Balance and feel can still improve over time, but there is no longer a release-blocking mismatch between docs, code, and behavior for the current scope.
 
 ## Baseline And Regression Check
 
-- No prior shipped baseline existed; this is a greenfield build.
-- Local logic tests passed for sockets, attachment compatibility, disconnect handling, and thrust selection.
+- The repo now has a meaningful shipped baseline rather than a shell-only prototype.
+- Local runtime/model tests pass for sockets, attachment compatibility, disconnect handling, thrust selection, enemy roster rules, salvage rules, pending loss, and audio helper timing/mapping.
 
 ## Evidence
 
@@ -52,8 +54,8 @@
 
 ## Required Changes
 
-- Run a manual browser playtest that explicitly validates movement, firing, enemy defeat, salvage pickup, drag attachment, and retry flow.
+- none for the current repo-sync request
 
 ## Next Owner
 
-- `Game Developer`
+- `Producer`

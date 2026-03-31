@@ -1291,7 +1291,8 @@ function makeEnemyShipDesign({
   minLevel = 1,
   tags = [],
   buildSteps,
-  removeBlocks = []
+  removeBlocks = [],
+  aiProfileWeightMultipliers = null
 }) {
   return {
     id,
@@ -1301,7 +1302,8 @@ function makeEnemyShipDesign({
     minLevel,
     tags: [...tags],
     buildSteps: cloneEnemyBuildSteps(buildSteps),
-    removeBlocks: removeBlocks.map((ref) => cloneEnemyBlockRef(ref))
+    removeBlocks: removeBlocks.map((ref) => cloneEnemyBlockRef(ref)),
+    aiProfileWeightMultipliers: aiProfileWeightMultipliers ? { ...aiProfileWeightMultipliers } : null
   };
 }
 
@@ -1417,6 +1419,66 @@ const ENEMY_ARCHETYPE_ALT_STEPS = {
     { type: "shield", socket: { x: 4, y: 1, side: "east" } }
   ])
 };
+
+const FORTRESS_BOSS_BUILD_STEPS = [
+  { type: "hull", variant: "triple", socket: { x: -1, y: 0, side: "west" } },
+  { type: "hull", variant: "triple", socket: { x: 1, y: 0, side: "east" } },
+  { type: "hull", variant: "double", socket: { x: -3, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: -2, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: -1, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: 0, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: 1, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: 2, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: 3, y: -1, side: "north" } },
+  { type: "hull", variant: "double", socket: { x: -3, y: 1, side: "south" } },
+  { type: "hull", variant: "double", socket: { x: -2, y: 1, side: "south" } },
+  { type: "hull", variant: "double", socket: { x: -1, y: 1, side: "south" } },
+  { type: "hull", variant: "double", socket: { x: 0, y: 1, side: "south" } },
+  { type: "hull", variant: "double", socket: { x: 1, y: 1, side: "south" } },
+  { type: "hull", variant: "double", socket: { x: 2, y: 1, side: "south" } },
+  { type: "hull", variant: "double", socket: { x: 3, y: 1, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: -4, y: -2, side: "west" } },
+  { type: "hull", variant: "single", socket: { x: -4, y: -1, side: "west" } },
+  { type: "hull", variant: "single", socket: { x: -4, y: 0, side: "west" } },
+  { type: "hull", variant: "single", socket: { x: -4, y: 1, side: "west" } },
+  { type: "hull", variant: "single", socket: { x: -4, y: 2, side: "west" } },
+  { type: "hull", variant: "single", socket: { x: 4, y: -2, side: "east" } },
+  { type: "hull", variant: "single", socket: { x: 4, y: -1, side: "east" } },
+  { type: "hull", variant: "single", socket: { x: 4, y: 0, side: "east" } },
+  { type: "hull", variant: "single", socket: { x: 4, y: 1, side: "east" } },
+  { type: "hull", variant: "single", socket: { x: 4, y: 2, side: "east" } },
+  { type: "blaster", variant: "single", socket: { x: -3, y: -3, side: "north" } },
+  { type: "blaster", variant: "dual", socket: { x: -2, y: -3, side: "north" } },
+  { type: "blaster", variant: "single", socket: { x: -1, y: -3, side: "north" } },
+  { type: "blaster", variant: "spread", socket: { x: 0, y: -3, side: "north" } },
+  { type: "blaster", variant: "single", socket: { x: 1, y: -3, side: "north" } },
+  { type: "blaster", variant: "dual", socket: { x: 2, y: -3, side: "north" } },
+  { type: "blaster", variant: "single", socket: { x: 3, y: -3, side: "north" } },
+  { type: "hull", variant: "single", socket: { x: -3, y: 3, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: -2, y: 3, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: -1, y: 3, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: 0, y: 3, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: 1, y: 3, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: 2, y: 3, side: "south" } },
+  { type: "hull", variant: "single", socket: { x: 3, y: 3, side: "south" } },
+  { type: "thruster", socket: { x: -3, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: -2, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: -1, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: 0, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: 1, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: 2, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: 3, y: 4, side: "south" } },
+  { type: "thruster", socket: { x: -5, y: -2, side: "west" } },
+  { type: "thruster", socket: { x: -5, y: -1, side: "west" } },
+  { type: "thruster", socket: { x: -5, y: 0, side: "west" } },
+  { type: "thruster", socket: { x: -5, y: 1, side: "west" } },
+  { type: "thruster", socket: { x: -5, y: 2, side: "west" } },
+  { type: "thruster", socket: { x: 5, y: -2, side: "east" } },
+  { type: "thruster", socket: { x: 5, y: -1, side: "east" } },
+  { type: "thruster", socket: { x: 5, y: 0, side: "east" } },
+  { type: "thruster", socket: { x: 5, y: 1, side: "east" } },
+  { type: "thruster", socket: { x: 5, y: 2, side: "east" } }
+];
 
 export const ENEMY_ARCHETYPE_DEFS = {
   needle: { id: "needle", label: "Needle", minLevel: 1, spawnWeight: 28, defaultDesignId: "needle-sting" },
@@ -1811,8 +1873,31 @@ export const ENEMY_SHIP_DESIGN_DEFS = [
   })
 ];
 
+export const ENEMY_BOSS_SHIP_DESIGN_DEFS = [
+  makeEnemyShipDesign({
+    id: "fortress-warheart",
+    archetypeId: "fortress",
+    label: "Warheart",
+    spawnWeight: 0.18,
+    minLevel: 6,
+    tags: ["boss", "aggressive", "broad"],
+    buildSteps: FORTRESS_BOSS_BUILD_STEPS,
+    aiProfileWeightMultipliers: {
+      punchingBag: 0.25,
+      slowReacting: 0.4,
+      wontAttackFirst: 0.45,
+      cautious: 0.85,
+      opportunist: 1.05,
+      aggressive: 2.8,
+      berserker: 2
+    }
+  })
+];
+
+const ALL_ENEMY_SHIP_DESIGN_DEFS = [...ENEMY_SHIP_DESIGN_DEFS, ...ENEMY_BOSS_SHIP_DESIGN_DEFS];
+
 const ENEMY_SHIP_DESIGNS_BY_ID = Object.fromEntries(
-  ENEMY_SHIP_DESIGN_DEFS.map((definition) => [definition.id, definition])
+  ALL_ENEMY_SHIP_DESIGN_DEFS.map((definition) => [definition.id, definition])
 );
 
 export const ENEMY_AI_PROFILE_DEFS = {
@@ -2250,7 +2335,32 @@ export function getEnemyProgressionLevel(elapsed = 0, kills = 0) {
   return 1 + Math.floor(elapsed / 60) + Math.floor(kills / 4);
 }
 
-export function getEnemyAiProfileWeights(archetypeId, aggressionProgress = 1) {
+function normalizeEnemyAiProfileWeights(weights) {
+  const total = Object.values(weights).reduce((sum, value) => sum + value, 0);
+  if (total <= 0) {
+    return weights;
+  }
+
+  const normalized = {};
+  for (const [profileId, value] of Object.entries(weights)) {
+    normalized[profileId] = value / total;
+  }
+  return normalized;
+}
+
+function applyEnemyAiProfileWeightMultipliers(weights, multipliers = null) {
+  if (!multipliers) {
+    return weights;
+  }
+
+  const scaled = {};
+  for (const profile of Object.values(ENEMY_AI_PROFILE_DEFS)) {
+    scaled[profile.id] = (weights[profile.id] ?? 0) * (multipliers[profile.id] ?? 1);
+  }
+  return normalizeEnemyAiProfileWeights(scaled);
+}
+
+export function getEnemyAiProfileWeights(archetypeId, aggressionProgress = 1, designId = null) {
   const earlyWeights = ENEMY_AI_PROFILE_EARLY_WEIGHTS[archetypeId] ?? ENEMY_AI_PROFILE_EARLY_WEIGHTS.needle;
   const lateWeights = ENEMY_AI_PROFILE_WEIGHTS[archetypeId] ?? ENEMY_AI_PROFILE_WEIGHTS.needle;
   const mix = clamp(aggressionProgress, 0, 1);
@@ -2260,7 +2370,8 @@ export function getEnemyAiProfileWeights(archetypeId, aggressionProgress = 1) {
     weights[profile.id] = lerp(earlyWeights[profile.id] ?? 0, lateWeights[profile.id] ?? 0, mix);
   }
 
-  return weights;
+  const designMultipliers = designId ? ENEMY_SHIP_DESIGNS_BY_ID[designId]?.aiProfileWeightMultipliers : null;
+  return applyEnemyAiProfileWeightMultipliers(weights, designMultipliers);
 }
 
 export function getEnemySpawnDirector(elapsed = 0, kills = 0) {
@@ -2385,11 +2496,11 @@ export function getAvailableEnemyArchetypes(level = 1) {
 }
 
 export function getEnemyDesignsForArchetype(archetypeId) {
-  return ENEMY_SHIP_DESIGN_DEFS.filter((definition) => definition.archetypeId === archetypeId);
+  return ALL_ENEMY_SHIP_DESIGN_DEFS.filter((definition) => definition.archetypeId === archetypeId);
 }
 
 export function getAvailableEnemyDesigns(level = 1) {
-  return ENEMY_SHIP_DESIGN_DEFS.filter(
+  return ALL_ENEMY_SHIP_DESIGN_DEFS.filter(
     (definition) =>
       level >= Math.max(
         ENEMY_ARCHETYPE_DEFS[definition.archetypeId]?.minLevel ?? 1,
@@ -2427,8 +2538,8 @@ export function chooseEnemyShipDesign(archetypeId, level = 1, rng = Math.random)
   );
 }
 
-export function chooseEnemyAiProfile(archetypeId, rng = Math.random, aggressionProgress = 1) {
-  const weights = getEnemyAiProfileWeights(archetypeId, aggressionProgress);
+export function chooseEnemyAiProfile(archetypeId, rng = Math.random, aggressionProgress = 1, designId = null) {
+  const weights = getEnemyAiProfileWeights(archetypeId, aggressionProgress, designId);
   const profiles = Object.values(ENEMY_AI_PROFILE_DEFS);
   return chooseWeighted(profiles, (profile) => weights[profile.id] ?? 0, rng);
 }
@@ -2436,7 +2547,7 @@ export function chooseEnemyAiProfile(archetypeId, rng = Math.random, aggressionP
 export function generateEnemyLoadout(level = 1, rng = Math.random, aggressionProgress = 1) {
   const archetype = chooseEnemyArchetype(level, rng);
   const design = chooseEnemyShipDesign(archetype.id, level, rng);
-  const aiProfile = chooseEnemyAiProfile(archetype.id, rng, aggressionProgress);
+  const aiProfile = chooseEnemyAiProfile(archetype.id, rng, aggressionProgress, design.id);
   const quality = getEnemyQualityForLevel(level);
 
   return {

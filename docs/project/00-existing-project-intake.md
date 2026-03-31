@@ -4,21 +4,26 @@
 
 - Project: Neon Blaster X
 - Owner: Producer
-- Date: 2026-03-30
-- Requested outcome: let enemy ships roll non-cockpit block qualities at base quality plus or minus `1` while preserving mirrored symmetry, legal builds, and the current browser-first loop
+- Date: 2026-03-31
+- Requested outcome: treat the game as release-ready, read the current repo and harness, refresh stale tests and documentation to match the shipped browser game, update the README to the current behavior and scope, and push the synced state to GitHub
 - Active platform profile: Browser-first
 
 ## Current Playable State
 
-The project is already browser-playable with title, run, and builder states; cockpit-only shared start/reset behavior; live salvage pickup and attachment; free-for-all combat; and a shipped `28`-design enemy fleet across `Needle`, `Bulwark`, `Manta`, and `Fortress`. The request-affected gap is narrower: enemy ships currently apply one flat non-cockpit quality tier per spawn, so internal silhouette contrast and salvage desirability inside a single enemy frame are flatter than intended.
+The project is already a playable browser game with title, run, builder, and retry states; a cockpit-only shared start/reset plus a builder-only rainbow seed ship; live salvage pickup, detach, rotation, and attachment; free-for-all combat; a shipped `28`-ship standard enemy roster plus the late `Warheart` fortress boss; procedural ambient music and melodic combat SFX; and deterministic gameplay coverage at `73/73` passing tests. The request-affected gap is documentation and release-story drift: multiple harness artifacts still describe an earlier pre-approval prototype instead of the current shipped behavior.
 
 ## Docs Reviewed
 
 - `./AGENTS.md`
 - `./README.md`
-- `./docs/project/01-producer-work-order.md`
+- `./docs/project/00-existing-project-intake.md`
+- `./docs/project/01-work-order.md`
 - `./docs/project/02-game-spec.md`
 - `./docs/project/05-build-note.md`
+- `./docs/project/06-test-verdict.md`
+- `./docs/project/07-mock-player-memo.md`
+- `./docs/project/08-release-backlog-summary.md`
+- `./docs/project/09-future-directions.md`
 - `./docs/project/10-session-change-log.md`
 - `/Users/davis.wang/Documents/pwner-studios-dev-team/AGENTS.md`
 - `/Users/davis.wang/Documents/pwner-studios-dev-team/docs/index.md`
@@ -31,8 +36,13 @@ The project is already browser-playable with title, run, and builder states; coc
 ## Code Areas Reviewed
 
 - `package.json`
-- `src/ship.js`
+- `index.html`
+- `run.html`
+- `builder.html`
+- `styles.css`
+- `src/audio.js`
 - `src/main.js`
+- `src/ship.js`
 - `tests/ship.test.js`
 
 ## Current Run And Test Commands
@@ -42,30 +52,36 @@ The project is already browser-playable with title, run, and builder states; coc
 
 ## Known Bugs And Quality Gaps
 
-- Enemy blueprint assembly still uses one shared non-cockpit quality per spawned ship.
-- There is no deterministic regression that proves mixed enemy block quality stays within base quality plus or minus `1`.
-- There is no deterministic regression that proves mirrored enemy block pairs keep matching qualities after variation is introduced.
-- Runtime-facing docs still describe enemy quality progression only at the whole-ship level.
+- Several release-facing docs still describe the project as not ready to ship even though the current repo already includes the later gameplay, roster, salvage, and audio passes.
+- `run.html` still carries the older three-column HUD wording while the other shipped shells and prior docs use the compact two-bucket wording.
+- The current session needs a final documentation sync and Git push, not a broader gameplay rewrite.
 
 ## Artifact Status
 
 | Artifact | Status | Notes |
 | --- | --- | --- |
-| `docs/project/00-existing-project-intake.md` | `refresh_required` | previous intake covered an older enemy-roster / AI loop, not the current mixed-quality request |
-| `docs/project/01-work-order.md` | `missing` | canonical brownfield work order for this request does not exist yet |
-| `docs/project/01-producer-work-order.md` | `out_of_scope` | keep as historical source material only; do not treat it as the active work order for this loop |
-| `docs/project/02-game-spec.md` | `refresh_required` | needs the shipped enemy quality-variation rule |
-| `docs/project/05-build-note.md` | `refresh_required` | needs the implementation/evidence summary for mixed-quality enemy ships |
-| `docs/project/06-test-verdict.md` | `out_of_scope` | no title/state-flow/UI contract changed in this loop; targeted logic validation is sufficient |
-| `docs/project/07-mock-player-memo.md` | `out_of_scope` | this is a contained enemy-generation pass, not a broader first-session feel review |
-| `docs/project/10-session-change-log.md` | `refresh_required` | needs the current correction-round entry |
-| `README.md` | `refresh_required` | runtime-facing notes should mention mirrored base-quality-plus-or-minus-`1` enemy accents |
-| `src/ship.js` | `refresh_required` | flat per-ship enemy quality assignment lives here |
-| `tests/ship.test.js` | `refresh_required` | missing bounded-variance and mirrored-symmetry coverage |
+| `docs/project/00-existing-project-intake.md` | `refresh_required` | stale for the current release-sync request |
+| `docs/project/01-work-order.md` | `refresh_required` | current work order still scopes the prior audio pass |
+| `docs/project/01-producer-work-order.md` | `out_of_scope` | historical source material only |
+| `docs/project/02-game-spec.md` | `refresh_required` | should describe the current shipped scope and audio-enabled rules cleanly |
+| `docs/project/05-build-note.md` | `refresh_required` | should move from review handoff language to release-sync language |
+| `docs/project/06-test-verdict.md` | `refresh_required` | still blocks shipping on an older review snapshot |
+| `docs/project/07-mock-player-memo.md` | `refresh_required` | still reads like a pre-approval prototype memo |
+| `docs/project/08-release-backlog-summary.md` | `refresh_required` | current release call still says do not ship yet |
+| `docs/project/09-future-directions.md` | `reusable` | future-facing ideas still fit the current game |
+| `docs/project/10-session-change-log.md` | `refresh_required` | needs the release-sync entry |
+| `README.md` | `refresh_required` | should present the repo as the current game, not an older prototype snapshot |
+| `src/audio.js` | `reusable` | shipped browser audio runtime now exists |
+| `src/main.js` | `reusable` | audio hooks and shipped gameplay wiring are already in place |
+| `src/ship.js` | `reusable` | core gameplay systems and tuning are already implemented |
+| `index.html` / `builder.html` | `reusable` | already reflect the current shell language and media |
+| `run.html` | `refresh_required` | compact HUD wording drift remains |
+| `styles.css` | `reusable` | current audio-toggle placement and shell styling already match the release direction |
+| `tests/ship.test.js` | `refresh_required` | should cover the release-ready audio/runtime expectations and stay in sync with the final docs |
 
 ## Recommended Loop Scope
 
-- Refresh only the request-affected artifact chain: intake, current work order, enemy blueprint logic, deterministic regressions, README, game spec, build note, and session change log.
-- Preserve the shipped `28`-design roster, archetype lineup, AI profile tables, progression curve, and current browser run/test flow.
-- Preserve player/builder quality behavior; this pass is limited to enemy blueprint assembly.
-- Avoid unrelated UI, camera, salvage, or combat-balance retuning unless the mixed-quality implementation exposes a concrete regression.
+- Refresh only the stale or request-affected release chain: intake, current work order, README, request-affected project docs, the one inconsistent HUD shell, targeted test coverage, and session/change tracking.
+- Preserve the shipped browser-first run/test flow, current title/run/builder/game-over states, combat rules, salvage rules, enemy roster, audio direction, and visual-quality toggle behavior.
+- Treat the repo's current code as source of truth and avoid reopening balance or feature scope unless the docs are materially wrong.
+- Finish with green tests and a GitHub push so the repo state, docs, and remote all agree.

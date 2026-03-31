@@ -64,6 +64,26 @@ button:active {
   display: block;
 }
 
+.audio-toggle {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 12;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(6, 12, 22, 0.72);
+  color: rgba(231, 251, 255, 0.84);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+}
+
+.audio-toggle[data-enabled="false"] {
+  color: rgba(139, 166, 188, 0.92);
+  border-color: rgba(115, 255, 241, 0.14);
+}
+
 .panel {
   position: absolute;
   border: 1px solid var(--panel-border);

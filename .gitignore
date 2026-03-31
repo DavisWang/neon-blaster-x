@@ -1,6 +1,7 @@
 .DS_Store
 .playwright-cli/
 output/playwright/
+output/howto-preview/
 node_modules/
 dist/
 coverage/

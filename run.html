@@ -9,6 +9,7 @@
   <body>
     <main class="app-shell">
       <canvas id="game-canvas" width="1440" height="900" aria-label="Neon Blaster X game canvas"></canvas>
+      <button id="audio-toggle" class="audio-toggle" type="button" aria-pressed="true">Audio On</button>
 
       <section id="title-screen" class="panel panel-center hidden">
         <p class="eyebrow">Pwner Studios presents</p>
@@ -26,16 +27,12 @@
 
       <section id="hud" class="panel hud">
         <div class="hud-column">
-          <div class="hud-label">Hull Status</div>
+          <div class="hud-label">Spaceship Status</div>
           <div id="hud-health" class="hud-value">Cockpit 100%</div>
         </div>
         <div class="hud-column">
-          <div class="hud-label">Run</div>
+          <div class="hud-label">Run Stats</div>
           <div id="hud-score" class="hud-value">Kills 0 | Scrap 0</div>
-        </div>
-        <div class="hud-column hud-column-right">
-          <div id="hud-mode" class="hud-value">Gameplay</div>
-          <div id="hud-hint" class="hud-label">Drag salvage onto cyan sockets. Press `R` to rotate.</div>
         </div>
       </section>
 
