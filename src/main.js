@@ -99,12 +99,16 @@ const autoEnemyCount = clamp(
 const GAME_OVER_SCREEN_DELAY = 3;
 
 const titleScreen = document.querySelector("#title-screen");
+const howToScreen = document.querySelector("#how-to-screen");
 const hud = document.querySelector("#hud");
 const builderSidebar = document.querySelector("#builder-sidebar");
 const gameOverPanel = document.querySelector("#game-over");
 
 const startRunButton = document.querySelector("#start-run");
+const startRunHowToButton = document.querySelector("#start-run-howto");
 const openBuilderButton = document.querySelector("#open-builder");
+const openHowToButton = document.querySelector("#open-howto");
+const closeHowToButton = document.querySelector("#close-howto");
 const retryRunButton = document.querySelector("#retry-run");
 const returnTitleButton = document.querySelector("#return-title");
 const launchFromBuilderButton = document.querySelector("#launch-from-builder");
@@ -116,8 +120,6 @@ const blockPalette = document.querySelector("#block-palette");
 
 const hudHealth = document.querySelector("#hud-health");
 const hudScore = document.querySelector("#hud-score");
-const hudMode = document.querySelector("#hud-mode");
-const hudHint = document.querySelector("#hud-hint");
 const gameOverStats = document.querySelector("#game-over-stats");
 const palettePreviewCanvases = new Map();
 const DETACH_PICK_PADDING = 8;
@@ -149,6 +151,7 @@ const state = {
     fire: false
   },
   drag: null,
+  titlePanel: "home",
   visualQuality: "high",
   selectedQuality: "yellow",
   selectedPaletteBlock: PALETTE_BLOCKS[0],
@@ -173,10 +176,6 @@ function colorWithAlpha(color, alpha) {
   const g = (value >> 8) & 255;
   const b = value & 255;
   return `rgba(${r}, ${g}, ${b}, ${clamp(alpha, 0, 1)})`;
-}
-
-function formatVisualQualityLabel(mode) {
-  return mode.charAt(0).toUpperCase() + mode.slice(1);
 }
 
 function getBlockColor(block, time) {
@@ -366,9 +365,15 @@ function resizeCanvas() {
   ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
 }
 
+function syncTitlePanels() {
+  const showingTitle = state.scene === "title";
+  titleScreen.classList.toggle("hidden", !showingTitle || state.titlePanel !== "home");
+  howToScreen.classList.toggle("hidden", !showingTitle || state.titlePanel !== "howto");
+}
+
 function showScene(scene) {
   state.scene = scene;
-  titleScreen.classList.toggle("hidden", scene !== "title");
+  syncTitlePanels();
   builderSidebar.classList.toggle("hidden", scene !== "builder");
   hud.classList.toggle("hidden", scene === "title");
   gameOverPanel.classList.toggle("hidden", !state.game?.gameOver);
@@ -383,12 +388,6 @@ function syncHud() {
   const cockpitPct = cockpit ? Math.round((cockpit.hp / cockpit.maxHp) * 100) : 0;
   hudHealth.textContent = `Cockpit ${cockpitPct}% | Blocks ${state.game.player.blocks.length}`;
   hudScore.textContent = `Kills ${state.game.kills} | Scrap ${state.game.scrapAttached}`;
-  hudMode.textContent = `${state.scene === "builder" ? "Builder Sandbox" : "Gameplay"} | FX ${formatVisualQualityLabel(state.visualQuality)}`;
-  hudHint.textContent =
-    state.scene === "builder"
-      ? ""
-      : "Drag salvage onto cyan sockets. Space fires. R rotates the dragged part. Q cycles glow.";
-  hudHint.classList.toggle("hidden", state.scene === "builder");
 
   if (state.game.gameOver) {
     gameOverStats.textContent = `Kills ${state.game.kills} | Scrap attached ${state.game.scrapAttached}`;
@@ -528,6 +527,7 @@ function createGame(builderMode = false, playerBlueprint = state.playerBlueprint
 }
 
 function startRun(options = {}) {
+  state.titlePanel = "home";
   const runBlueprint = resolveRunBlueprint(
     state.playerBlueprint,
     options.useCurrentBlueprint ?? false
@@ -551,6 +551,7 @@ function primeBuilderBlueprint() {
 }
 
 function openBuilder() {
+  state.titlePanel = "home";
   primeBuilderBlueprint();
   state.game = createGame(true);
   state.camera.x = state.game.player.x;
@@ -560,9 +561,20 @@ function openBuilder() {
   syncHud();
 }
 
+function openHowTo() {
+  state.titlePanel = "howto";
+  showScene("title");
+}
+
+function closeHowTo() {
+  state.titlePanel = "home";
+  showScene("title");
+}
+
 function returnToTitle() {
   state.game = null;
   state.drag = null;
+  state.titlePanel = "home";
   showScene("title");
 }
 
@@ -1953,7 +1965,10 @@ function loop(timestamp) {
 }
 
 startRunButton.addEventListener("click", startRun);
+startRunHowToButton?.addEventListener("click", startRun);
 openBuilderButton.addEventListener("click", openBuilder);
+openHowToButton?.addEventListener("click", openHowTo);
+closeHowToButton?.addEventListener("click", closeHowTo);
 retryRunButton.addEventListener("click", startRun);
 returnTitleButton.addEventListener("click", returnToTitle);
 launchFromBuilderButton.addEventListener("click", () => {

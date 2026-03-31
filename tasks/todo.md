@@ -27,6 +27,13 @@
 - [x] Add an Actions-based GitHub Pages deploy that publishes the playable site files only.
 - [x] Push the workflow and verify the first Pages deployment.
 
+## Correction Round: Title How-To + Compact HUD
+
+- [x] Rename the HUD status label from `Hull Status` to `Spaceship Status`.
+- [x] Shrink the top HUD down to only the two required stat buckets: spaceship status and run stats.
+- [x] Add a simple title-screen `How to Play` panel with image cards and move the gameplay directions there.
+- [x] Re-run automated checks and a browser sanity pass for the title/how-to/builder shell.
+
 ## Correction Round: Enemy Quality Variance Pass
 
 - [x] Refresh the existing-project intake and create the current work order for the mixed-quality enemy pass.
@@ -592,6 +599,13 @@
 - Added an Actions-based Pages workflow in `.github/workflows/deploy-pages.yml` that publishes the playable static bundle instead of the whole repo tree.
 - The initial workflow failed because the repository did not have a Pages site yet, so Pages was created explicitly through the GitHub API with `build_type=workflow`.
 - The deployment rerun succeeded, and the live site is now reachable at [daviswang.github.io/neon-blaster-x](https://daviswang.github.io/neon-blaster-x/).
+
+## Review: Title How-To + Compact HUD
+
+- The top HUD now only shows the two required groups, with `Spaceship Status` replacing `Hull Status` and the overall panel rendered as a smaller centered strip.
+- All gameplay directions that were previously split between the title hint and the top bar now live in a dedicated `How to Play` title panel.
+- The `How to Play` panel stays simple and visual: three neon image cards cover movement/fire, the exact phrase `Mouse click/drag to attach/detach parts`, and the `R` / `Q` helper keys.
+- `npm test` passed, `node --check src/main.js` passed, and a Playwright sanity pass confirmed the title home state, the new how-to panel, and the compact builder HUD.
 
 ## Review: Repo Push Prep
 
