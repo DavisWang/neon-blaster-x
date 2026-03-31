@@ -21,6 +21,12 @@
 - [x] Add a small line-art death animation that plays for about `2s`.
 - [x] Refresh the runtime notes for the new loss presentation and re-run validation.
 
+## Repo Infra: GitHub Pages
+
+- [x] Check the current repo for Pages workflow/config state.
+- [x] Add an Actions-based GitHub Pages deploy that publishes the playable site files only.
+- [ ] Push the workflow and verify the first Pages deployment.
+
 ## Correction Round: Enemy Quality Variance Pass
 
 - [x] Refresh the existing-project intake and create the current work order for the mixed-quality enemy pass.
@@ -580,6 +586,10 @@
 
 - Player cockpit death now emits a dedicated `~2s` neon line-art breakup effect during the existing pending-loss window instead of only flashing one short burst.
 - The effect reuses the ship's own block silhouettes as drifting fragments, so the loss read stays in the same visual language as the rest of the game.
+
+## Review: GitHub Pages
+
+- Pending.
 
 ## Review: Repo Push Prep
 
