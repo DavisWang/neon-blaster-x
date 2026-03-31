@@ -1,0 +1,4909 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2440" height="2048" viewBox="0 0 2440 2048">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#07101d" />
+      <stop offset="100%" stop-color="#01040a" />
+    </linearGradient>
+    <pattern id="grid" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M 120 0 L 0 0 0 120" fill="none" stroke="rgba(110, 247, 255, 0.05)" stroke-width="1" />
+    </pattern>
+    <style>
+      text {
+        font-family: "SF Mono", "Azeret Mono", "IBM Plex Mono", monospace;
+        letter-spacing: 0.02em;
+      }
+      .title {
+        fill: #f3fbff;
+        font-size: 44px;
+        font-weight: 700;
+      }
+      .subtitle {
+        fill: rgba(179, 214, 255, 0.88);
+        font-size: 22px;
+        font-weight: 500;
+      }
+      .row-title {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .row-subtitle {
+        fill: rgba(179, 214, 255, 0.62);
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .card {
+        fill: rgba(4, 12, 24, 0.88);
+        stroke: rgba(110, 247, 255, 0.25);
+        stroke-width: 2;
+      }
+      .card-title {
+        fill: #f3fbff;
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .card-id {
+        fill: rgba(179, 214, 255, 0.72);
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .card-archetype {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .card-tags {
+        fill: rgba(244, 248, 255, 0.82);
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .card-blasters {
+        fill: rgba(179, 214, 255, 0.92);
+        font-size: 15px;
+        font-weight: 500;
+      }
+      .card-meta {
+        fill: rgba(179, 214, 255, 0.68);
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .block {
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <rect width="2440" height="2048" fill="url(#bg)" />
+  <rect width="2440" height="2048" fill="url(#grid)" />
+  <text class="title" x="40" y="58">Neon Blaster X Proposed Enemy Fleet</text>
+  <text class="subtitle" x="40" y="96">28 legal proposal designs across Needle, Bulwark, Manta, and Fortress, with symmetry-first thruster placement and no Vulture archetype</text>
+  <text class="subtitle" x="40" y="128">Quotas across the full board: 3 low-yaw ships, 6 slow ships, and 9 highly mobile ships. This is a proposal render only.</text>
+  
+    <g transform="translate(0 164)">
+      <text class="row-title" x="40" y="34" fill="#ff5f7f">Needle  •  7 designs</text>
+      <text class="row-subtitle" x="40" y="52">Symmetry-first proposal board, still constrained to the current cockpit, hull, blaster, thruster, and shield part set</text>
+      
+        <g transform="translate(40 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Dart</text>
+          <text class="card-id" x="24" y="364">needle-dart</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.932)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 51.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.932)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -12.24 -7 L -17.68 -4 L -17.68 4 L -12.24 7" /><path d="M 12.24 -7 L 17.68 -4 L 17.68 4 L 12.24 7" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">small • mobile</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">1x5 FOOTPRINT  •  5 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 880  •  Y 11.0k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(372 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Sting</text>
+          <text class="card-id" x="24" y="364">needle-sting</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.776)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(90)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(270)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 136.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.776)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -12.24 -7 L -17.68 -4 L -17.68 4 L -12.24 7" /><path d="M 12.24 -7 L 17.68 -4 L 17.68 4 L 12.24 7" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">small • mobile</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x6 FOOTPRINT  •  8 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 880  •  Y 51.4k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(704 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Razer</text>
+          <text class="card-id" x="24" y="364">needle-razer</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.776)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(90)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(270)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 136.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.776)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">mobile • gunline</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x6 FOOTPRINT  •  12 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 880  •  Y 48.9k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1036 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Fork</text>
+          <text class="card-id" x="24" y="364">needle-fork</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.776)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(90)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(270)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 136.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 68.00) rotate(270)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.776)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">mobile • forked</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x6 FOOTPRINT  •  14 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 880  •  Y 47.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1368 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Lance</text>
+          <text class="card-id" x="24" y="364">needle-lance</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.518)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 238.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 204.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 204.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.518)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -12.24 -7 L -17.68 -4 L -17.68 4 L -12.24 7" /><path d="M 12.24 -7 L 17.68 -4 L 17.68 4 L 12.24 7" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">mobile • long</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x9 FOOTPRINT  •  13 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 2.6k  •  Y 40.9k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1700 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Javelin</text>
+          <text class="card-id" x="24" y="364">needle-javelin</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.518)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 238.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 170.00) rotate(270)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 170.00) rotate(90)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.518)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -12.24 -7 L -17.68 -4 L -17.68 4 L -12.24 7" /><path d="M 12.24 -7 L 17.68 -4 L 17.68 4 L 12.24 7" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • long</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">5x9 FOOTPRINT  •  13 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 880  •  Y 11.0k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(2032 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 95, 127, 0.16)" />
+          <text class="card-title" x="24" y="43">Pike</text>
+          <text class="card-id" x="24" y="364">needle-pike</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.518)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 170.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-46.24" width="24.48" height="92.48" />
+      <line x1="-7.83" y1="-38.24" x2="7.83" y2="38.24" />
+      <line x1="-7.83" y1="38.24" x2="7.83" y2="-38.24" />
+      <line x1="-8.32" y1="-17.00" x2="8.32" y2="-17.00" /><line x1="-8.32" y1="17.00" x2="8.32" y2="17.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 238.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.518)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -12.24 -7 L -17.68 -4 L -17.68 4 L -12.24 7" /><path d="M 12.24 -7 L 17.68 -4 L 17.68 4 L 12.24 7" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff5f7f" text-anchor="middle">NEEDLE</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">low-yaw • artillery</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">1x9 FOOTPRINT  •  9 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 880  •  Y 11.0k</text>
+    </g>
+  
+        </g>
+      
+    </g>
+  
+    <g transform="translate(0 632)">
+      <text class="row-title" x="40" y="34" fill="#ff9d4a">Bulwark  •  7 designs</text>
+      <text class="row-subtitle" x="40" y="52">Symmetry-first proposal board, still constrained to the current cockpit, hull, blaster, thruster, and shield part set</text>
+      
+        <g transform="translate(40 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Ward</text>
+          <text class="card-id" x="24" y="364">bulwark-ward</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(1.050)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(1.050)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">small • balanced</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x3 FOOTPRINT  •  7 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 1.2k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(372 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Guard</text>
+          <text class="card-id" x="24" y="364">bulwark-guard</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(1.006)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(1.006)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">small • balanced</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">5x3 FOOTPRINT  •  7 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 1.2k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(704 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Trench</text>
+          <text class="card-id" x="24" y="364">bulwark-trench</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • gunline</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 2</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x3 FOOTPRINT  •  13 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 2.4k  •  Y 40.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1036 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Shelter</text>
+          <text class="card-id" x="24" y="364">bulwark-shelter</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.457)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-119.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(119.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-170.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(170.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.457)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">slow • wall</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">11x4 FOOTPRINT  •  14 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 1.2k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1368 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Redoubt</text>
+          <text class="card-id" x="24" y="364">bulwark-redoubt</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • midwall</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 2</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x3 FOOTPRINT  •  13 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 2.4k  •  Y 40.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1700 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Rampart</text>
+          <text class="card-id" x="24" y="364">bulwark-rampart</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.457)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-119.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(119.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-170.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(170.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.457)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">slow • wide</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">11x4 FOOTPRINT  •  20 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 3.6k  •  Y 162.8k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(2032 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(255, 157, 74, 0.16)" />
+          <text class="card-title" x="24" y="43">Anchor</text>
+          <text class="card-id" x="24" y="364">bulwark-anchor</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.457)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-119.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(119.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="rgba(255, 157, 74, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-170.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(170.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#ff9d4a" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.457)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#ff9d4a" text-anchor="middle">BULWARK</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">slow • low-yaw</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">11x4 FOOTPRINT  •  16 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 1.2k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+    </g>
+  
+    <g transform="translate(0 1100)">
+      <text class="row-title" x="40" y="34" fill="#63c7ff">Manta  •  7 designs</text>
+      <text class="row-subtitle" x="40" y="52">Symmetry-first proposal board, still constrained to the current cockpit, hull, blaster, thruster, and shield part set</text>
+      
+        <g transform="translate(40 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Skiff</text>
+          <text class="card-id" x="24" y="364">manta-skiff</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(1.050)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(1.050)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -7 12.24 L -4 17.68 L 4 17.68 L 7 12.24" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">small • mobile</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 2</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x3 FOOTPRINT  •  8 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 4.9k  •  Y 62.8k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(372 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Fan</text>
+          <text class="card-id" x="24" y="364">manta-fan</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(1.050)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(1.050)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">small • balanced</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">3x4 FOOTPRINT  •  9 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 1.8k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(704 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Glide</text>
+          <text class="card-id" x="24" y="364">manta-glide</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(1.006)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(1.006)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">mobile • starter</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 2</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">5x3 FOOTPRINT  •  11 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 3.7k  •  Y 125.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1036 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Crescent</text>
+          <text class="card-id" x="24" y="364">manta-crescent</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">mobile • wide</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x5 FOOTPRINT  •  17 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 5.5k  •  Y 125.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1368 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Harrier</text>
+          <text class="card-id" x="24" y="364">manta-harrier</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">mobile • gunline</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x6 FOOTPRINT  •  19 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 5.5k  •  Y 125.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1700 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Driftwing</text>
+          <text class="card-id" x="24" y="364">manta-driftwing</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.559)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.559)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • wide</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 2</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">9x4 FOOTPRINT  •  18 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 3.7k  •  Y 125.7k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(2032 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(99, 199, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Net</text>
+          <text class="card-id" x="24" y="364">manta-net</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="rgba(99, 199, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#63c7ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#63c7ff" text-anchor="middle">MANTA</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">slow • area denial</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 5  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x6 FOOTPRINT  •  19 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 1.8k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+    </g>
+  
+    <g transform="translate(0 1568)">
+      <text class="row-title" x="40" y="34" fill="#b988ff">Fortress  •  7 designs</text>
+      <text class="row-subtitle" x="40" y="52">Symmetry-first proposal board, still constrained to the current cockpit, hull, blaster, thruster, and shield part set</text>
+      
+        <g transform="translate(40 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Bastion</text>
+          <text class="card-id" x="24" y="364">fortress-bastion</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • brick</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x6 FOOTPRINT  •  28 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 6.0k  •  Y 67.6k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(372 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Keep</text>
+          <text class="card-id" x="24" y="364">fortress-keep</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.718)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.718)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • compact</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 5  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">7x6 FOOTPRINT  •  28 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 6.0k  •  Y 67.6k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(704 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Gatehouse</text>
+          <text class="card-id" x="24" y="364">fortress-gatehouse</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.559)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 34.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.559)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -7 12.24 L -4 17.68 L 4 17.68 L 7 12.24" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">slow • hollow</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 1  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">9x6 FOOTPRINT  •  31 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 3.2k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1036 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Voidshell</text>
+          <text class="card-id" x="24" y="364">fortress-voidshell</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.559)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 34.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.559)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -7 12.24 L -4 17.68 L 4 17.68 L 7 12.24" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • ring</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 2</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">9x6 FOOTPRINT  •  33 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 5.2k  •  Y 67.6k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1368 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Arsenal</text>
+          <text class="card-id" x="24" y="364">fortress-arsenal</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.559)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 34.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.559)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • edge guns</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 9  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">9x6 FOOTPRINT  •  40 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 6.0k  •  Y 67.6k</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(1700 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Citadel</text>
+          <text class="card-id" x="24" y="364">fortress-citadel</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.559)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      <line x1="0" y1="-14" x2="-7" y2="-22" /><line x1="0" y1="-14" x2="7" y2="-22" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 34.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.559)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">slow • low-yaw</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 1</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">9x6 FOOTPRINT  •  36 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 2.0k  •  Y 0</text>
+    </g>
+  
+        </g>
+      
+        <g transform="translate(2032 54)">
+          <rect class="card" x="0" y="0" width="312" height="386" rx="22" />
+          <rect x="16" y="16" width="280" height="42" rx="12" fill="rgba(185, 136, 255, 0.16)" />
+          <text class="card-title" x="24" y="43">Ringwall</text>
+          <text class="card-id" x="24" y="364">fortress-ringwall</text>
+          
+    <g transform="translate(156 182)">
+      <g transform="scale(0.559)">
+        
+        <g transform="translate(0.00 0.00) rotate(0)">
+          
+    <g class="block" stroke="#ff5f7f" fill="rgba(255, 95, 127, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <path d="M 0 -3 C 7 -12 14 -4 0 10 C -14 -4 -7 -12 0 -3" fill="none" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 -34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(51.00 68.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-29.24" width="24.48" height="58.48" />
+      <line x1="-7.83" y1="-21.24" x2="7.83" y2="21.24" />
+      <line x1="-7.83" y1="21.24" x2="7.83" y2="-21.24" />
+      <line x1="-8.32" y1="0.00" x2="8.32" y2="0.00" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="-6" y1="-14" x2="-6" y2="-22" /><line x1="6" y1="-14" x2="6" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 -68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -10 12 L -9 -6 L -4 -14 L 4 -14 L 9 -6 L 10 12 Z" />
+      <line x1="0" y1="-14" x2="0" y2="-22" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 0.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 0.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(0.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(34.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -11 -12 L 11 -12 L 7 10 L -7 10 Z" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 -34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 34.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(102.00 68.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(68.00 102.00) rotate(0)">
+          
+    <g class="block" stroke="#b988ff" fill="rgba(185, 136, 255, 0.04)">
+      <rect x="-12.24" y="-12.24" width="24.48" height="24.48" />
+      <line x1="-7.83" y1="-8.32" x2="7.83" y2="8.32" />
+      <line x1="-7.83" y1="8.32" x2="7.83" y2="-8.32" />
+      
+    </g>
+  
+        </g>
+      
+        <g transform="translate(-136.00 34.00) rotate(270)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+        <g transform="translate(136.00 34.00) rotate(90)">
+          
+    <g class="block" stroke="#b988ff" fill="none">
+      <path d="M -12 18 Q 0 -12 12 18" />
+      <line x1="-10" y1="7" x2="10" y2="7" />
+    </g>
+  
+        </g>
+      
+      </g>
+      
+    <g transform="translate(0.00 0.00) scale(0.559)" stroke="#ff5f7f" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -7 12.24 L -4 17.68 L 4 17.68 L 7 12.24" />
+    </g>
+  
+      <text class="card-archetype" x="0" y="-132" fill="#b988ff" text-anchor="middle">FORTRESS</text>
+      <text class="card-tags" x="0" y="132" text-anchor="middle">balanced • hollow</text>
+      <text class="card-blasters" x="0" y="156" text-anchor="middle">B 3  •  T 3</text>
+      <text class="card-meta" x="0" y="178" text-anchor="middle">9x6 FOOTPRINT  •  35 CELLS</text>
+      <text class="card-meta" x="0" y="198" text-anchor="middle">F 7.2k  •  Y 67.6k</text>
+    </g>
+  
+        </g>
+      
+    </g>
+  
+</svg>

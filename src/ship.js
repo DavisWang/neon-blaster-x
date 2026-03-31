@@ -1,4 +1,4 @@
-import { BLOCK_DEFS, CELL_SIZE, HALF_CELL, MAX_ENEMIES, QUALITY_BY_ID, SIDE_ORDER, SIDE_VECTORS } from "./data.js";
+import { BLOCK_DEFS, CELL_SIZE, HALF_CELL, MAX_ENEMIES, QUALITY_BY_ID, QUALITY_TIERS, SIDE_ORDER, SIDE_VECTORS } from "./data.js";
 import { clamp, dot, length, lerp, normalize, rotate, wrapAngle } from "./math.js";
 
 let nextBlockId = 1;
@@ -16,6 +16,72 @@ const SHIP_DEATH_SALVAGE_HP_FLOOR_RATIO = 0.85;
 const SHIP_DEATH_SALVAGE_EJECT_OFFSET = CELL_SIZE * 0.55;
 const SHIP_DEATH_SALVAGE_EJECT_SPEED = 60;
 const SHIP_VISUAL_QUALITY_ORDER = ["high", "medium", "low"];
+const HULL_DURABILITY_FACTORS = {
+  single: 1,
+  double: 1.14,
+  triple: 1.28
+};
+const QUALITY_INDEX_BY_ID = Object.fromEntries(QUALITY_TIERS.map((tier, index) => [tier.id, index]));
+const QUALITY_MATCHUP_DAMAGE_MULTIPLIERS = {
+  "-8": 0.338,
+  "-7": 0.366,
+  "-6": 0.41,
+  "-5": 0.466,
+  "-4": 0.536,
+  "-3": 0.618,
+  "-2": 0.705,
+  "-1": 0.857,
+  "0": 1,
+  "1": 1.63,
+  "2": 3,
+  "3": 5.5,
+  "4": 5.5,
+  "5": 5.5,
+  "6": 5.5,
+  "7": 5.5,
+  "8": 5.5
+};
+const SHIP_VISUAL_QUALITY_PROFILES = {
+  high: {
+    glowMultiplier: 0.68,
+    detailGlowScale: 0.28,
+    blockHaloAlpha: 0.18,
+    blockHaloRadius: 30,
+    glowPasses: [
+      {
+        glowScale: 0.68,
+        lineScale: 1,
+        shadowBoost: 1.35,
+        shadowBlur: 20,
+        strokeAlphaScale: 0.5,
+        fillAlpha: 0
+      }
+    ]
+  },
+  medium: {
+    glowMultiplier: 0.3,
+    detailGlowScale: 0.12,
+    blockHaloAlpha: 0.08,
+    blockHaloRadius: 22,
+    glowPasses: [
+      {
+        glowScale: 0.3,
+        lineScale: 1,
+        shadowBoost: 0.9,
+        shadowBlur: 14,
+        strokeAlphaScale: 0.42,
+        fillAlpha: 0
+      }
+    ]
+  },
+  low: {
+    glowMultiplier: 0,
+    detailGlowScale: 0,
+    blockHaloAlpha: 0,
+    blockHaloRadius: 0,
+    glowPasses: []
+  }
+};
 
 function makeId(prefix, counter) {
   return `${prefix}-${counter}`;
@@ -30,14 +96,12 @@ export function cycleShipVisualQuality(current = "high") {
   return SHIP_VISUAL_QUALITY_ORDER[(index + 1 + SHIP_VISUAL_QUALITY_ORDER.length) % SHIP_VISUAL_QUALITY_ORDER.length];
 }
 
+export function getShipVisualQualityProfile(mode = "high") {
+  return SHIP_VISUAL_QUALITY_PROFILES[mode] ?? SHIP_VISUAL_QUALITY_PROFILES.high;
+}
+
 export function getShipGlowMultiplier(mode = "high") {
-  if (mode === "low") {
-    return 0;
-  }
-  if (mode === "medium") {
-    return 0.45;
-  }
-  return 1;
+  return getShipVisualQualityProfile(mode).glowMultiplier;
 }
 
 export function rotateSide(side, steps = 1) {
@@ -185,9 +249,39 @@ function getReferenceBlasterDamage(quality) {
 }
 
 // Most non-cockpit HP is expressed in "same-tier single-blaster hits" so the durability
-// curve stays readable even when weapon quality and block quality both scale upward.
+// curve stays readable. Cross-tier overmatch is then layered on top through the explicit
+// quality matchup multiplier instead of being hidden inside raw HP growth.
 function getDurabilityHp(quality, durabilityFactor) {
   return getReferenceBlasterDamage(quality) * quality.durabilityHits * durabilityFactor;
+}
+
+function getQualityIndex(qualityId) {
+  return QUALITY_INDEX_BY_ID[qualityId] ?? QUALITY_INDEX_BY_ID.red;
+}
+
+function getHullDurabilityFactor(block) {
+  return HULL_DURABILITY_FACTORS[block.variant ?? "single"] ?? HULL_DURABILITY_FACTORS.single;
+}
+
+export function getQualityMatchupDamageMultiplier(attackerQualityId, defenderQualityId, defenderType = "hull") {
+  if (!attackerQualityId || !defenderQualityId || defenderType === "cockpit") {
+    return 1;
+  }
+  const delta = clamp(getQualityIndex(attackerQualityId) - getQualityIndex(defenderQualityId), -8, 8);
+  return QUALITY_MATCHUP_DAMAGE_MULTIPLIERS[String(delta)] ?? 1;
+}
+
+export function getProjectileDamageAgainstBlock(baseDamage, attackerQualityId, block) {
+  if (!block) {
+    return baseDamage;
+  }
+
+  let damage =
+    baseDamage * getQualityMatchupDamageMultiplier(attackerQualityId, block.quality, block.type);
+  if (block.type === "shield") {
+    damage *= getBlockStats(block).damageScale;
+  }
+  return damage;
 }
 
 export function getHullLength(block) {
@@ -250,6 +344,8 @@ export function chooseLooseBlockForPickup(blocks, worldX, worldY, padding = 0, c
   let bestLayer = Number.NEGATIVE_INFINITY;
   let bestIndex = Number.NEGATIVE_INFINITY;
 
+  // Overlapping loot should feel spatial first. Prefer the closest valid hit,
+  // then break exact ties in favor of persistent death-drop loot and newer draw-order blocks.
   const consider = (block, index, distanceSq) => {
     const layer = block.persistentSalvage ? 1 : 0;
     const beatsByDistance = distanceSq + 0.000001 < bestDistanceSq;
@@ -365,7 +461,7 @@ export function getBlockStats(block) {
   }
   if (block.type === "hull") {
     return {
-      hp: getDurabilityHp(quality, BLOCK_DEFS.hull.durabilityFactor) * getHullLength(block)
+      hp: getDurabilityHp(quality, getHullDurabilityFactor(block))
     };
   }
   if (block.type === "blaster") {
@@ -396,7 +492,7 @@ export function getBlockStats(block) {
   if (block.type === "shield") {
     return {
       hp: getDurabilityHp(quality, BLOCK_DEFS.shield.durabilityFactor),
-      damageScale: BLOCK_DEFS.shield.damageScale / Math.max(1, quality.powerMultiplier * 0.72),
+      damageScale: BLOCK_DEFS.shield.damageScale,
       reflectBoost: BLOCK_DEFS.shield.reflectBoost * quality.powerMultiplier
     };
   }
@@ -650,6 +746,66 @@ export function getBlockWorldPosition(ship, block) {
   return localToWorld(ship, block.x * CELL_SIZE + offset.x, block.y * CELL_SIZE + offset.y);
 }
 
+export function getShipCellOverlap(leftShip, leftCell, rightShip, rightCell, halfExtent = CELL_SIZE * 0.47) {
+  const leftWorld = localToWorld(leftShip, leftCell.x * CELL_SIZE, leftCell.y * CELL_SIZE);
+  const rightWorld = localToWorld(rightShip, rightCell.x * CELL_SIZE, rightCell.y * CELL_SIZE);
+  const leftAxes = [rotate(1, 0, leftShip.angle), rotate(0, 1, leftShip.angle)];
+  const rightAxes = [rotate(1, 0, rightShip.angle), rotate(0, 1, rightShip.angle)];
+  const testAxes = [...leftAxes, ...rightAxes];
+  const betweenX = rightWorld.x - leftWorld.x;
+  const betweenY = rightWorld.y - leftWorld.y;
+  let minOverlap = Number.POSITIVE_INFINITY;
+  let bestAxis = null;
+
+  for (const axis of testAxes) {
+    const centerDistance = Math.abs(dot(betweenX, betweenY, axis.x, axis.y));
+    const leftRadius =
+      halfExtent *
+      (Math.abs(dot(axis.x, axis.y, leftAxes[0].x, leftAxes[0].y)) +
+        Math.abs(dot(axis.x, axis.y, leftAxes[1].x, leftAxes[1].y)));
+    const rightRadius =
+      halfExtent *
+      (Math.abs(dot(axis.x, axis.y, rightAxes[0].x, rightAxes[0].y)) +
+        Math.abs(dot(axis.x, axis.y, rightAxes[1].x, rightAxes[1].y)));
+    const overlap = leftRadius + rightRadius - centerDistance;
+    if (overlap <= 0) {
+      return null;
+    }
+    if (overlap < minOverlap) {
+      minOverlap = overlap;
+      const axisSign = dot(betweenX, betweenY, axis.x, axis.y) >= 0 ? 1 : -1;
+      bestAxis = { x: axis.x * axisSign, y: axis.y * axisSign };
+    }
+  }
+
+  return {
+    penetration: minOverlap,
+    normalX: bestAxis?.x ?? 1,
+    normalY: bestAxis?.y ?? 0
+  };
+}
+
+export function getShipCollisionOverlap(leftShip, rightShip) {
+  let bestOverlap = null;
+
+  for (const leftBlock of leftShip.blocks) {
+    const leftCells = getBlockCells(leftBlock);
+    for (const rightBlock of rightShip.blocks) {
+      const rightCells = getBlockCells(rightBlock);
+      for (const leftCell of leftCells) {
+        for (const rightCell of rightCells) {
+          const overlap = getShipCellOverlap(leftShip, leftCell, rightShip, rightCell);
+          if (overlap && (!bestOverlap || overlap.penetration > bestOverlap.penetration)) {
+            bestOverlap = overlap;
+          }
+        }
+      }
+    }
+  }
+
+  return bestOverlap;
+}
+
 export function getBlockAtLocalPoint(ship, localX, localY, padding = 0) {
   let closest = null;
   let closestDistanceSq = Number.POSITIVE_INFINITY;
@@ -781,7 +937,7 @@ export function isCockpitFrontOpen(ship) {
 
 export function getBuiltInBlaster(ship) {
   const cockpit = getCockpit(ship);
-  if (!cockpit || !isCockpitFrontOpen(ship)) {
+  if (!cockpit || !isCockpitFrontOpen(ship) || ship?.team !== "player") {
     return null;
   }
 
@@ -1002,125 +1158,766 @@ export function makeLooseFromBlock(block, worldX, worldY, velocity = { x: 0, y: 
   };
 }
 
-const ENEMY_QUALITY_PALETTE = ["grey", "red", "orange", "yellow", "green", "blue", "purple", "white"];
+const ENEMY_QUALITY_PALETTE = ["grey", "red", "orange", "yellow", "green", "blue", "purple", "white", "rainbow"];
+const ENEMY_QUALITY_VARIANCE_WEIGHTS = {
+  "-1": 0.22,
+  "0": 0.56,
+  "1": 0.22
+};
+
+function mirrorEnemySymmetrySide(side) {
+  if (side === "east") {
+    return "west";
+  }
+  if (side === "west") {
+    return "east";
+  }
+  return side;
+}
+
+function getEnemyQualitySymmetryKey(step) {
+  const normalizedSide =
+    step.socket.x < 0 ? mirrorEnemySymmetrySide(step.socket.side) : step.socket.side;
+  return [
+    step.type,
+    step.variant ?? "single",
+    Math.abs(step.socket.x),
+    step.socket.y,
+    normalizedSide
+  ].join("|");
+}
+
+function getEnemyQualityIdForOffset(baseQualityId, offset = 0) {
+  const baseIndex = getQualityIndex(baseQualityId);
+  const resolvedIndex = clamp(baseIndex + offset, 0, QUALITY_TIERS.length - 1);
+  return QUALITY_TIERS[resolvedIndex]?.id ?? baseQualityId;
+}
+
+function chooseEnemyQualityOffset(baseQualityId, rng) {
+  const baseIndex = getQualityIndex(baseQualityId);
+  const allowedOffsets = [-1, 0, 1].filter((offset) => {
+    const nextIndex = baseIndex + offset;
+    return nextIndex >= 0 && nextIndex < ENEMY_QUALITY_PALETTE.length;
+  });
+
+  return chooseWeighted(
+    allowedOffsets,
+    (offset) => ENEMY_QUALITY_VARIANCE_WEIGHTS[String(offset)] ?? 0,
+    rng
+  );
+}
+
+function resolveEnemyStepQualities(buildSteps, baseQualityId, rng = null) {
+  if (typeof rng !== "function") {
+    return buildSteps.map(() => baseQualityId);
+  }
+
+  const symmetryKeys = buildSteps.map((step) => getEnemyQualitySymmetryKey(step));
+  const uniqueKeys = [...new Set(symmetryKeys)];
+  const offsetsByKey = new Map();
+  const baseIndex = getQualityIndex(baseQualityId);
+  const allowedNonZeroOffsets = [-1, 1].filter((offset) => {
+    const nextIndex = baseIndex + offset;
+    return nextIndex >= 0 && nextIndex < ENEMY_QUALITY_PALETTE.length;
+  });
+  let hasVariance = false;
+
+  for (const key of uniqueKeys) {
+    const offset = chooseEnemyQualityOffset(baseQualityId, rng);
+    offsetsByKey.set(key, offset);
+    hasVariance ||= offset !== 0;
+  }
+
+  if (!hasVariance && allowedNonZeroOffsets.length > 0 && uniqueKeys.length > 0) {
+    const forcedKey = uniqueKeys[Math.floor(rng() * uniqueKeys.length)];
+    const forcedOffset = chooseWeighted(
+      allowedNonZeroOffsets,
+      (offset) => ENEMY_QUALITY_VARIANCE_WEIGHTS[String(offset)] ?? 0,
+      rng
+    );
+    offsetsByKey.set(forcedKey, forcedOffset);
+  }
+
+  return symmetryKeys.map((key) => getEnemyQualityIdForOffset(baseQualityId, offsetsByKey.get(key) ?? 0));
+}
+
+function cloneEnemyBuildStep(step) {
+  return {
+    ...step,
+    socket: { ...step.socket }
+  };
+}
+
+function cloneEnemyBlockRef(ref) {
+  return {
+    ...ref
+  };
+}
+
+function cloneEnemyBuildSteps(buildSteps) {
+  return buildSteps.map((step) => cloneEnemyBuildStep(step));
+}
+
+function matchesEnemySocket(left, right) {
+  return left.x === right.x && left.y === right.y && left.side === right.side;
+}
+
+function buildEnemyVariant(baseSteps, extraSteps = [], replacements = []) {
+  const steps = cloneEnemyBuildSteps(baseSteps);
+
+  for (const replacement of replacements) {
+    const index = steps.findIndex((step) => matchesEnemySocket(step.socket, replacement.socket));
+    if (index === -1) {
+      throw new Error(`Missing enemy variant socket ${JSON.stringify(replacement.socket)}`);
+    }
+    steps[index] = {
+      ...steps[index],
+      ...replacement.updates,
+      socket: {
+        ...steps[index].socket,
+        ...(replacement.updates.socket ?? {})
+      }
+    };
+  }
+
+  return steps.concat(cloneEnemyBuildSteps(extraSteps));
+}
+
+function makeEnemyShipDesign({
+  id,
+  archetypeId,
+  label,
+  spawnWeight = 1,
+  minLevel = 1,
+  tags = [],
+  buildSteps,
+  removeBlocks = []
+}) {
+  return {
+    id,
+    archetypeId,
+    label,
+    spawnWeight,
+    minLevel,
+    tags: [...tags],
+    buildSteps: cloneEnemyBuildSteps(buildSteps),
+    removeBlocks: removeBlocks.map((ref) => cloneEnemyBlockRef(ref))
+  };
+}
+
+const ENEMY_ARCHETYPE_BASE_STEPS = {
+  needle: [
+    { type: "hull", variant: "triple", socket: { x: 0, y: 1, side: "south" } },
+    { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+    { type: "thruster", socket: { x: -1, y: 3, side: "west" } },
+    { type: "thruster", socket: { x: 1, y: 3, side: "east" } },
+    { type: "thruster", socket: { x: 0, y: 4, side: "south" } }
+  ],
+  bulwark: [
+    { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
+    { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+    { type: "shield", socket: { x: -3, y: 0, side: "west" } },
+    { type: "shield", socket: { x: 3, y: 0, side: "east" } },
+    { type: "thruster", socket: { x: -1, y: 1, side: "south" } },
+    { type: "thruster", socket: { x: 1, y: 1, side: "south" } }
+  ],
+  manta: [
+    { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: -2, y: -1, side: "north" } },
+    { type: "hull", variant: "single", socket: { x: 2, y: -1, side: "north" } },
+    { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
+    { type: "blaster", variant: "spread", socket: { x: 0, y: -1, side: "north" } },
+    { type: "thruster", socket: { x: -2, y: 1, side: "south" } },
+    { type: "thruster", socket: { x: 2, y: 1, side: "south" } }
+  ],
+  fortress: [
+    { type: "hull", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+    { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
+    { type: "hull", variant: "double", socket: { x: -1, y: -1, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 1, y: -1, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: -2, y: 1, side: "south" } },
+    { type: "hull", variant: "single", socket: { x: -1, y: 1, side: "south" } },
+    { type: "hull", variant: "single", socket: { x: 1, y: 1, side: "south" } },
+    { type: "hull", variant: "single", socket: { x: 2, y: 1, side: "south" } },
+    { type: "hull", variant: "single", socket: { x: 0, y: 2, side: "south" } },
+    { type: "hull", variant: "double", socket: { x: -1, y: 2, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 1, y: 2, side: "east" } },
+    { type: "blaster", variant: "single", socket: { x: -2, y: -2, side: "north" } },
+    { type: "blaster", variant: "dual", socket: { x: 0, y: -2, side: "north" } },
+    { type: "blaster", variant: "single", socket: { x: 2, y: -2, side: "north" } },
+    { type: "shield", socket: { x: -3, y: 0, side: "west" } },
+    { type: "shield", socket: { x: 3, y: 0, side: "east" } },
+    { type: "thruster", socket: { x: -1, y: 3, side: "south" } },
+    { type: "thruster", socket: { x: 0, y: 3, side: "south" } },
+    { type: "thruster", socket: { x: 1, y: 3, side: "south" } }
+  ]
+};
+
+const ENEMY_ARCHETYPE_ALT_STEPS = {
+  needleCompact: [
+    { type: "hull", variant: "double", socket: { x: 0, y: 1, side: "south" } },
+    { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+    { type: "thruster", socket: { x: 0, y: 3, side: "south" } }
+  ],
+  needleLong: [
+    { type: "hull", variant: "triple", socket: { x: 0, y: 1, side: "south" } },
+    { type: "hull", variant: "triple", socket: { x: 0, y: 4, side: "south" } },
+    { type: "blaster", variant: "dual", socket: { x: 0, y: -1, side: "north" } },
+    { type: "thruster", socket: { x: 0, y: 7, side: "south" } }
+  ],
+  bulwarkCompact: [
+    { type: "hull", variant: "single", socket: { x: -1, y: 0, side: "west" } },
+    { type: "hull", variant: "single", socket: { x: 1, y: 0, side: "east" } },
+    { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+    { type: "shield", socket: { x: -2, y: 0, side: "west" } },
+    { type: "shield", socket: { x: 2, y: 0, side: "east" } },
+    { type: "thruster", socket: { x: -1, y: 1, side: "south" } },
+    { type: "thruster", socket: { x: 1, y: 1, side: "south" } },
+    { type: "thruster", socket: { x: 0, y: 1, side: "south" } }
+  ],
+  bulwarkWall: [
+    { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
+    { type: "hull", variant: "double", socket: { x: -3, y: 0, side: "west" } },
+    { type: "hull", variant: "double", socket: { x: 3, y: 0, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
+    { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+    { type: "shield", socket: { x: -5, y: 0, side: "west" } },
+    { type: "shield", socket: { x: 5, y: 0, side: "east" } },
+    { type: "thruster", socket: { x: 0, y: 2, side: "south" } }
+  ],
+  mantaCompact: [
+    { type: "hull", variant: "single", socket: { x: -1, y: 0, side: "west" } },
+    { type: "hull", variant: "single", socket: { x: 1, y: 0, side: "east" } },
+    { type: "blaster", variant: "spread", socket: { x: 0, y: -1, side: "north" } },
+    { type: "thruster", socket: { x: 0, y: 1, side: "south" } }
+  ],
+  mantaWide: buildEnemyVariant(ENEMY_ARCHETYPE_BASE_STEPS.manta, [
+    { type: "hull", variant: "single", socket: { x: -3, y: 0, side: "west" } },
+    { type: "hull", variant: "single", socket: { x: 3, y: 0, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: -3, y: -1, side: "north" } },
+    { type: "hull", variant: "single", socket: { x: 3, y: -1, side: "north" } },
+    { type: "hull", variant: "single", socket: { x: 0, y: 2, side: "south" } }
+  ]),
+  fortressOuter: buildEnemyVariant(ENEMY_ARCHETYPE_BASE_STEPS.fortress, [
+    { type: "hull", variant: "single", socket: { x: -3, y: -1, side: "west" } },
+    { type: "hull", variant: "single", socket: { x: 3, y: -1, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: -3, y: 1, side: "west" } },
+    { type: "hull", variant: "single", socket: { x: 3, y: 1, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: -3, y: 2, side: "west" } },
+    { type: "hull", variant: "single", socket: { x: 3, y: 2, side: "east" } },
+    { type: "hull", variant: "single", socket: { x: -2, y: 3, side: "south" } },
+    { type: "hull", variant: "single", socket: { x: 2, y: 3, side: "south" } },
+    { type: "shield", socket: { x: -4, y: 1, side: "west" } },
+    { type: "shield", socket: { x: 4, y: 1, side: "east" } }
+  ])
+};
 
 export const ENEMY_ARCHETYPE_DEFS = {
-  needle: {
-    id: "needle",
-    label: "Needle",
+  needle: { id: "needle", label: "Needle", minLevel: 1, spawnWeight: 28, defaultDesignId: "needle-sting" },
+  bulwark: { id: "bulwark", label: "Bulwark", minLevel: 1, spawnWeight: 26, defaultDesignId: "bulwark-guard" },
+  manta: { id: "manta", label: "Manta", minLevel: 1, spawnWeight: 26, defaultDesignId: "manta-glide" },
+  fortress: { id: "fortress", label: "Fortress", minLevel: 3, spawnWeight: 20, defaultDesignId: "fortress-bastion" }
+};
+
+export const ENEMY_SHIP_DESIGN_DEFS = [
+  makeEnemyShipDesign({
+    id: "needle-dart",
+    archetypeId: "needle",
+    label: "Dart",
     minLevel: 1,
-    spawnWeight: 26,
+    tags: ["small", "mobile"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.needleCompact
+  }),
+  makeEnemyShipDesign({
+    id: "needle-sting",
+    archetypeId: "needle",
+    label: "Sting",
+    minLevel: 1,
+    tags: ["small", "mobile"],
+    buildSteps: ENEMY_ARCHETYPE_BASE_STEPS.needle
+  }),
+  makeEnemyShipDesign({
+    id: "needle-razer",
+    archetypeId: "needle",
+    label: "Razer",
+    minLevel: 2,
+    tags: ["mobile", "gunline"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_BASE_STEPS.needle,
+      [
+        { type: "hull", variant: "single", socket: { x: -1, y: 1, side: "west" } },
+        { type: "hull", variant: "single", socket: { x: 1, y: 1, side: "east" } },
+        { type: "blaster", variant: "single", socket: { x: -1, y: 0, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 1, y: 0, side: "north" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "spread" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "needle-fork",
+    archetypeId: "needle",
+    label: "Fork",
+    minLevel: 2,
+    tags: ["mobile", "forked"],
+    buildSteps: buildEnemyVariant(ENEMY_ARCHETYPE_BASE_STEPS.needle, [
+      { type: "hull", variant: "single", socket: { x: -1, y: 1, side: "west" } },
+      { type: "hull", variant: "single", socket: { x: 1, y: 1, side: "east" } },
+      { type: "blaster", variant: "single", socket: { x: -1, y: 0, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: 1, y: 0, side: "north" } },
+      { type: "shield", socket: { x: -1, y: 2, side: "west" } },
+      { type: "shield", socket: { x: 1, y: 2, side: "east" } }
+    ], [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "dual" } }])
+  }),
+  makeEnemyShipDesign({
+    id: "needle-lance",
+    archetypeId: "needle",
+    label: "Lance",
+    minLevel: 2,
+    tags: ["mobile", "long"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.needleLong,
+      [
+        { type: "hull", variant: "single", socket: { x: -1, y: 5, side: "west" } },
+        { type: "hull", variant: "single", socket: { x: 1, y: 5, side: "east" } },
+        { type: "thruster", socket: { x: -1, y: 6, side: "south" } },
+        { type: "thruster", socket: { x: 1, y: 6, side: "south" } }
+      ]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "needle-javelin",
+    archetypeId: "needle",
+    label: "Javelin",
+    minLevel: 2,
+    tags: ["balanced", "long"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.needleLong,
+      [
+        { type: "hull", variant: "single", socket: { x: -1, y: 5, side: "west" } },
+        { type: "hull", variant: "single", socket: { x: 1, y: 5, side: "east" } },
+        { type: "shield", socket: { x: -2, y: 5, side: "west" } },
+        { type: "shield", socket: { x: 2, y: 5, side: "east" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "spread" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "needle-pike",
+    archetypeId: "needle",
+    label: "Pike",
+    minLevel: 2,
+    tags: ["low-yaw", "artillery"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.needleLong
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-ward",
+    archetypeId: "bulwark",
+    label: "Ward",
+    minLevel: 1,
+    tags: ["small", "balanced"],
     buildSteps: [
-      { type: "hull", variant: "triple", socket: { x: 0, y: 1, side: "south" } },
+      { type: "hull", variant: "single", socket: { x: -1, y: 0, side: "west" } },
+      { type: "hull", variant: "single", socket: { x: 1, y: 0, side: "east" } },
       { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
-      { type: "thruster", socket: { x: -1, y: 3, side: "west" } },
-      { type: "thruster", socket: { x: 1, y: 3, side: "east" } },
-      { type: "thruster", socket: { x: 0, y: 4, side: "south" } }
+      { type: "blaster", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: 1, y: -1, side: "north" } },
+      { type: "thruster", socket: { x: -1, y: 1, side: "south" } },
+      { type: "thruster", socket: { x: 1, y: 1, side: "south" } },
+      { type: "thruster", socket: { x: 0, y: 1, side: "south" } }
     ]
-  },
-  bulwark: {
-    id: "bulwark",
-    label: "Bulwark",
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-guard",
+    archetypeId: "bulwark",
+    label: "Guard",
     minLevel: 1,
-    spawnWeight: 24,
+    tags: ["small", "balanced"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.bulwarkCompact
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-trench",
+    archetypeId: "bulwark",
+    label: "Trench",
+    minLevel: 2,
+    tags: ["balanced", "gunline"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_BASE_STEPS.bulwark,
+      [
+        { type: "blaster", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 1, y: -1, side: "north" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "spread" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-shelter",
+    archetypeId: "bulwark",
+    label: "Shelter",
+    minLevel: 2,
+    tags: ["slow", "wall"],
+    buildSteps: buildEnemyVariant(ENEMY_ARCHETYPE_ALT_STEPS.bulwarkWall, [
+      { type: "thruster", socket: { x: -1, y: 1, side: "south" } },
+      { type: "thruster", socket: { x: 1, y: 1, side: "south" } }
+    ])
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-redoubt",
+    archetypeId: "bulwark",
+    label: "Redoubt",
+    minLevel: 2,
+    tags: ["balanced", "midwall"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_BASE_STEPS.bulwark,
+      [
+        { type: "blaster", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 1, y: -1, side: "north" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "spread" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-rampart",
+    archetypeId: "bulwark",
+    label: "Rampart",
+    minLevel: 2,
+    tags: ["slow", "wide"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.bulwarkWall,
+      [
+        { type: "hull", variant: "single", socket: { x: -4, y: 1, side: "south" } },
+        { type: "hull", variant: "single", socket: { x: 4, y: 1, side: "south" } },
+        { type: "thruster", socket: { x: -4, y: 2, side: "south" } },
+        { type: "thruster", socket: { x: 4, y: 2, side: "south" } },
+        { type: "blaster", variant: "single", socket: { x: -2, y: -1, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 2, y: -1, side: "north" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "dual" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "bulwark-anchor",
+    archetypeId: "bulwark",
+    label: "Anchor",
+    minLevel: 2,
+    tags: ["slow", "low-yaw"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.bulwarkWall,
+      [
+        { type: "blaster", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 1, y: -1, side: "north" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "dual" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "manta-skiff",
+    archetypeId: "manta",
+    label: "Skiff",
+    minLevel: 1,
+    tags: ["small", "mobile"],
     buildSteps: [
-      { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
-      { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
-      { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
-      { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
-      { type: "shield", socket: { x: -3, y: 0, side: "west" } },
-      { type: "shield", socket: { x: 3, y: 0, side: "east" } },
+      { type: "hull", variant: "single", socket: { x: -1, y: 0, side: "west" } },
+      { type: "hull", variant: "single", socket: { x: 1, y: 0, side: "east" } },
+      { type: "blaster", variant: "spread", socket: { x: 0, y: -1, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: 1, y: -1, side: "north" } },
       { type: "thruster", socket: { x: -1, y: 1, side: "south" } },
       { type: "thruster", socket: { x: 1, y: 1, side: "south" } }
     ]
-  },
-  manta: {
-    id: "manta",
-    label: "Manta",
-    minLevel: 2,
-    spawnWeight: 20,
+  }),
+  makeEnemyShipDesign({
+    id: "manta-fan",
+    archetypeId: "manta",
+    label: "Fan",
+    minLevel: 1,
+    tags: ["small", "balanced"],
     buildSteps: [
-      { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
-      { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
-      { type: "hull", variant: "single", socket: { x: -2, y: -1, side: "north" } },
-      { type: "hull", variant: "single", socket: { x: 2, y: -1, side: "north" } },
-      { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
-      { type: "blaster", variant: "spread", socket: { x: 0, y: -1, side: "north" } },
-      { type: "thruster", socket: { x: -2, y: 1, side: "south" } },
-      { type: "thruster", socket: { x: 2, y: 1, side: "south" } }
-    ]
-  },
-  fortress: {
-    id: "fortress",
-    label: "Fortress",
-    minLevel: 4,
-    spawnWeight: 12,
-    buildSteps: [
-      { type: "hull", variant: "single", socket: { x: 0, y: -1, side: "north" } },
-      { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
-      { type: "hull", variant: "double", socket: { x: 1, y: 0, side: "east" } },
-      { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
-      { type: "hull", variant: "double", socket: { x: -1, y: -1, side: "west" } },
-      { type: "hull", variant: "double", socket: { x: 1, y: -1, side: "east" } },
-      { type: "hull", variant: "single", socket: { x: -2, y: 1, side: "south" } },
-      { type: "hull", variant: "single", socket: { x: -1, y: 1, side: "south" } },
-      { type: "hull", variant: "single", socket: { x: 1, y: 1, side: "south" } },
-      { type: "hull", variant: "single", socket: { x: 2, y: 1, side: "south" } },
-      { type: "hull", variant: "single", socket: { x: 0, y: 2, side: "south" } },
-      { type: "hull", variant: "double", socket: { x: -1, y: 2, side: "west" } },
-      { type: "hull", variant: "double", socket: { x: 1, y: 2, side: "east" } },
-      { type: "blaster", variant: "single", socket: { x: -2, y: -2, side: "north" } },
-      { type: "blaster", variant: "dual", socket: { x: 0, y: -2, side: "north" } },
-      { type: "blaster", variant: "single", socket: { x: 2, y: -2, side: "north" } },
-      { type: "shield", socket: { x: -3, y: 0, side: "west" } },
-      { type: "shield", socket: { x: 3, y: 0, side: "east" } },
-      { type: "thruster", socket: { x: -1, y: 3, side: "south" } },
-      { type: "thruster", socket: { x: 0, y: 3, side: "south" } },
-      { type: "thruster", socket: { x: 1, y: 3, side: "south" } }
-    ]
-  },
-  vulture: {
-    id: "vulture",
-    label: "Vulture",
-    minLevel: 3,
-    spawnWeight: 18,
-    buildSteps: [
-      { type: "hull", variant: "double", socket: { x: -1, y: 0, side: "west" } },
+      { type: "hull", variant: "single", socket: { x: -1, y: 0, side: "west" } },
       { type: "hull", variant: "single", socket: { x: 1, y: 0, side: "east" } },
-      { type: "hull", variant: "single", socket: { x: 0, y: 1, side: "south" } },
-      { type: "hull", variant: "single", socket: { x: 1, y: 1, side: "east" } },
-      { type: "blaster", variant: "dual", socket: { x: 1, y: -1, side: "north" } },
-      { type: "shield", socket: { x: -3, y: 0, side: "west" } },
-      { type: "thruster", socket: { x: -2, y: 1, side: "south" } },
-      { type: "thruster", socket: { x: 1, y: 2, side: "south" } },
-      { type: "thruster", socket: { x: 2, y: 1, side: "east" } }
+      { type: "hull", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+      { type: "hull", variant: "single", socket: { x: 1, y: -1, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: 0, y: -1, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: -1, y: -2, side: "north" } },
+      { type: "blaster", variant: "single", socket: { x: 1, y: -2, side: "north" } },
+      { type: "thruster", socket: { x: -1, y: 1, side: "south" } },
+      { type: "thruster", socket: { x: 1, y: 1, side: "south" } },
+      { type: "thruster", socket: { x: 0, y: 1, side: "south" } }
     ]
-  }
-};
+  }),
+  makeEnemyShipDesign({
+    id: "manta-glide",
+    archetypeId: "manta",
+    label: "Glide",
+    minLevel: 1,
+    tags: ["mobile", "starter"],
+    buildSteps: ENEMY_ARCHETYPE_BASE_STEPS.manta
+  }),
+  makeEnemyShipDesign({
+    id: "manta-crescent",
+    archetypeId: "manta",
+    label: "Crescent",
+    minLevel: 2,
+    tags: ["mobile", "wide"],
+    buildSteps: buildEnemyVariant(ENEMY_ARCHETYPE_ALT_STEPS.mantaWide, [
+      { type: "thruster", socket: { x: 0, y: 3, side: "south" } }
+    ])
+  }),
+  makeEnemyShipDesign({
+    id: "manta-harrier",
+    archetypeId: "manta",
+    label: "Harrier",
+    minLevel: 2,
+    tags: ["mobile", "gunline"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.mantaWide,
+      [
+        { type: "blaster", variant: "single", socket: { x: -2, y: -2, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 2, y: -2, side: "north" } },
+        { type: "thruster", socket: { x: 0, y: 3, side: "south" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "dual" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "manta-driftwing",
+    archetypeId: "manta",
+    label: "Driftwing",
+    minLevel: 2,
+    tags: ["balanced", "wide"],
+    buildSteps: buildEnemyVariant(ENEMY_ARCHETYPE_ALT_STEPS.mantaWide, [
+      { type: "shield", socket: { x: -4, y: 0, side: "west" } },
+      { type: "shield", socket: { x: 4, y: 0, side: "east" } }
+    ])
+  }),
+  makeEnemyShipDesign({
+    id: "manta-net",
+    archetypeId: "manta",
+    label: "Net",
+    minLevel: 2,
+    tags: ["slow", "area denial"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.mantaWide,
+      [
+        { type: "blaster", variant: "single", socket: { x: -1, y: -1, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 1, y: -1, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: -3, y: -2, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 3, y: -2, side: "north" } },
+        { type: "thruster", socket: { x: 0, y: 3, side: "south" } }
+      ],
+      [{ socket: { x: 0, y: -1, side: "north" }, updates: { variant: "spread" } }]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-bastion",
+    archetypeId: "fortress",
+    label: "Bastion",
+    minLevel: 3,
+    tags: ["balanced", "brick"],
+    buildSteps: ENEMY_ARCHETYPE_BASE_STEPS.fortress
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-keep",
+    archetypeId: "fortress",
+    label: "Keep",
+    minLevel: 3,
+    tags: ["balanced", "compact"],
+    buildSteps: buildEnemyVariant(ENEMY_ARCHETYPE_BASE_STEPS.fortress, [], [
+      { socket: { x: -3, y: 0, side: "west" }, updates: { type: "blaster", variant: "single" } },
+      { socket: { x: 3, y: 0, side: "east" }, updates: { type: "blaster", variant: "single" } }
+    ])
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-gatehouse",
+    archetypeId: "fortress",
+    label: "Gatehouse",
+    minLevel: 3,
+    tags: ["slow", "hollow"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.fortressOuter,
+    removeBlocks: [
+      { type: "hull", x: -1, y: 1 },
+      { type: "hull", x: 0, y: 1 },
+      { type: "hull", x: 1, y: 1 },
+      { type: "blaster", x: -2, y: -2 },
+      { type: "blaster", x: 2, y: -2 },
+      { type: "thruster", x: -1, y: 3 },
+      { type: "thruster", x: 1, y: 3 }
+    ]
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-voidshell",
+    archetypeId: "fortress",
+    label: "Voidshell",
+    minLevel: 4,
+    tags: ["balanced", "ring"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.fortressOuter,
+    removeBlocks: [
+      { type: "hull", x: -1, y: 1 },
+      { type: "hull", x: 0, y: 1 },
+      { type: "hull", x: 1, y: 1 },
+      { type: "hull", x: 0, y: 2 }
+    ]
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-arsenal",
+    archetypeId: "fortress",
+    label: "Arsenal",
+    minLevel: 4,
+    tags: ["balanced", "edge guns"],
+    buildSteps: buildEnemyVariant(
+      ENEMY_ARCHETYPE_ALT_STEPS.fortressOuter,
+      [
+        { type: "blaster", variant: "single", socket: { x: -1, y: -2, side: "north" } },
+        { type: "blaster", variant: "single", socket: { x: 1, y: -2, side: "north" } }
+      ],
+      [
+        { socket: { x: 0, y: -2, side: "north" }, updates: { variant: "spread" } },
+        { socket: { x: -3, y: 0, side: "west" }, updates: { type: "blaster", variant: "single" } },
+        { socket: { x: 3, y: 0, side: "east" }, updates: { type: "blaster", variant: "single" } },
+        { socket: { x: -4, y: 1, side: "west" }, updates: { type: "blaster", variant: "single" } },
+        { socket: { x: 4, y: 1, side: "east" }, updates: { type: "blaster", variant: "single" } }
+      ]
+    )
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-citadel",
+    archetypeId: "fortress",
+    label: "Citadel",
+    minLevel: 4,
+    tags: ["slow", "low-yaw"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.fortressOuter,
+    removeBlocks: [
+      { type: "thruster", x: -1, y: 3 },
+      { type: "thruster", x: 1, y: 3 }
+    ]
+  }),
+  makeEnemyShipDesign({
+    id: "fortress-ringwall",
+    archetypeId: "fortress",
+    label: "Ringwall",
+    minLevel: 4,
+    tags: ["balanced", "hollow"],
+    buildSteps: ENEMY_ARCHETYPE_ALT_STEPS.fortressOuter,
+    removeBlocks: [
+      { type: "hull", x: -1, y: 1 },
+      { type: "hull", x: 0, y: 1 },
+      { type: "hull", x: 1, y: 1 }
+    ]
+  })
+];
+
+const ENEMY_SHIP_DESIGNS_BY_ID = Object.fromEntries(
+  ENEMY_SHIP_DESIGN_DEFS.map((definition) => [definition.id, definition])
+);
 
 export const ENEMY_AI_PROFILE_DEFS = {
-  passive: {
-    id: "passive",
-    label: "Passive",
-    preferredRange: 780,
-    retreatRange: 520,
-    fireRange: 700,
-    fireAngle: 0.1,
-    turnThreshold: 0.06,
+  // These profiles shape both feel and social rules: steering speed, range discipline,
+  // who opens combat, and whether a ship patrols or retaliates at all.
+  punchingBag: {
+    id: "punchingBag",
+    label: "Punching Bag",
+    reactionSpeed: 0.65,
+    preferredRange: 860,
+    retreatRange: 620,
+    cruiseRange: 520,
+    fireRange: 320,
+    fireAngle: 0.045,
+    turnThreshold: 0.08,
     orbitOffset: 0,
     orbitMinRange: 0,
     orbitMaxRange: 0,
-    weakTargetWeight: 30,
-    engagedBias: 20,
-    targetStickiness: 60,
+    weakTargetWeight: 0,
+    engagedBias: 0,
+    targetStickiness: 0,
+    woundedRetreatBoost: 260,
+    disableReverse: false,
+    allowUnprovokedCombat: false,
+    allowUnprovokedPlayerTargeting: false,
+    retaliationChance: 0,
+    aggroDuration: 0,
+    retaliatesOnlyAgainstProvoker: false,
+    targetAcquireDelay: 99,
+    playerBias: -220,
+    provokedTargetBias: 0,
+    idlePatrolMinRange: 160,
+    idlePatrolMaxRange: 320,
+    idlePatrolAngularSpeed: 0.24,
+    idleArrivalRange: 64
+  },
+  slowReacting: {
+    id: "slowReacting",
+    label: "Slow Reacting",
+    reactionSpeed: 1.15,
+    preferredRange: 720,
+    retreatRange: 460,
+    cruiseRange: 480,
+    fireRange: 620,
+    fireAngle: 0.09,
+    turnThreshold: 0.065,
+    orbitOffset: 0.08,
+    orbitMinRange: 260,
+    orbitMaxRange: 680,
+    weakTargetWeight: 40,
+    engagedBias: 30,
+    targetStickiness: 40,
     woundedRetreatBoost: 220,
-    disableReverse: false
+    disableReverse: false,
+    allowUnprovokedCombat: true,
+    allowUnprovokedPlayerTargeting: true,
+    retaliationChance: 1,
+    aggroDuration: 4,
+    retaliatesOnlyAgainstProvoker: false,
+    targetAcquireDelay: 0.5,
+    playerBias: -120,
+    provokedTargetBias: 120,
+    idlePatrolMinRange: 220,
+    idlePatrolMaxRange: 380,
+    idlePatrolAngularSpeed: 0.22,
+    idleArrivalRange: 76
+  },
+  wontAttackFirst: {
+    id: "wontAttackFirst",
+    label: "Won't Attack First",
+    reactionSpeed: 2.3,
+    preferredRange: 620,
+    retreatRange: 340,
+    cruiseRange: 420,
+    fireRange: 700,
+    fireAngle: 0.14,
+    turnThreshold: 0.055,
+    orbitOffset: 0.12,
+    orbitMinRange: 220,
+    orbitMaxRange: 620,
+    weakTargetWeight: 70,
+    engagedBias: 25,
+    targetStickiness: 70,
+    woundedRetreatBoost: 180,
+    disableReverse: false,
+    allowUnprovokedCombat: true,
+    allowUnprovokedPlayerTargeting: false,
+    retaliationChance: 1,
+    aggroDuration: 6,
+    retaliatesOnlyAgainstProvoker: true,
+    targetAcquireDelay: 0.55,
+    playerBias: -160,
+    provokedTargetBias: 260,
+    idlePatrolMinRange: 260,
+    idlePatrolMaxRange: 430,
+    idlePatrolAngularSpeed: 0.26,
+    idleArrivalRange: 84
   },
   cautious: {
     id: "cautious",
     label: "Cautious",
+    reactionSpeed: 2.4,
     preferredRange: 620,
     retreatRange: 380,
+    cruiseRange: 420,
     fireRange: 780,
     fireAngle: 0.14,
     turnThreshold: 0.055,
@@ -1131,13 +1928,23 @@ export const ENEMY_AI_PROFILE_DEFS = {
     engagedBias: 40,
     targetStickiness: 80,
     woundedRetreatBoost: 160,
-    disableReverse: false
+    disableReverse: false,
+    allowUnprovokedCombat: true,
+    allowUnprovokedPlayerTargeting: true,
+    retaliationChance: 1,
+    aggroDuration: 7,
+    retaliatesOnlyAgainstProvoker: false,
+    targetAcquireDelay: 0.3,
+    playerBias: -40,
+    provokedTargetBias: 150
   },
   opportunist: {
     id: "opportunist",
     label: "Opportunist",
+    reactionSpeed: 4,
     preferredRange: 540,
     retreatRange: 260,
+    cruiseRange: 360,
     fireRange: 720,
     fireAngle: 0.18,
     turnThreshold: 0.05,
@@ -1148,13 +1955,23 @@ export const ENEMY_AI_PROFILE_DEFS = {
     engagedBias: 150,
     targetStickiness: 100,
     woundedRetreatBoost: 120,
-    disableReverse: false
+    disableReverse: false,
+    allowUnprovokedCombat: true,
+    allowUnprovokedPlayerTargeting: true,
+    retaliationChance: 1,
+    aggroDuration: 7,
+    retaliatesOnlyAgainstProvoker: false,
+    targetAcquireDelay: 0.2,
+    playerBias: -30,
+    provokedTargetBias: 180
   },
   aggressive: {
     id: "aggressive",
     label: "Aggressive",
+    reactionSpeed: 6.4,
     preferredRange: 260,
     retreatRange: 120,
+    cruiseRange: 260,
     fireRange: 860,
     fireAngle: 0.24,
     turnThreshold: 0.045,
@@ -1165,13 +1982,23 @@ export const ENEMY_AI_PROFILE_DEFS = {
     engagedBias: 50,
     targetStickiness: 120,
     woundedRetreatBoost: 40,
-    disableReverse: false
+    disableReverse: false,
+    allowUnprovokedCombat: true,
+    allowUnprovokedPlayerTargeting: true,
+    retaliationChance: 1,
+    aggroDuration: 9,
+    retaliatesOnlyAgainstProvoker: false,
+    targetAcquireDelay: 0.08,
+    playerBias: 0,
+    provokedTargetBias: 180
   },
   berserker: {
     id: "berserker",
     label: "Berserker",
+    reactionSpeed: 8.5,
     preferredRange: 160,
     retreatRange: 0,
+    cruiseRange: 180,
     fireRange: 980,
     fireAngle: 0.34,
     turnThreshold: 0.035,
@@ -1182,24 +2009,62 @@ export const ENEMY_AI_PROFILE_DEFS = {
     engagedBias: 30,
     targetStickiness: 180,
     woundedRetreatBoost: 0,
-    disableReverse: true
+    disableReverse: true,
+    allowUnprovokedCombat: true,
+    allowUnprovokedPlayerTargeting: true,
+    retaliationChance: 1,
+    aggroDuration: 12,
+    retaliatesOnlyAgainstProvoker: false,
+    targetAcquireDelay: 0,
+    playerBias: 20,
+    provokedTargetBias: 220
   }
 };
 
 export const ENEMY_AI_PROFILE_WEIGHTS = {
-  needle: { passive: 0.05, cautious: 0.15, opportunist: 0.2, aggressive: 0.4, berserker: 0.2 },
-  bulwark: { passive: 0.2, cautious: 0.4, opportunist: 0.2, aggressive: 0.15, berserker: 0.05 },
-  manta: { passive: 0.2, cautious: 0.25, opportunist: 0.35, aggressive: 0.15, berserker: 0.05 },
-  fortress: { passive: 0.3, cautious: 0.4, opportunist: 0.15, aggressive: 0.1, berserker: 0.05 },
-  vulture: { passive: 0.05, cautious: 0.1, opportunist: 0.4, aggressive: 0.25, berserker: 0.2 }
+  needle: {
+    punchingBag: 0.064286,
+    slowReacting: 0.192857,
+    wontAttackFirst: 0.192857,
+    cautious: 0.2,
+    opportunist: 0.175,
+    aggressive: 0.125,
+    berserker: 0.05
+  },
+  bulwark: {
+    punchingBag: 0.080357,
+    slowReacting: 0.208929,
+    wontAttackFirst: 0.160714,
+    cautious: 0.225,
+    opportunist: 0.15,
+    aggressive: 0.125,
+    berserker: 0.05
+  },
+  manta: {
+    punchingBag: 0.063158,
+    slowReacting: 0.197368,
+    wontAttackFirst: 0.189474,
+    cautious: 0.17907,
+    opportunist: 0.217441,
+    aggressive: 0.102326,
+    berserker: 0.051163
+  },
+  fortress: {
+    punchingBag: 0.091525,
+    slowReacting: 0.190678,
+    wontAttackFirst: 0.167797,
+    cautious: 0.254878,
+    opportunist: 0.147561,
+    aggressive: 0.093902,
+    berserker: 0.053659
+  }
 };
 
 export const ENEMY_AI_PROFILE_EARLY_WEIGHTS = {
-  needle: { passive: 0.8, cautious: 0.12, opportunist: 0.05, aggressive: 0.02, berserker: 0.01 },
-  bulwark: { passive: 0.8, cautious: 0.12, opportunist: 0.05, aggressive: 0.02, berserker: 0.01 },
-  manta: { passive: 0.8, cautious: 0.12, opportunist: 0.05, aggressive: 0.02, berserker: 0.01 },
-  fortress: { passive: 0.8, cautious: 0.12, opportunist: 0.05, aggressive: 0.02, berserker: 0.01 },
-  vulture: { passive: 0.8, cautious: 0.12, opportunist: 0.05, aggressive: 0.02, berserker: 0.01 }
+  needle: { punchingBag: 0.12, slowReacting: 0.28, wontAttackFirst: 0.24, cautious: 0.16, opportunist: 0.1, aggressive: 0.07, berserker: 0.03 },
+  bulwark: { punchingBag: 0.14, slowReacting: 0.28, wontAttackFirst: 0.22, cautious: 0.18, opportunist: 0.1, aggressive: 0.06, berserker: 0.02 },
+  manta: { punchingBag: 0.12, slowReacting: 0.3, wontAttackFirst: 0.24, cautious: 0.14, opportunist: 0.12, aggressive: 0.06, berserker: 0.02 },
+  fortress: { punchingBag: 0.16, slowReacting: 0.28, wontAttackFirst: 0.22, cautious: 0.18, opportunist: 0.08, aggressive: 0.06, berserker: 0.02 }
 };
 
 function chooseWeighted(items, getWeight, rng = Math.random) {
@@ -1216,13 +2081,15 @@ function chooseWeighted(items, getWeight, rng = Math.random) {
   return items[items.length - 1];
 }
 
-function buildEnemyBlueprintFromSteps(buildSteps, quality) {
+function buildEnemyBlueprintFromSteps(buildSteps, quality, removeBlocks = [], options = {}) {
   const ship = createShipFromBlueprint(makeDefaultPlayerBlueprint(), {
     team: "enemy-blueprint",
     kind: "enemy-blueprint"
   });
+  const stepQualities = resolveEnemyStepQualities(buildSteps, quality, options.rng);
 
-  for (const step of buildSteps) {
+  for (let index = 0; index < buildSteps.length; index += 1) {
+    const step = buildSteps[index];
     const socket = getOpenSockets(ship).find(
       (entry) =>
         entry.x === step.socket.x &&
@@ -1238,7 +2105,7 @@ function buildEnemyBlueprintFromSteps(buildSteps, quality) {
       type: step.type,
       x: 0,
       y: 0,
-      quality,
+      quality: stepQualities[index] ?? quality,
       orientation: step.orientation ?? "north",
       variant: step.variant ?? "single"
     });
@@ -1247,6 +2114,30 @@ function buildEnemyBlueprintFromSteps(buildSteps, quality) {
     if (!placed) {
       throw new Error(`Failed to place enemy step ${step.type} at ${JSON.stringify(step.socket)}`);
     }
+  }
+
+  if (removeBlocks.length > 0) {
+    for (const ref of removeBlocks) {
+      ship.blocks = ship.blocks.filter((block) => {
+        if (block.type === "cockpit") {
+          return true;
+        }
+        if (ref.type && block.type !== ref.type) {
+          return true;
+        }
+        if (ref.variant && block.variant !== ref.variant) {
+          return true;
+        }
+        if (typeof ref.x === "number" && block.x !== ref.x) {
+          return true;
+        }
+        if (typeof ref.y === "number" && block.y !== ref.y) {
+          return true;
+        }
+        return false;
+      });
+    }
+    ejectDisconnectedBlocks(ship);
   }
 
   return serializeShipToBlueprint(ship);
@@ -1258,6 +2149,47 @@ function getShipHealthRatio(ship) {
     return 0;
   }
   return cockpit.hp / cockpit.maxHp;
+}
+
+function isPlayerShip(ship) {
+  return ship?.kind === "player" || ship?.team === "player";
+}
+
+function getEnemyProfile(ship) {
+  return ENEMY_AI_PROFILE_DEFS[ship.ai?.profileId] ?? ENEMY_AI_PROFILE_DEFS.aggressive;
+}
+
+function isEnemyProvoked(enemy, now = enemy.ai?.now ?? 0) {
+  return Number.isFinite(enemy.ai?.provokedUntil) && enemy.ai.provokedUntil > now;
+}
+
+export function registerEnemyProvocation(enemy, attackerId, now = 0, rng = Math.random) {
+  if (!enemy?.alive || enemy.kind !== "enemy" || !attackerId || attackerId === enemy.id) {
+    return false;
+  }
+
+  const profile = getEnemyProfile(enemy);
+  const retaliationChance = profile.retaliationChance ?? 1;
+  enemy.ai = {
+    ...enemy.ai,
+    lastHitById: attackerId,
+    lastHitAt: now
+  };
+
+  if (retaliationChance <= 0 || (retaliationChance < 1 && rng() > retaliationChance)) {
+    return false;
+  }
+
+  enemy.ai = {
+    ...enemy.ai,
+    lastHitById: attackerId,
+    lastHitAt: now,
+    provokedById: attackerId,
+    provokedAt: now,
+    provokedUntil: now + (profile.aggroDuration ?? 0),
+    targetSince: now
+  };
+  return true;
 }
 
 function getTargetEngagementBonus(candidate, ships, enemyId) {
@@ -1272,13 +2204,36 @@ function getTargetEngagementBonus(candidate, ships, enemyId) {
     : 0;
 }
 
-function scoreEnemyTarget(enemy, candidate, ships, profile) {
+function canEnemyTargetCandidate(enemy, candidate, profile, now = enemy.ai?.now ?? 0) {
+  const provoked = isEnemyProvoked(enemy, now);
+  if (provoked) {
+    if (profile.retaliatesOnlyAgainstProvoker && candidate.id !== enemy.ai?.provokedById) {
+      return false;
+    }
+    return true;
+  }
+
+  if (!profile.allowUnprovokedCombat) {
+    return false;
+  }
+  if (isPlayerShip(candidate) && profile.allowUnprovokedPlayerTargeting === false) {
+    return false;
+  }
+  return true;
+}
+
+function scoreEnemyTarget(enemy, candidate, ships, profile, now = enemy.ai?.now ?? 0) {
   const separation = length(candidate.x - enemy.x, candidate.y - enemy.y);
   const currentTargetBonus = enemy.ai?.targetId === candidate.id ? profile.targetStickiness : 0;
   const healthScore = (1 - getShipHealthRatio(candidate)) * profile.weakTargetWeight;
   const engagedScore = getTargetEngagementBonus(candidate, ships, enemy.id) * profile.engagedBias;
+  const playerBias = isPlayerShip(candidate) ? profile.playerBias ?? 0 : 0;
+  const provokedTargetBias =
+    isEnemyProvoked(enemy, now) && candidate.id === enemy.ai?.provokedById
+      ? profile.provokedTargetBias ?? 0
+      : 0;
 
-  return currentTargetBonus + healthScore + engagedScore - separation;
+  return currentTargetBonus + healthScore + engagedScore + playerBias + provokedTargetBias - separation;
 }
 
 export function getEnemyQualityForLevel(level = 1) {
@@ -1315,10 +2270,16 @@ export function getEnemySpawnDirector(elapsed = 0, kills = 0) {
     progress,
     level: getEnemyProgressionLevel(elapsed, kills),
     aiAggression: progress,
-    activeCap: progress < 0.33 ? 1 : progress < 0.7 ? 2 : MAX_ENEMIES,
-    initialSpawnDelay: lerp(7.2, 3.1, progress),
-    spawnInterval: lerp(6.2, 2.9, progress)
+    activeCap: MAX_ENEMIES,
+    initialSpawnDelay: lerp(1.9, 1.2, progress),
+    spawnInterval: lerp(2.8, 2.05, progress)
   };
+}
+
+export function getEnemySpawnMargin(aggressionProgress = 1) {
+  // Early runs are mostly soft ships with long preferred / retreat ranges.
+  // Spawn them farther out so they move into the viewport instead of instantly reversing away.
+  return lerp(460, 180, clamp(aggressionProgress, 0, 1));
 }
 
 export function getOffscreenSpawnPosition(cameraX, cameraY, viewportWidth, viewportHeight, margin = 140, rng = Math.random) {
@@ -1340,18 +2301,130 @@ export function getOffscreenSpawnPosition(cameraX, cameraY, viewportWidth, viewp
   }
 }
 
+export function isShipWithinSpawnPressureWindow(
+  ship,
+  cameraX,
+  cameraY,
+  viewportWidth,
+  viewportHeight,
+  margin = 120
+) {
+  if (!ship?.alive) {
+    return false;
+  }
+
+  const halfWidth = viewportWidth * 0.5;
+  const halfHeight = viewportHeight * 0.5;
+  return (
+    ship.x >= cameraX - halfWidth - margin &&
+    ship.x <= cameraX + halfWidth + margin &&
+    ship.y >= cameraY - halfHeight - margin &&
+    ship.y <= cameraY + halfHeight + margin
+  );
+}
+
+export function countShipsWithinSpawnPressureWindow(
+  ships,
+  cameraX,
+  cameraY,
+  viewportWidth,
+  viewportHeight,
+  margin = 120
+) {
+  return ships.filter((ship) =>
+    isShipWithinSpawnPressureWindow(ship, cameraX, cameraY, viewportWidth, viewportHeight, margin)
+  ).length;
+}
+
+export function retainEnemiesNearPlayerSpace(
+  ships,
+  cameraX,
+  cameraY,
+  viewportWidth,
+  viewportHeight,
+  margin = 900
+) {
+  return ships.filter((ship) =>
+    isShipWithinSpawnPressureWindow(ship, cameraX, cameraY, viewportWidth, viewportHeight, margin)
+  );
+}
+
+export function resolveEnemySpawnPressureTimer(
+  timer,
+  totalEnemyCount,
+  nearbyEnemyCount,
+  enemyDirector,
+  dt
+) {
+  const refillDelayWhenNoPressure = 1.25;
+  let nextTimer = timer;
+
+  // Count nearby pressure separately from total alive enemies so slow offscreen
+  // stragglers cannot starve visible reinforcements and leave the screen empty.
+  if (nearbyEnemyCount === 0 && totalEnemyCount > 0) {
+    nextTimer = Math.min(nextTimer, refillDelayWhenNoPressure);
+  }
+
+  nextTimer -= dt;
+
+  return {
+    timer: nextTimer,
+    shouldSpawn:
+      nextTimer <= 0 &&
+      nearbyEnemyCount < enemyDirector.activeCap &&
+      totalEnemyCount < Math.max(enemyDirector.activeCap + 2, 3),
+    nextSpawnTimer:
+      nearbyEnemyCount === 0
+        ? Math.min(enemyDirector.spawnInterval, refillDelayWhenNoPressure)
+        : enemyDirector.spawnInterval
+  };
+}
+
 export function getAvailableEnemyArchetypes(level = 1) {
   return Object.values(ENEMY_ARCHETYPE_DEFS).filter((definition) => level >= definition.minLevel);
 }
 
-export function buildEnemyBlueprint(archetypeId, quality = "red") {
-  const definition = ENEMY_ARCHETYPE_DEFS[archetypeId] ?? ENEMY_ARCHETYPE_DEFS.needle;
-  return buildEnemyBlueprintFromSteps(definition.buildSteps, quality);
+export function getEnemyDesignsForArchetype(archetypeId) {
+  return ENEMY_SHIP_DESIGN_DEFS.filter((definition) => definition.archetypeId === archetypeId);
+}
+
+export function getAvailableEnemyDesigns(level = 1) {
+  return ENEMY_SHIP_DESIGN_DEFS.filter(
+    (definition) =>
+      level >= Math.max(
+        ENEMY_ARCHETYPE_DEFS[definition.archetypeId]?.minLevel ?? 1,
+        definition.minLevel ?? 1
+      )
+  );
+}
+
+export function buildEnemyBlueprint(designOrArchetypeId, quality = "red", options = {}) {
+  const design =
+    ENEMY_SHIP_DESIGNS_BY_ID[designOrArchetypeId] ??
+    ENEMY_SHIP_DESIGNS_BY_ID[
+      ENEMY_ARCHETYPE_DEFS[designOrArchetypeId]?.defaultDesignId ?? ENEMY_ARCHETYPE_DEFS.needle.defaultDesignId
+    ];
+  return buildEnemyBlueprintFromSteps(design.buildSteps, quality, design.removeBlocks ?? [], options);
 }
 
 export function chooseEnemyArchetype(level = 1, rng = Math.random) {
   const available = getAvailableEnemyArchetypes(level);
   return chooseWeighted(available, (definition) => definition.spawnWeight, rng);
+}
+
+export function chooseEnemyShipDesign(archetypeId, level = 1, rng = Math.random) {
+  const designs = getEnemyDesignsForArchetype(archetypeId).filter(
+    (definition) =>
+      level >= Math.max(
+        ENEMY_ARCHETYPE_DEFS[definition.archetypeId]?.minLevel ?? 1,
+        definition.minLevel ?? 1
+      )
+  );
+  return chooseWeighted(
+    designs.length > 0 ? designs : getEnemyDesignsForArchetype(archetypeId),
+    (definition) => definition.spawnWeight,
+    rng
+  );
 }
 
 export function chooseEnemyAiProfile(archetypeId, rng = Math.random, aggressionProgress = 1) {
@@ -1362,28 +2435,38 @@ export function chooseEnemyAiProfile(archetypeId, rng = Math.random, aggressionP
 
 export function generateEnemyLoadout(level = 1, rng = Math.random, aggressionProgress = 1) {
   const archetype = chooseEnemyArchetype(level, rng);
+  const design = chooseEnemyShipDesign(archetype.id, level, rng);
   const aiProfile = chooseEnemyAiProfile(archetype.id, rng, aggressionProgress);
   const quality = getEnemyQualityForLevel(level);
 
   return {
     archetypeId: archetype.id,
+    designId: design.id,
     aiProfileId: aiProfile.id,
     orbitSign: rng() < 0.5 ? -1 : 1,
+    idlePatrolSign: rng() < 0.5 ? -1 : 1,
+    idleSeed: rng(),
     quality,
-    blueprint: buildEnemyBlueprint(archetype.id, quality)
+    blueprint: buildEnemyBlueprint(design.id, quality, { rng })
   };
 }
 
 export function chooseEnemyTarget(enemy, ships) {
-  const profile = ENEMY_AI_PROFILE_DEFS[enemy.ai?.profileId] ?? ENEMY_AI_PROFILE_DEFS.aggressive;
+  const profile = getEnemyProfile(enemy);
+  const now = enemy.ai?.now ?? 0;
   const candidates = ships.filter((candidate) => candidate?.alive && candidate.id !== enemy.id);
 
   if (candidates.length === 0) {
     return null;
   }
 
-  return candidates.reduce((best, candidate) => {
-    const score = scoreEnemyTarget(enemy, candidate, ships, profile);
+  const eligible = candidates.filter((candidate) => canEnemyTargetCandidate(enemy, candidate, profile, now));
+  if (eligible.length === 0) {
+    return null;
+  }
+
+  return eligible.reduce((best, candidate) => {
+    const score = scoreEnemyTarget(enemy, candidate, ships, profile, now);
     if (!best || score > best.score) {
       return { candidate, score };
     }
@@ -1391,11 +2474,42 @@ export function chooseEnemyTarget(enemy, ships) {
   }, null)?.candidate ?? null;
 }
 
-export function resolveEnemyAiPlan(enemy, ships) {
-  const profile = ENEMY_AI_PROFILE_DEFS[enemy.ai?.profileId] ?? ENEMY_AI_PROFILE_DEFS.aggressive;
-  const target = chooseEnemyTarget(enemy, ships);
+function resolveEnemyIdleNavigationTarget(enemy, ships, profile, now = enemy.ai?.now ?? 0) {
+  if (
+    !Number.isFinite(profile.idlePatrolMinRange) ||
+    !Number.isFinite(profile.idlePatrolMaxRange) ||
+    !Number.isFinite(profile.idlePatrolAngularSpeed)
+  ) {
+    return null;
+  }
 
-  if (!target) {
+  const player = ships.find((ship) => ship?.alive && isPlayerShip(ship));
+  if (!player) {
+    return null;
+  }
+
+  const idleSeed = clamp(enemy.ai?.idleSeed ?? 0.5, 0, 1);
+  const patrolSign = enemy.ai?.idlePatrolSign ?? enemy.ai?.orbitSign ?? 1;
+  const sweep = 0.5 + 0.5 * Math.sin(now * (0.35 + idleSeed * 0.2) + idleSeed * Math.PI * 2);
+  const radius = lerp(profile.idlePatrolMinRange, profile.idlePatrolMaxRange, sweep);
+  const angle = idleSeed * Math.PI * 2 + now * profile.idlePatrolAngularSpeed * patrolSign;
+
+  return {
+    id: `idle-${enemy.id}`,
+    x: player.x + Math.cos(angle) * radius,
+    y: player.y + Math.sin(angle) * radius
+  };
+}
+
+export function resolveEnemyAiPlan(enemy, ships, dt = 1 / 60) {
+  const profile = getEnemyProfile(enemy);
+  const target = chooseEnemyTarget(enemy, ships);
+  const idleNavigationTarget = target ? null : resolveEnemyIdleNavigationTarget(enemy, ships, profile);
+  const navigationTarget = target ?? idleNavigationTarget ?? pickNearestOtherShip(enemy, ships);
+  const now = enemy.ai?.now ?? 0;
+  const usingIdlePatrol = !target && Boolean(idleNavigationTarget);
+
+  if (!navigationTarget) {
     return {
       profileId: profile.id,
       targetId: null,
@@ -1409,12 +2523,33 @@ export function resolveEnemyAiPlan(enemy, ships) {
     };
   }
 
-  const toTarget = { x: target.x - enemy.x, y: target.y - enemy.y };
+  const trackingAlpha = 1 - Math.exp(-(profile.reactionSpeed ?? 0) * Math.max(dt, 0));
+  const hasTrackedTarget =
+    enemy.ai?.trackedShipId === navigationTarget.id &&
+    Number.isFinite(enemy.ai?.trackedX) &&
+    Number.isFinite(enemy.ai?.trackedY);
+  const trackedX = hasTrackedTarget ? lerp(enemy.ai.trackedX, navigationTarget.x, trackingAlpha) : navigationTarget.x;
+  const trackedY = hasTrackedTarget ? lerp(enemy.ai.trackedY, navigationTarget.y, trackingAlpha) : navigationTarget.y;
+  const targetSince =
+    target && enemy.ai?.targetId === target.id && Number.isFinite(enemy.ai?.targetSince)
+      ? enemy.ai.targetSince
+      : now;
+  const combatReady = Boolean(target) && now - targetSince >= (profile.targetAcquireDelay ?? 0);
+  enemy.ai = {
+    ...enemy.ai,
+    trackedShipId: navigationTarget.id,
+    trackedX,
+    trackedY,
+    targetSince
+  };
+
+  const toTarget = { x: trackedX - enemy.x, y: trackedY - enemy.y };
   const targetAngle = Math.atan2(toTarget.y, toTarget.x) + Math.PI * 0.5;
   const separation = length(toTarget.x, toTarget.y);
   let desiredAngle = targetAngle;
 
   if (
+    !usingIdlePatrol &&
     profile.orbitOffset !== 0 &&
     separation >= profile.orbitMinRange &&
     separation <= profile.orbitMaxRange
@@ -1426,12 +2561,27 @@ export function resolveEnemyAiPlan(enemy, ships) {
   const fireDiff = wrapAngle(targetAngle - enemy.angle);
   const healthRatio = getShipHealthRatio(enemy);
   const retreatRange = profile.retreatRange + (1 - healthRatio) * profile.woundedRetreatBoost;
+  const preferredRange = target
+    ? profile.preferredRange
+    : usingIdlePatrol
+      ? profile.idleArrivalRange ?? 72
+      : profile.cruiseRange ?? profile.preferredRange;
 
-  let up = separation > profile.preferredRange;
-  let down = !profile.disableReverse && separation < retreatRange;
+  let up = separation > preferredRange;
+  let down = !profile.disableReverse && target && separation < retreatRange;
 
-  if (profile.id === "passive") {
-    up = separation > profile.preferredRange + 40;
+  if (usingIdlePatrol) {
+    up = separation > preferredRange;
+    down = false;
+  } else if (profile.id === "punchingBag") {
+    up = separation > preferredRange + 30;
+    down = !profile.disableReverse && separation < preferredRange * 0.55;
+  } else if (profile.id === "slowReacting") {
+    up = separation > preferredRange + 30;
+    down = !profile.disableReverse && target && separation < retreatRange + 40;
+  } else if (profile.id === "wontAttackFirst") {
+    up = separation > preferredRange + 20;
+    down = !profile.disableReverse && target && separation < retreatRange;
   } else if (profile.id === "cautious") {
     up = separation > profile.preferredRange + 20;
   } else if (profile.id === "aggressive") {
@@ -1444,19 +2594,21 @@ export function resolveEnemyAiPlan(enemy, ships) {
 
   return {
     profileId: profile.id,
-    targetId: target.id,
+    targetId: target?.id ?? null,
     separation,
     steeringDiff,
     fireDiff,
     shouldFire:
+      combatReady &&
       Math.abs(fireDiff) < profile.fireAngle &&
       separation < profile.fireRange &&
-      !(profile.id === "passive" && separation < retreatRange + 20),
+      !(profile.id === "punchingBag") &&
+      !((profile.id === "slowReacting" || profile.id === "wontAttackFirst") && separation < retreatRange + 20),
     input: {
-      up,
-      down,
-      turnLeft: steeringDiff < -profile.turnThreshold,
-      turnRight: steeringDiff > profile.turnThreshold
+      up: combatReady || !target ? up : false,
+      down: combatReady || !target ? down : false,
+      turnLeft: combatReady || !target ? steeringDiff < -profile.turnThreshold : false,
+      turnRight: combatReady || !target ? steeringDiff > profile.turnThreshold : false
     }
   };
 }
@@ -1559,6 +2711,8 @@ export function makeDefaultBuilderBlueprint() {
 }
 
 export function resolveBuilderBlueprint(playerBlueprint, builderPresetPrimed) {
+  // The first builder visit gets a seeded test rig, but later builder entries and
+  // reset flows should preserve or restore the real player blueprint instead.
   if (builderPresetPrimed) {
     return {
       blueprint: cloneBlueprint(playerBlueprint),
@@ -1579,6 +2733,8 @@ export function resolveRunBlueprint(playerBlueprint, useCurrentBlueprint = false
 }
 
 export function advancePendingGameOver(game, dt, delay = 3) {
+  // Hold a short aftermath beat after cockpit death so the loss reads in-world
+  // before the game-over panel fully takes over the screen.
   if (!game?.playerLost || game.gameOver) {
     return false;
   }

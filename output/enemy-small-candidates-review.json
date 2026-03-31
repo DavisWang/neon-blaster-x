@@ -1,0 +1,672 @@
+[
+  {
+    "id": "needle-dart",
+    "archetypeId": "needle",
+    "label": "Dart",
+    "blueprint": [
+      {
+        "id": "block-1",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-3",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "red",
+        "orientation": "south",
+        "variant": "double",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-5",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-7",
+        "type": "thruster",
+        "x": 0,
+        "y": 3,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "needle-flechette",
+    "archetypeId": "needle",
+    "label": "Flechette",
+    "blueprint": [
+      {
+        "id": "block-8",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-10",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "red",
+        "orientation": "south",
+        "variant": "double",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-12",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "dual",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-14",
+        "type": "thruster",
+        "x": 0,
+        "y": 3,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-16",
+        "type": "thruster",
+        "x": 1,
+        "y": 2,
+        "quality": "red",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "west"
+      }
+    ]
+  },
+  {
+    "id": "bulwark-brace",
+    "archetypeId": "bulwark",
+    "label": "Brace",
+    "blueprint": [
+      {
+        "id": "block-17",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-19",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-21",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-23",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-25",
+        "type": "shield",
+        "x": -2,
+        "y": 0,
+        "quality": "orange",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-27",
+        "type": "thruster",
+        "x": 0,
+        "y": 2,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "bulwark-ward",
+    "archetypeId": "bulwark",
+    "label": "Ward",
+    "blueprint": [
+      {
+        "id": "block-28",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-30",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-32",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-34",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-36",
+        "type": "shield",
+        "x": 2,
+        "y": 0,
+        "quality": "orange",
+        "orientation": "east",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-38",
+        "type": "thruster",
+        "x": 0,
+        "y": 1,
+        "quality": "orange",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "manta-skiff",
+    "archetypeId": "manta",
+    "label": "Skiff",
+    "blueprint": [
+      {
+        "id": "block-39",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-41",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-43",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-45",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "spread",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-47",
+        "type": "thruster",
+        "x": 0,
+        "y": 1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "manta-fan",
+    "archetypeId": "manta",
+    "label": "Fan",
+    "blueprint": [
+      {
+        "id": "block-48",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-50",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-52",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-54",
+        "type": "hull",
+        "x": -1,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-56",
+        "type": "hull",
+        "x": 1,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-58",
+        "type": "blaster",
+        "x": 0,
+        "y": -1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-60",
+        "type": "thruster",
+        "x": 0,
+        "y": 1,
+        "quality": "blue",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "fortress-cell",
+    "archetypeId": "fortress",
+    "label": "Cell",
+    "blueprint": [
+      {
+        "id": "block-61",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-63",
+        "type": "hull",
+        "x": 0,
+        "y": -1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-65",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-67",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-69",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-71",
+        "type": "blaster",
+        "x": 0,
+        "y": -2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-73",
+        "type": "thruster",
+        "x": 0,
+        "y": 2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "fortress-nook",
+    "archetypeId": "fortress",
+    "label": "Nook",
+    "blueprint": [
+      {
+        "id": "block-74",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-76",
+        "type": "hull",
+        "x": 0,
+        "y": -1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-78",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-80",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-82",
+        "type": "hull",
+        "x": 0,
+        "y": 1,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-84",
+        "type": "shield",
+        "x": -2,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-86",
+        "type": "shield",
+        "x": 2,
+        "y": 0,
+        "quality": "purple",
+        "orientation": "east",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-88",
+        "type": "thruster",
+        "x": 0,
+        "y": 2,
+        "quality": "purple",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "vulture-peck",
+    "archetypeId": "vulture",
+    "label": "Peck",
+    "blueprint": [
+      {
+        "id": "block-89",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-91",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "green",
+        "orientation": "west",
+        "variant": "double",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-93",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-95",
+        "type": "blaster",
+        "x": 1,
+        "y": -1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-97",
+        "type": "thruster",
+        "x": -2,
+        "y": 1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      }
+    ]
+  },
+  {
+    "id": "vulture-snag",
+    "archetypeId": "vulture",
+    "label": "Snag",
+    "blueprint": [
+      {
+        "id": "block-98",
+        "type": "cockpit",
+        "x": 0,
+        "y": 0,
+        "quality": "red",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": null
+      },
+      {
+        "id": "block-100",
+        "type": "hull",
+        "x": -1,
+        "y": 0,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "east"
+      },
+      {
+        "id": "block-102",
+        "type": "hull",
+        "x": 1,
+        "y": 0,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "west"
+      },
+      {
+        "id": "block-104",
+        "type": "hull",
+        "x": 1,
+        "y": 1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-106",
+        "type": "blaster",
+        "x": 1,
+        "y": -1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "dual",
+        "attachSide": "south"
+      },
+      {
+        "id": "block-108",
+        "type": "thruster",
+        "x": -1,
+        "y": 1,
+        "quality": "green",
+        "orientation": "north",
+        "variant": "single",
+        "attachSide": "north"
+      },
+      {
+        "id": "block-110",
+        "type": "shield",
+        "x": -2,
+        "y": 0,
+        "quality": "green",
+        "orientation": "west",
+        "variant": "single",
+        "attachSide": "east"
+      }
+    ]
+  }
+]

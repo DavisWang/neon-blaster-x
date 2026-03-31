@@ -6,6 +6,11 @@ This file captures the cumulative changes made across the iterative correction r
 
 | Round | What changed | Main files |
 | --- | --- | --- |
+| Docs + Code Comment Sync | re-read the live runtime, corrected the docs to match current behavior for pickup priority, cockpit regen, delayed loss flow, visual-quality toggling, and run-vs-builder start rules, and added targeted comments around the matching non-obvious code paths | `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `src/ship.js`, `tasks/todo.md` |
+| Enemy Quality Variance Pass | enemy ships now keep one progression-driven base quality per spawn, but non-cockpit blocks can roll within base quality plus or minus `1`, with mirrored block pairs forced to keep matching tiers | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `tasks/todo.md` |
+| Visible Cap + Collision Precision Pass | capped active visible enemy pressure at `3` other ships and replaced the old flat ship-separation shove with penetration-based overlap resolution plus normal-velocity separation so enemy ships clip through each other less severely | `src/data.js`, `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Empty-Map Mid-Run Fix | enemies far outside player space are now recycled out of the spawn loop before they can consume the alive-enemy budget, so long runs no longer strand the player in an empty map while offscreen ships still technically exist | `src/main.js`, `src/ship.js`, `tests/ship.test.js`, `README.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Blaster Damage Scaling Pass | flattened same-tier `Hull 1x1` durability to a `7`-hit baseline across qualities, added explicit quality-overmatch damage scaling, made `1x2` / `1x3` hulls only slightly tougher than `1x1`, moved shields closer to `1x3` effective durability, and made cockpits fold faster to stronger blasters | `src/data.js`, `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `tasks/todo.md`, `tasks/lessons.md` |
 | Builder + Cockpit Pass | visual block buttons, corrected mounted-part art rotation, cockpit-only starter ship, built-in cockpit thrusters, animated quality previews, builder copy cleanup | `src/main.js`, `src/ship.js`, `builder.html`, `index.html`, `styles.css` |
 | Side Thruster Turning | side-mounted port/starboard thrusters now contribute yaw on `A` / `D` even on the centerline | `src/ship.js`, `tests/ship.test.js` |
 | Cockpit Side Capabilities | attaching directly to a cockpit side disables that built-in cockpit blaster / mini-thruster and the cockpit art mirrors the change | `src/ship.js`, `src/main.js`, `tests/ship.test.js` |
@@ -27,11 +32,24 @@ This file captures the cumulative changes made across the iterative correction r
 | Enemy Archetypes + AI Personalities | replaced the old generic enemy pool with validated `Needle`, `Bulwark`, `Manta`, `Fortress`, and `Vulture` blueprints, then layered weighted `Passive` through `Berserker` AI personalities on top of those frames | `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-producer-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
 | Early Difficulty Ramp | added a shared enemy director that uses elapsed time plus kills to slow the opening spawn cadence, cap early active enemies, and bias early AI toward passive / cautious behavior before converging on the approved late-game mix | `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md` |
 | Passive Opening + Offscreen Spawns | raised the start-of-run AI mix to roughly `80% Passive` across archetypes and moved enemy entry points outside the visible browser viewport so early threats arrive later and from readable edges | `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Modular Enemy Fleet Expansion | expanded the roster from `5` fixed blueprints to `25` distinct legal ship designs across the same `5` archetypes, and raised blaster density so weapon salvage becomes a normal combat reward | `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/01-producer-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Enemy Fleet Diversity Pass | rebuilt the `25`-ship roster so each archetype now spans wider footprint, thrust, yaw, and offense variance, including hollow `Fortress` outlines and deliberately weak-mobility or low-offense variants that still remain legal builds | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Offscreen Pressure Stall | fixed the empty-screen regression where slow passive offscreen enemies could consume the early active cap, by counting only nearby threats toward spawn pressure and refilling faster when the viewport is effectively empty | `src/main.js`, `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Soft-Majority AI Revamp | replaced the old combat-capable `Passive` bucket with `Punching Bag`, `Slow Reacting`, and `Won't Attack First`, added provocation/retaliation state, and relaxed early sparsity so difficulty now comes more from personality mix than an empty map | `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-producer-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Population + Idle Patrol Pass | raised visible enemy pressure slightly, shortened the opening spawn delay, and gave soft personalities explicit idle patrol routes around player space so the map stays alive without making docile ships more lethal | `src/data.js`, `src/ship.js`, `src/main.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md`, `scripts/render_small_enemy_candidates.mjs` |
+| Approved Small Ship Additions | promoted the approved `Dart`, `Ward`, `Skiff`, and `Fan` concepts into the live enemy pool, keeping them compact and shipping `Ward` without the originally proposed shield | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/05-build-note.md`, `tasks/todo.md` |
+| Medium AI Counterpunch Rollback | reduced the share of true `Punching Bag` ships, made `Slow Reacting` and `Won't Attack First` retaliate consistently when provoked, and shifted more spawn weight into `Cautious` / `Opportunist` so the map still reads soft but no longer feels toothless | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md` |
+| Four-Archetype Fleet Refresh | removed `Vulture`, replaced the live enemy roster with a symmetry-first `28`-ship fleet across `Needle`, `Bulwark`, `Manta`, and `Fortress`, added per-design unlock levels so smaller ships dominate the early game, and brought actual mobility back in line with the approved low-yaw / slow / high-mobility quotas | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/00-existing-project-intake.md`, `docs/project/01-producer-work-order.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `tasks/todo.md`, `tasks/lessons.md`, `scripts/render_enemy_fleet_gallery.mjs` |
+| Late AI Weight + Rainbow Quality Pass | changed `Won't Attack First` to refuse only the player as an unprovoked opener, reduced late soft-personality share to roughly `45%` per archetype while preserving archetype skew, and extended enemy quality progression up to `rainbow` for very late ships | `src/ship.js`, `tests/ship.test.js`, `README.md`, `docs/project/02-game-spec.md`, `docs/project/05-build-note.md`, `docs/project/10-session-change-log.md`, `tasks/todo.md` |
 
 ## Runtime Rules That Changed
 
 | Area | Current rule |
 | --- | --- |
+| Visible enemy cap | the active nearby enemy cap now stays at `3` other ships instead of widening to `4` later in the run |
+| Ship collisions | enemy-ship overlap is now resolved from measured penetration depth and relative normal velocity instead of one fixed shove, so collisions separate more cleanly and clip less |
+| Lost enemy recycling | enemies far outside player space are removed from the live spawn loop so they cannot silently consume the alive-enemy budget and leave the screen empty |
+| Blaster quality scaling | same-tier blasters now delete `Hull 1x1` blocks in `7` hits, quality-overmatch damage now ramps much harder, larger hulls are only slightly tougher than `1x1`, and shields sit near `Hull 1x3` effective durability instead of acting like extreme bullet sponges |
 | Cockpit systems | the cockpit starts bare and only exposes built-in blaster / mini-thrusters on sides that are still open |
 | Detach | manual detach and destruction both eject every component that no longer has a valid attachment path to the cockpit |
 | Snap rotation | `R` rotates in place when the current snap cell supports multiple legal orientations |
@@ -43,10 +61,15 @@ This file captures the cumulative changes made across the iterative correction r
 | Ship death salvage yield | surviving death-drop salvage gets a higher health floor and is converted into persistent collectible loot so destroyed ships produce usable scrap |
 | Salvage persistence | loose salvage should remain in play until it is collected or truly destroyed, instead of being removed by a generic distance cull |
 | Combat vs loot | persistent ship-death loot is collectible, but it should not intercept live projectiles or create shield-reflection spam |
-| Loot pickup | when salvage overlaps, pickup should follow visible stack order rather than stale array order |
+| Loot pickup | overlapping salvage now picks by closest valid hit first, then breaks ties toward persistent loot and newer top-most entries instead of using stale array order |
 | Enemy pressure | active enemy count and spawn pacing are intentionally reduced during testing-focused tuning |
-| Enemy roster | enemies now spawn from the validated `Needle`, `Bulwark`, `Manta`, `Fortress`, and `Vulture` archetypes instead of one small generic template pool |
-| Enemy personalities | each archetype now rolls a weighted AI profile from `Passive`, `Cautious`, `Opportunist`, `Aggressive`, and `Berserker` |
+| Enemy roster | enemies now spawn from the validated `Needle`, `Bulwark`, `Manta`, and `Fortress` archetypes, with `7` live designs per archetype instead of one small generic template pool |
+| Enemy intra-archetype variety | each archetype now includes wider footprint swings plus a controlled minority of low-yaw / low-thrust outliers, smaller early-game ships, and hollow `Fortress` outlines instead of minor weapon-only remixes |
+| Enemy personalities | each archetype now rolls a weighted AI profile from `Punching Bag`, `Slow Reacting`, `Won't Attack First`, `Cautious`, `Opportunist`, `Aggressive`, and `Berserker` |
+| Soft AI behavior | soft ships can now truly avoid attacking the player first, fail to retaliate, or react so slowly that they function as safer salvage opportunities instead of competent ranged duelists |
+| Late AI pressure | late-game soft share now settles closer to `45%` per archetype instead of staying near `56-59%` |
+| Enemy quality ceiling | very late enemy quality progression can now reach `rainbow` |
+| Enemy quality variation | each enemy spawn still rolls one base quality tier, but mirrored non-cockpit block pairs can now land at base quality plus or minus `1` instead of sharing one flat tier across the whole ship |
 | Thrust physics | force-induced torque now uses the ship's center of mass, so asymmetric ships can yaw under forward or reverse thrust |
 | Builder drag priority | in builder mode, mounted-part drag-detach takes precedence over overlapping loose salvage so one detached block cannot trap the next drag |
 | Builder default | the first builder entry can seed a special test rig without changing the shared start/reset default; the current builder seed is a compact rainbow speed-test loadout |
@@ -55,10 +78,15 @@ This file captures the cumulative changes made across the iterative correction r
 | Salvage durability | loose salvage now takes bullet and collision damage and can be destroyed |
 | Hull visuals | all hull sizes now carry the `X` motif, not just `1x1` hulls |
 | Rainbow timing | rainbow blocks now share one synchronized hue / pulse phase |
+| Cockpit weapon ownership + AI reaction speed | only the player cockpit keeps the built-in blaster, that built-in gun stays red-tier, and enemy personalities now scale how quickly ships re-track moving targets |
+| Cockpit regen | alive ships now regenerate cockpit HP on a `120s` full-refill slope |
+| Loss flow | cockpit destruction now enters a short pending-loss phase, with the game-over panel appearing about `3s` later instead of instantly |
+| Visual quality toggle | pressing `Q` now cycles `High`, `Medium`, and `Low` ship rendering quality without changing gameplay rules |
 
 ## Validation Coverage Added During These Rounds
 
 - socket-derived placement and snap-orientation regressions
+- enemy mixed-quality variance and mirrored-symmetry regressions
 - cockpit-only starter and cockpit-side capability regressions
 - side-thruster yaw regression
 - multi-cell hull footprint / collision regressions

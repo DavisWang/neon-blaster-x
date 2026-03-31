@@ -8,6 +8,21 @@
 - [x] Verify the build with logic tests and browser checks.
 - [x] Record release notes, risks, and future directions.
 
+## Docs + Comments Sync
+
+- [x] Re-read the current runtime and tests to identify stale behavior notes.
+- [x] Update the README and project docs so they match the shipped behavior.
+- [x] Add targeted source comments for non-obvious runtime contracts.
+- [x] Re-run validation before pushing the doc-sync pass.
+
+## Correction Round: Enemy Quality Variance Pass
+
+- [x] Refresh the existing-project intake and create the current work order for the mixed-quality enemy pass.
+- [x] Let enemy ships roll non-cockpit block qualities at base quality plus or minus `1` while keeping mirrored block pairs matched.
+- [x] Add deterministic regression coverage for bounded quality variance and mirrored-quality preservation.
+- [x] Refresh only the request-affected runtime docs and change tracking.
+- [x] Re-run targeted validation for the enemy-quality pass.
+
 ## Repo Push Prep
 
 - [x] Audit local-only artifacts and decide what belongs in the first remote push.
@@ -38,6 +53,75 @@
 - [x] Make enemy spawn points land outside the visible browser viewport instead of using a generic radial spawn.
 - [x] Add regressions and refresh docs for the stronger early calmness and offscreen-entry rule.
 - [x] Re-run validation after the spawn + AI tuning pass.
+
+## Correction Round: Modular Enemy Fleet Expansion
+
+- [x] Replace the one-blueprint-per-archetype enemy roster with roughly `20-30` distinct legal ship designs that still read as `Needle`, `Bulwark`, `Manta`, `Fortress`, and `Vulture`.
+- [x] Increase enemy blaster density so weapon salvage becomes a common reward instead of a rare drop.
+- [x] Add deterministic coverage for expanded roster size, legal builds, and blaster density.
+- [x] Refresh the harness/project docs for the widened enemy fleet.
+- [x] Re-run validation after the roster-expansion pass.
+
+## Correction Round: Enemy Fleet Diversity Pass
+
+- [x] Rework the `25` enemy designs so the variation inside each archetype is materially larger, not just new gun placements on similar hulls.
+- [x] Introduce stronger footprint swings plus some deliberately weak-yaw, weak-thrust, and low-offense variants while keeping every ship buildable.
+- [x] Add hollow `Fortress` variants that preserve a large outer outline with an emptier interior.
+- [x] Update regression coverage for footprint spread, hollow fortresses, and low-mobility / low-offense ships without losing the blaster-rich salvage pool.
+- [x] Refresh the harness/project docs for the diversity pass and regenerate the review gallery from the live roster.
+
+## Correction Round: Offscreen Pressure Stall
+
+- [x] Trace why the diversity pass made runs feel empty even though enemies were technically alive.
+- [x] Stop far-offscreen enemies from consuming the visible-pressure cap by counting only nearby threats toward spawn pressure.
+- [x] Refill the spawn timer faster when no current enemy has actually reached the viewport pressure window.
+- [x] Add deterministic coverage for the pressure-window and refill behavior.
+
+## Correction Round: Soft-Majority AI Revamp
+
+- [x] Replace the old combat-capable `Passive` bucket with `Punching Bag`, `Slow Reacting`, and `Won't Attack First`.
+- [x] Add provocation / retaliation state so some ships genuinely ignore the player until hit and some fail to retaliate at all.
+- [x] Relax early-game sparsity so difficulty comes more from personality mix than from a nearly empty map.
+- [x] Update deterministic coverage for soft-personality majority, provocation, and behavior contrast against the hostile profiles.
+- [x] Refresh the harness/docs overlay for the new AI model.
+
+## Correction Round: Population + Idle Patrol Pass
+
+- [x] Raise visible enemy pressure slightly so the opening no longer feels under-populated.
+- [x] Give the soft personalities explicit idle patrol behavior so docile ships keep moving through player space instead of stalling.
+- [x] Add deterministic coverage for the denser director and soft-idle movement.
+- [x] Generate a review-only PNG for `10` proposed small early-game ship candidates without enabling them in gameplay yet.
+- [x] Refresh runtime docs, the change log, and lessons for this tuning pass.
+
+## Correction Round: Approved Small Ship Additions
+
+- [x] Promote the approved `Dart`, `Ward`, `Skiff`, and `Fan` designs into the live enemy roster.
+- [x] Ship `Ward` without the proposed shield so it stays a bare compact guard frame.
+- [x] Add deterministic coverage for the larger `29`-ship roster, the new unlock counts, and the compact-footprint contract for the approved small variants.
+- [x] Refresh runtime docs and change tracking for the live roster increase.
+
+## Correction Round: Medium AI Counterpunch Rollback
+
+- [x] Make provoked `Slow Reacting` and `Won't Attack First` ships retaliate consistently instead of often absorbing hits without response.
+- [x] Shorten the slow-profile target-acquire delay so counterattacks begin soon enough to matter.
+- [x] Reduce `Punching Bag` frequency and move that weight mostly into `Cautious` and `Opportunist`.
+- [x] Update deterministic AI-weight and provocation coverage for the stronger counterpunch behavior.
+- [x] Refresh runtime docs and change tracking for the medium rollback.
+
+## Correction Round: Four-Archetype Fleet Refresh
+
+- [x] Remove the `Vulture` archetype from the live roster and move to a `4`-archetype fleet.
+- [x] Replace the live enemy pool with the approved `28`-design lineup: `7` ships each for `Needle`, `Bulwark`, `Manta`, and `Fortress`.
+- [x] Add per-design unlock levels so compact `Needle`, `Bulwark`, and `Manta` frames dominate the early game before larger fortress hulls arrive.
+- [x] Bring the shipped movement mix back in line with the approved quotas by limiting low-yaw and low-thrust designs in actual live metrics, not just labels.
+- [x] Refresh the runtime docs, harness overlay, and fleet artifacts for the new lineup.
+
+## Correction Round: Late AI Weight + Rainbow Quality Pass
+
+- [x] Change `Won't Attack First` so it refuses to open on the player rather than refusing unprovoked combat entirely.
+- [x] Rebalance the late-game AI tables so the three soft personalities sum to roughly `45%` per archetype while preserving the archetype skews inside the soft and hard groups.
+- [x] Extend enemy quality progression so very late ships can spawn with `rainbow` parts.
+- [x] Update deterministic coverage and runtime docs for the new target rule, late-game distribution, and rainbow enemy quality.
 
 ## Correction Round: Builder + Cockpit Pass
 
@@ -170,6 +254,41 @@
 - [x] Add a regression covering the "drag X, then try to drag Y" overlap case.
 - [x] Re-run automated validation after the selector change.
 
+## Correction Round: Ship FX Quality Readability
+
+## Correction Round: Blaster Damage Scaling Pass
+
+- [x] Translate the approved review table into a shippable quality-matchup model instead of only raw same-tier HP scaling.
+- [x] Flatten same-tier `Hull 1x1` durability to the new `7`-hit baseline across qualities.
+- [x] Make `Hull 1x2`, `Hull 1x3`, blasters, thrusters, shields, and cockpit durability line up with the approved relative targets.
+- [x] Add deterministic coverage for the shipped cross-quality hit matrix and the new special-case durability targets.
+- [x] Refresh runtime notes for the shipped combat-balance pass.
+
+## Correction Round: Empty-Map Mid-Run Fix
+
+- [x] Trace why long runs can still end up with no visible enemies after enough kills.
+- [x] Recycle enemies that drift far outside player space before they can keep consuming the alive-enemy budget.
+- [x] Add deterministic coverage for the distant-enemy recycle path and the unblocked spawn refill.
+- [x] Refresh runtime notes for the recycled-straggler rule.
+
+## Correction Round: Visible Cap + Collision Precision Pass
+
+- [x] Cap active nearby enemy pressure at `3` other ships.
+- [x] Tighten ship-ship collision separation so clipped enemies resolve by overlap depth instead of a fixed shove.
+- [x] Add deterministic coverage for the visible cap and the collision-overlap helper.
+- [x] Refresh runtime notes for the new pressure/collision rules.
+
+- [x] Replace the subtle single-pass ship glow scaling with explicit `high` / `medium` / `low` ship FX profiles.
+- [x] Apply the shared quality profile to block halos plus cockpit detail lines so the visual difference is obvious in motion.
+- [x] Add regression coverage for distinct ship FX profiles and re-run automated validation.
+
+## Correction Round: Cockpit Weapon Ownership + AI Reaction Speed
+
+- [x] Remove the built-in cockpit blaster from enemy ships while keeping the player cockpit gun available.
+- [x] Lock the player cockpit built-in gun to red-tier quality in regression coverage.
+- [x] Add personality-scaled steering reaction speed so `Passive` tracks moving targets more slowly than `Aggressive` and `Berserker`.
+- [x] Refresh harness-facing docs and re-run automated validation.
+
 ## Correction Round: Detached Block Projectile Grace
 
 - [x] Stop freshly detached loose blocks from immediately intercepting the firing ship's shots.
@@ -218,6 +337,21 @@
 - Loose salvage blocks now collide with ships and get pushed clear instead of ghosting through them.
 - Snap selection now prefers the current rotated orientation when multiple valid sockets share the same snap location.
 - Cockpit and mounted thrusters both got a global thrust increase for faster acceleration and rotation.
+
+## Review: Ship FX Quality Readability
+
+- The `Q` toggle now changes actual ship render passes instead of only scaling one subtle blur value.
+- `High` renders a strong two-pass halo, `Medium` renders a lighter single halo, and `Low` renders crisp no-glow ship lines.
+- `node --check src/main.js`, `node --check src/ship.js`, and `npm test` all passed.
+- Follow-up tuning reduced the effect substantially: all ship strokes now stay the same width, `High` is only a subtle halo, `Medium` is barely-there glow, and `Low` remains no-glow.
+- Second follow-up fixed the real damping bug: halo strength and halo radius are now decoupled, so `High` and `Medium` can differ visibly without thickening the ship geometry.
+- Third follow-up made the quality toggle visibly separable by adding per-block ship aura gradients: `High` gets the strongest aura, `Medium` a smaller lighter aura, and `Low` none.
+
+## Review: Cockpit Weapon Ownership + AI Reaction Speed
+
+- Enemy cockpits no longer get the player's built-in blaster, so enemy firepower now comes only from mounted weapon blocks.
+- The player cockpit built-in blaster remains explicitly red-tier.
+- AI steering now follows a personality-scaled tracked target point, so passive enemies lag movement changes while aggressive personalities correct much faster.
 - `npm test` passed with a new snap-selection regression; this round did not include a full manual in-browser collision playtest.
 
 ## Review: Snap-In-Place + Branch Detach
@@ -355,6 +489,62 @@
 - `npm test` passed with new regressions covering the stronger passive opening weights and the offscreen spawn helper.
 - `node --check src/main.js` and `node --check src/ship.js` both passed after the passive-opening and spawn-placement pass.
 
+## Review: Modular Enemy Fleet Expansion
+
+- The runtime was still only expressing `5` concrete enemy blueprints, which undercut the modular-build fantasy even after the archetype and AI work landed.
+- Enemy generation now expands those `5` archetypes into `25` distinct legal ship designs, chosen within archetype-weighted spawn logic so the roster feels broader without losing identity.
+- The expanded pool is much more blaster-heavy, which should materially improve blaster salvage frequency during ordinary combat instead of forcing the player to wait for rare weapon-bearing wrecks.
+- `npm test` passed with new regressions covering the `25`-design roster, full-pool build validity, unlock counts by level, and higher blaster density.
+- `node --check src/main.js` and `node --check src/ship.js` both passed after the modular-fleet expansion pass.
+- The first `25`-design fleet pass still clustered too tightly within each archetype, so ships often read like minor gun swaps instead of genuinely different frames.
+- The diversity pass now creates wider size swings inside each archetype, keeps some intentionally weak-yaw / weak-thrust / low-offense ships in the pool, and adds hollow `Fortress` outlines while preserving legal build generation.
+
+## Review: Four-Archetype Fleet Refresh
+
+- The live roster still carried the old `Vulture` family and too many one-thruster or zero-yaw ships, which undercut both the approved proposal and the maneuverability audit.
+- The shipped roster now uses `Needle`, `Bulwark`, `Manta`, and `Fortress` only, with `28` legal designs total and `7` designs per archetype.
+- Enemy availability now respects per-design unlock levels, so level `1` runs draw from the smaller starter frames while larger `Fortress` hulls come online later.
+- The actual live mobility mix now lands on `6` low-thrust ships, `3` zero-yaw ships, and `9` tagged high-mobility ships instead of just claiming those quotas in proposal artifacts.
+- `node --test tests/ship.test.js`, `node --check src/ship.js`, and `npm test` all passed after the fleet refresh.
+
+## Review: Late AI Weight + Rainbow Quality Pass
+
+- `Won't Attack First` was still suppressing all unprovoked combat, which made some enemy faceoffs look broken instead of merely soft.
+- That profile now only refuses to attack the player first; it can still pick enemy targets before the player gets involved and still retaliates normally when provoked.
+- The late-game AI tables now reduce the combined soft share to about `45%` per archetype while preserving each archetype's existing skew toward `Cautious`, `Opportunist`, or `Aggressive` follow-through.
+- Enemy quality progression now includes `rainbow`, so very late ships can spawn at the top visual/stat tier.
+- `npm test`, `node --check src/ship.js`, and `node --check src/main.js` all passed after this pass.
+- `npm test` passed with new regressions covering footprint spread, hollow fortress occupancy gaps, low-mobility ships, and the still-blaster-rich salvage pool.
+- `node --check src/ship.js`, `node --check src/main.js`, and `node --check tests/ship.test.js` all passed after the diversity pass.
+- The diversity pass also exposed a spawn-pressure bug: slow passive enemies could stay offscreen but still fill the early active cap, leaving the player with nothing visible to fight.
+- Enemy spawning now counts only ships near the current viewport toward pressure, and the refill timer accelerates when no enemy has reached that pressure window yet.
+- `npm test` passed with new regressions covering the offscreen-pressure window and faster no-pressure refill path.
+- The previous `Passive` AI was still too combat-capable, so the game stayed punishing even when the roster mix technically skewed soft.
+- The AI model now uses a `~70%` soft majority across `Punching Bag`, `Slow Reacting`, and `Won't Attack First`, plus explicit provocation / retaliation state so docile enemies can actually ignore the player or fail to counterattack.
+- Early progression is no longer kept mainly calm through an empty map: the spawn director now starts more populated, while survivability comes from the softer personality mix instead.
+- `npm test` passed with new regressions covering the updated weight tables, the more populated early director, punching-bag harmlessness, slow-reacting target lag, and won't-attack-first provocation behavior.
+
+## Review: Population + Idle Patrol Pass
+
+- Visible enemy pressure now opens slightly denser, with the shared director ramping from `3` nearby enemies to the `4`-enemy late-game cap instead of holding the opener at `2`.
+- Soft personalities now generate idle patrol targets around player space, which keeps docile ships moving through the arena without making them more eager to attack.
+- `npm test` passed with new regressions for the denser director, smaller offscreen spawn margin, faster no-pressure refill, and non-stationary idle plans for soft ships.
+- Proposal-only review artifact generated: [enemy-small-candidates-review.png](/Users/davis.wang/Documents/neon-blaster-x/output/enemy-small-candidates-review.png) from [render_small_enemy_candidates.mjs](/Users/davis.wang/Documents/neon-blaster-x/scripts/render_small_enemy_candidates.mjs).
+
+## Review: Approved Small Ship Additions
+
+- The live enemy roster now includes `needle-dart`, `bulwark-ward`, `manta-skiff`, and `manta-fan`, bringing the total pool to `29` legal ships.
+- Those approved additions stay compact in regression coverage: `Dart` is `1x5`, while `Ward`, `Skiff`, and `Fan` all stay within `3x3` footprints.
+- `Ward` shipped without the proposed shield, so the runtime version remains a stripped-down compact guard instead of a mini shield-barge.
+- `npm test` passed with updated roster-count and level-unlock coverage after the new ships were added.
+
+## Review: Medium AI Counterpunch Rollback
+
+- The soft AI pass had gone too far: provoked ships often still felt inert because `Slow Reacting` could fail retaliation and then waited too long to become combat-ready.
+- `Slow Reacting` now always retaliates and starts its counterattack faster, while `Won't Attack First` now also retaliates reliably once provoked.
+- `Punching Bag` is still present as the safest salvage profile, but its spawn share is materially lower and that weight now mostly reinforces `Cautious` / `Opportunist` ships.
+- `npm test` passed with updated AI-weight expectations plus a dedicated regression that `Slow Reacting` now enters retaliation state reliably.
+
 ## Review: Cockpit Survival Buff
 
 - Early-game survivability was still too fragile because the bare cockpit start did not have enough built-in acceleration to create real disengage space before the player found salvage.
@@ -373,6 +563,12 @@
 
 - Ship glow was previously hard-coded at one quality level, which made it impossible to trade prettiness for frame rate when many ships or effects were on screen.
 - Pressing `Q` now cycles `High`, `Medium`, and `Low` ship-visual quality. `High` preserves the current glow-heavy look, `Medium` reduces ship glow substantially, and `Low` disables ship glow entirely while leaving gameplay unchanged.
+
+## Review: Docs + Comments Sync
+
+- Re-read the current runtime plus the live regression suite and corrected the docs where they had drifted from behavior, especially around overlapping-loot pickup precedence, cockpit regen, delayed loss flow, the `Q` visual-quality toggle, and the difference between title/retry starts versus builder launches.
+- Added concise source comments around the matching non-obvious helpers in `src/ship.js`, so the runtime contracts are easier for a fresh agent to trace without re-deriving them from tests.
+- `npm test` passed with `69` passing tests, and `node --check src/ship.js` passed after the doc-sync pass.
 
 ## Review: Repo Push Prep
 

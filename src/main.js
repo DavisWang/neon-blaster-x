@@ -36,15 +36,20 @@ import {
   cycleShipVisualQuality,
   chooseBestSnapCandidate,
   chooseLooseBlockForPickup,
+  countShipsWithinSpawnPressureWindow,
   createBlueprintBlock,
   createShipFromBlueprint,
   ejectDisconnectedBlocks,
   generateEnemyBlueprint,
   generateEnemyLoadout,
+  getEnemySpawnMargin,
   getEnemySpawnDirector,
   getOffscreenSpawnPosition,
   getBlockAtLocalPoint,
   getBlockCells,
+  getProjectileDamageAgainstBlock,
+  getShipCellOverlap,
+  getShipCollisionOverlap,
   getBlockStats,
   getBlockWorldPosition,
   getBuiltInBlaster,
@@ -53,7 +58,7 @@ import {
   getShipDeathSalvageSpawnState,
   getCockpit,
   getCockpitOpenSides,
-  getShipGlowMultiplier,
+  getShipVisualQualityProfile,
   getBlockRenderOffset,
   getHullLength,
   getInertia,
@@ -65,7 +70,10 @@ import {
   makeLooseFromBlock,
   oppositeSide,
   prepareShipDeathSalvageBlocks,
+  registerEnemyProvocation,
   removeBlock,
+  retainEnemiesNearPlayerSpace,
+  resolveEnemySpawnPressureTimer,
   resolveBuilderBlueprint,
   resolveDraggedLooseDrop,
   resolveEnemyAiPlan,
@@ -916,6 +924,7 @@ function fireShipWeapons(ship, isFiring) {
         vx: rotatedForward.x * stats.speed + ship.vx,
         vy: rotatedForward.y * stats.speed + ship.vy,
         damage: stats.damage,
+        quality: weapon.quality,
         ttl: stats.ttl,
         selfHitGrace: Math.max(SELF_HIT_GRACE, (CELL_SIZE * 1.1) / stats.speed),
         team: ship.team,
@@ -966,8 +975,13 @@ function updateShipPhysics(ship, input, dt) {
 }
 
 function updateEnemyAi(enemy, dt) {
-  const plan = resolveEnemyAiPlan(enemy, [state.game.player, ...state.game.enemies]);
   enemy.ai = {
+    ...enemy.ai,
+    now: state.game.elapsed
+  };
+  const plan = resolveEnemyAiPlan(enemy, [state.game.player, ...state.game.enemies], dt);
+  enemy.ai = {
+    ...enemy.ai,
     profileId: enemy.ai?.profileId ?? plan.profileId,
     orbitSign: enemy.ai?.orbitSign ?? 1,
     targetId: plan.targetId
@@ -985,7 +999,7 @@ function spawnEnemy() {
     state.camera.y,
     window.innerWidth,
     window.innerHeight,
-    180,
+    getEnemySpawnMargin(enemyDirector.aiAggression),
     Math.random
   );
   const x = spawn.x;
@@ -998,11 +1012,14 @@ function spawnEnemy() {
     ai: {
       profileId: loadout.aiProfileId,
       orbitSign: loadout.orbitSign,
+      idlePatrolSign: loadout.idlePatrolSign,
+      idleSeed: loadout.idleSeed,
       targetId: null
     },
     kind: "enemy"
   });
   enemy.archetypeId = loadout.archetypeId;
+  enemy.designId = loadout.designId;
   state.game.enemies.push(enemy);
 }
 
@@ -1010,11 +1027,33 @@ function maybeSpawnEnemies(dt) {
   if (state.game.builderMode || state.game.gameOver) {
     return;
   }
+  state.game.enemies = retainEnemiesNearPlayerSpace(
+    state.game.enemies,
+    state.game.player.x,
+    state.game.player.y,
+    window.innerWidth,
+    window.innerHeight
+  );
   const enemyDirector = getEnemySpawnDirector(state.game.elapsed, state.game.kills);
-  state.game.spawnTimer -= dt;
-  if (state.game.spawnTimer <= 0 && state.game.enemies.length < enemyDirector.activeCap) {
+  const nearbyEnemyCount = countShipsWithinSpawnPressureWindow(
+    state.game.enemies,
+    state.camera.x,
+    state.camera.y,
+    window.innerWidth,
+    window.innerHeight
+  );
+  const spawnPressure = resolveEnemySpawnPressureTimer(
+    state.game.spawnTimer,
+    state.game.enemies.length,
+    nearbyEnemyCount,
+    enemyDirector,
+    dt
+  );
+  state.game.spawnTimer = spawnPressure.timer;
+
+  if (spawnPressure.shouldSpawn) {
     spawnEnemy();
-    state.game.spawnTimer = enemyDirector.spawnInterval;
+    state.game.spawnTimer = spawnPressure.nextSpawnTimer;
   }
 }
 
@@ -1055,6 +1094,7 @@ function updateBullets(dt) {
       block.flash = 0.3;
       if (block.type === "shield") {
         const shieldStats = getBlockStats(block);
+        const impactDamage = getProjectileDamageAgainstBlock(bullet.damage, bullet.quality, block);
         const normalLocal = SIDE_VECTORS[block.orientation];
         const normalWorld = rotate(normalLocal.x, normalLocal.y, ship.angle);
         reflectBulletFromShield(
@@ -1065,9 +1105,10 @@ function updateBullets(dt) {
           ship.team,
           ship.id
         );
-        block.hp -= bullet.damage * shieldStats.damageScale;
+        registerEnemyProvocation(ship, bullet.ownerId, state.game.elapsed, Math.random);
+        block.hp -= impactDamage;
         if (block.hp <= 0) {
-          destroyShipBlock(ship, block, bullet.damage);
+          destroyShipBlock(ship, block, impactDamage);
         }
         state.game.effects.push(makeEffect("snap", bullet.x, bullet.y, { radius: 12, ttl: 0.12, color: getBlockColor(block, state.time) }));
         resolved = true;
@@ -1075,9 +1116,11 @@ function updateBullets(dt) {
         break;
       }
 
-      block.hp -= bullet.damage;
+      const impactDamage = getProjectileDamageAgainstBlock(bullet.damage, bullet.quality, block);
+      registerEnemyProvocation(ship, bullet.ownerId, state.game.elapsed, Math.random);
+      block.hp -= impactDamage;
       if (block.hp <= 0) {
-        destroyShipBlock(ship, block, bullet.damage);
+        destroyShipBlock(ship, block, impactDamage);
       }
       state.game.effects.push(makeEffect("burst", bullet.x, bullet.y, { radius: 18, ttl: 0.12, color: getBlockColor(block, state.time) }));
       resolved = true;
@@ -1089,6 +1132,7 @@ function updateBullets(dt) {
       const loose = findLooseBlockAt(bullet.x, bullet.y, BULLET_RADIUS, false);
       if (shouldBulletHitLooseBlock(bullet, loose)) {
         const looseStats = getBlockStats(loose);
+        const impactDamage = getProjectileDamageAgainstBlock(bullet.damage, bullet.quality, loose);
         if (loose.type === "shield") {
           const normal = SIDE_VECTORS[loose.orientation];
           reflectBulletFromShield(
@@ -1099,7 +1143,7 @@ function updateBullets(dt) {
             "neutral",
             loose.id
           );
-          applyDamageToLooseBlock(loose, bullet.damage * looseStats.damageScale, { x: bullet.x, y: bullet.y });
+          applyDamageToLooseBlock(loose, impactDamage, { x: bullet.x, y: bullet.y });
           state.game.effects.push(
             makeEffect("snap", bullet.x, bullet.y, {
               radius: 12,
@@ -1109,7 +1153,7 @@ function updateBullets(dt) {
           );
           keepBullet = true;
         } else {
-          applyDamageToLooseBlock(loose, bullet.damage, { x: bullet.x, y: bullet.y });
+          applyDamageToLooseBlock(loose, impactDamage, { x: bullet.x, y: bullet.y });
           state.game.effects.push(
             makeEffect("burst", bullet.x, bullet.y, {
               radius: 16,
@@ -1228,12 +1272,13 @@ function handleShipCollisions(dt) {
   const ships = [state.game.player, ...state.game.enemies];
 
   for (const [leftShip, rightShip] of getAliveShipPairs(ships)) {
-    const relativeSpeed = length(leftShip.vx - rightShip.vx, leftShip.vy - rightShip.vy);
-    if (relativeSpeed < 80) {
+    const overlap = getShipCollisionOverlap(leftShip, rightShip);
+    if (!overlap) {
       continue;
     }
 
-    let overlap = false;
+    const relativeSpeed = length(leftShip.vx - rightShip.vx, leftShip.vy - rightShip.vy);
+    let damaged = false;
     for (const leftBlock of leftShip.blocks) {
       const leftCells = getBlockCells(leftBlock);
       for (const rightBlock of rightShip.blocks) {
@@ -1241,19 +1286,9 @@ function handleShipCollisions(dt) {
         let pairCollided = false;
 
         for (const leftCell of leftCells) {
-          const leftWorld = localToWorld(
-            leftShip,
-            leftCell.x * CELL_SIZE,
-            leftCell.y * CELL_SIZE
-          );
           for (const rightCell of rightCells) {
-            const rightWorld = localToWorld(
-              rightShip,
-              rightCell.x * CELL_SIZE,
-              rightCell.y * CELL_SIZE
-            );
-            if (distance(leftWorld, rightWorld) < CELL_SIZE * 0.72) {
-              overlap = true;
+            const pairOverlap = getShipCellOverlap(leftShip, leftCell, rightShip, rightCell);
+            if (pairOverlap) {
               pairCollided = true;
               break;
             }
@@ -1263,10 +1298,13 @@ function handleShipCollisions(dt) {
           }
         }
 
-        if (pairCollided) {
+        if (pairCollided && relativeSpeed >= 80) {
           const damage = relativeSpeed * COLLISION_DAMAGE_SCALE * dt * 60;
+          registerEnemyProvocation(leftShip, rightShip.id, state.game.elapsed, Math.random);
+          registerEnemyProvocation(rightShip, leftShip.id, state.game.elapsed, Math.random);
           leftBlock.hp -= damage;
           rightBlock.hp -= damage;
+          damaged = true;
           leftBlock.flash = 0.25;
           rightBlock.flash = 0.25;
           if (leftBlock.hp <= 0) {
@@ -1285,12 +1323,21 @@ function handleShipCollisions(dt) {
       }
     }
 
-    if (overlap) {
-      const normal = normalize(rightShip.x - leftShip.x, rightShip.y - leftShip.y);
-      rightShip.x += normal.x * 4;
-      rightShip.y += normal.y * 4;
-      leftShip.x -= normal.x * 4;
-      leftShip.y -= normal.y * 4;
+    const separationDistance = overlap.penetration * 0.55 + 0.75;
+    rightShip.x += overlap.normalX * separationDistance;
+    rightShip.y += overlap.normalY * separationDistance;
+    leftShip.x -= overlap.normalX * separationDistance;
+    leftShip.y -= overlap.normalY * separationDistance;
+
+    const relativeAlongNormal =
+      (rightShip.vx - leftShip.vx) * overlap.normalX +
+      (rightShip.vy - leftShip.vy) * overlap.normalY;
+    if (relativeAlongNormal < 0) {
+      const correction = -relativeAlongNormal * (damaged ? 0.55 : 0.7);
+      rightShip.vx += overlap.normalX * correction * 0.5;
+      rightShip.vy += overlap.normalY * correction * 0.5;
+      leftShip.vx -= overlap.normalX * correction * 0.5;
+      leftShip.vy -= overlap.normalY * correction * 0.5;
     }
   }
 }
@@ -1380,21 +1427,24 @@ function drawBlockShapeOnContext(drawCtx, block, color, hpRatio, options = {}) {
   const effectTime = options.time ?? state.time;
   const flash = block.flash ?? 0;
   const glowScale = options.glowScale ?? 1;
+  const lineScale = options.lineScale ?? 1;
   const pulse =
     block.quality === "rainbow"
       ? 0.9 + Math.sin(effectTime * 3.6) * 0.08
       : 0.9 + Math.sin(effectTime * 3.6 + block.x * 0.8 + block.y * 0.45) * 0.08;
   const dimmed = hpRatio < 0.34 && Math.sin(effectTime * 34 + block.x * 3 + block.y * 6) > 0.55 ? 0.22 : 1;
   const alpha = clamp((0.42 + hpRatio * 0.65 + flash * 0.8) * pulse * dimmed, 0.18, 1);
-  const stroke = colorWithAlpha(color, alpha);
+  const stroke = colorWithAlpha(color, clamp(alpha * (options.strokeAlphaScale ?? 1), 0.1, 1));
   drawCtx.strokeStyle = stroke;
-  drawCtx.lineWidth = 2;
+  drawCtx.lineWidth = 2 * lineScale;
+  drawCtx.lineCap = "round";
+  drawCtx.lineJoin = "round";
   drawCtx.shadowColor =
     glowScale > 0
       ? colorWithAlpha(color, (0.28 + alpha * 0.18) * (options.shadowBoost ?? 1) * glowScale)
       : "rgba(0, 0, 0, 0)";
-  drawCtx.shadowBlur = 16 * glowScale;
-  drawCtx.fillStyle = colorWithAlpha(color, options.isLoose ? 0.06 : 0.04);
+  drawCtx.shadowBlur = glowScale > 0 ? (options.shadowBlur ?? 16) : 0;
+  drawCtx.fillStyle = colorWithAlpha(color, options.fillAlpha ?? (options.isLoose ? 0.06 : 0.04));
 
   if (block.type === "cockpit") {
     drawCtx.beginPath();
@@ -1478,6 +1528,9 @@ function drawBlockShapeOnContext(drawCtx, block, color, hpRatio, options = {}) {
     drawCtx.stroke();
     if (block.active) {
       drawCtx.strokeStyle = colorWithAlpha("#ffc664", 0.95);
+      drawCtx.shadowColor =
+        glowScale > 0 ? colorWithAlpha("#ffc664", 0.42 * glowScale) : "rgba(0, 0, 0, 0)";
+      drawCtx.shadowBlur = glowScale > 0 ? (options.shadowBlur ?? 16) : 0;
       drawCtx.beginPath();
       drawCtx.moveTo(-5, 10);
       drawCtx.lineTo(0, 20 + Math.sin(state.time * 24 + block.x) * 4);
@@ -1502,17 +1555,60 @@ function drawBlockShape(block, color, hpRatio, isLoose = false) {
   drawBlockShapeOnContext(ctx, block, color, hpRatio, { isLoose });
 }
 
+function applyShipStrokeGlow(drawCtx, color, alpha, glowScale, lineWidth = 2, shadowBoost = 1.3, shadowBlur = 18) {
+  drawCtx.strokeStyle = colorWithAlpha(color, alpha);
+  drawCtx.lineWidth = lineWidth;
+  drawCtx.lineCap = "round";
+  drawCtx.lineJoin = "round";
+  drawCtx.shadowColor =
+    glowScale > 0
+      ? colorWithAlpha(color, (0.24 + alpha * 0.2) * shadowBoost * glowScale)
+      : "rgba(0, 0, 0, 0)";
+  drawCtx.shadowBlur = glowScale > 0 ? shadowBlur : 0;
+}
+
+function drawShipHalo(screenX, screenY, color, alpha, radius) {
+  if (alpha <= 0 || radius <= 0) {
+    return;
+  }
+  const gradient = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, radius);
+  gradient.addColorStop(0, colorWithAlpha(color, alpha));
+  gradient.addColorStop(0.55, colorWithAlpha(color, alpha * 0.35));
+  gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(screenX, screenY, radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 function drawShip(ship, isPlayer = false) {
-  const shipGlowScale = getShipGlowMultiplier(state.visualQuality);
+  const shipVisualProfile = getShipVisualQualityProfile(state.visualQuality);
   for (const block of ship.blocks) {
     const world = getBlockWorldPosition(ship, block);
     const screen = worldToScreen(world.x, world.y);
     const color = getBlockColor(block, state.time);
     const hpRatio = clamp(block.hp / block.maxHp, 0, 1);
+    drawShipHalo(
+      screen.x,
+      screen.y,
+      color,
+      shipVisualProfile.blockHaloAlpha * clamp(0.55 + hpRatio * 0.45, 0.4, 1),
+      shipVisualProfile.blockHaloRadius
+    );
     ctx.save();
     ctx.translate(screen.x, screen.y);
     ctx.rotate(ship.angle + getRenderAngleForBlock(block));
-    drawBlockShapeOnContext(ctx, block, color, hpRatio, { glowScale: shipGlowScale });
+    for (const glowPass of shipVisualProfile.glowPasses) {
+      drawBlockShapeOnContext(ctx, block, color, hpRatio, glowPass);
+    }
+    drawBlockShapeOnContext(ctx, block, color, hpRatio, {
+      glowScale: 0,
+      shadowBoost: 0,
+      shadowBlur: 0
+    });
     ctx.restore();
   }
 
@@ -1526,8 +1622,15 @@ function drawShip(ship, isPlayer = false) {
     ctx.save();
     ctx.translate(screen.x, screen.y);
     ctx.rotate(ship.angle);
-    ctx.strokeStyle = colorWithAlpha(cockpitColor, 0.82);
-    ctx.lineWidth = 2;
+    applyShipStrokeGlow(
+      ctx,
+      cockpitColor,
+      0.82,
+      shipVisualProfile.detailGlowScale,
+      2,
+      1.45,
+      20
+    );
     if (cockpitOpenSides.west) {
       ctx.beginPath();
       ctx.moveTo(-HALF_CELL * 0.72, -7);
@@ -1552,8 +1655,15 @@ function drawShip(ship, isPlayer = false) {
       ctx.lineTo(7, HALF_CELL * 0.72);
       ctx.stroke();
     }
-    ctx.strokeStyle = colorWithAlpha("#ffc664", 0.86);
-    ctx.lineWidth = 2;
+    applyShipStrokeGlow(
+      ctx,
+      "#ffc664",
+      0.86,
+      shipVisualProfile.detailGlowScale * 1.15,
+      2,
+      1.1,
+      16
+    );
     if (thrusters.west) {
       ctx.beginPath();
       ctx.moveTo(-HALF_CELL * 1.02, -4);
@@ -1585,8 +1695,15 @@ function drawShip(ship, isPlayer = false) {
     ctx.save();
     ctx.translate(screen.x, screen.y);
     ctx.rotate(ship.angle);
-    ctx.strokeStyle = colorWithAlpha("#ff5f7f", 0.85);
-    ctx.lineWidth = 2;
+    applyShipStrokeGlow(
+      ctx,
+      "#ff5f7f",
+      0.85,
+      shipVisualProfile.detailGlowScale * 1.05,
+      2,
+      1.35,
+      18
+    );
     ctx.beginPath();
     ctx.moveTo(0, -12);
     ctx.lineTo(0, -25);

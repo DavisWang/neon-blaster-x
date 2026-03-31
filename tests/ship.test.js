@@ -12,19 +12,25 @@ import {
   cycleShipVisualQuality,
   chooseBestSnapCandidate,
   chooseEnemyAiProfile,
+  chooseEnemyShipDesign,
   chooseEnemyTarget,
   chooseLooseBlockForPickup,
-    createBlueprintBlock,
-    createShipFromBlueprint,
-    ENEMY_AI_PROFILE_EARLY_WEIGHTS,
-    ENEMY_AI_PROFILE_WEIGHTS,
-    getAliveShipPairs,
-    getBlockAtLocalPoint,
-    getEnemyAiProfileWeights,
-    getBlockCells,
-    getCenterOfMass,
-    getAvailableEnemyArchetypes,
+  countShipsWithinSpawnPressureWindow,
+  createBlueprintBlock,
+  createShipFromBlueprint,
+  ENEMY_AI_PROFILE_EARLY_WEIGHTS,
+  ENEMY_AI_PROFILE_WEIGHTS,
+  ENEMY_SHIP_DESIGN_DEFS,
+  getAliveShipPairs,
+  getBlockAtLocalPoint,
+  getEnemyAiProfileWeights,
+  getBlockCells,
+  getCenterOfMass,
+  getAvailableEnemyArchetypes,
+  getAvailableEnemyDesigns,
   getEnemyDifficultyProgress,
+  getEnemyQualityForLevel,
+  getEnemySpawnMargin,
   getEnemyProgressionLevel,
   getEnemySpawnDirector,
   getOffscreenSpawnPosition,
@@ -33,16 +39,23 @@ import {
   getShipDeathSalvageSpawnState,
   getBlockStats,
   getBuiltInBlaster,
+  getProjectileDamageAgainstBlock,
+  getShipCellOverlap,
   getBlockPlacementForSocket,
   getShipGlowMultiplier,
+  getShipVisualQualityProfile,
   getOpenSockets,
   pickNearestOtherShip,
   prepareShipDeathSalvageBlocks,
+  registerEnemyProvocation,
+  getShipCollisionOverlap,
   getShipSalvageBlocks,
   makeDefaultBuilderBlueprint,
   makeLooseFromBlock,
   makeDefaultPlayerBlueprint,
+  retainEnemiesNearPlayerSpace,
   removeBlock,
+  resolveEnemySpawnPressureTimer,
   resolveBuilderBlueprint,
   resolveDraggedLooseDrop,
   resolveEnemyAiPlan,
@@ -51,6 +64,50 @@ import {
   shouldBulletHitLooseBlock,
   selectThrustersForInput
 } from "../src/ship.js";
+
+const QUALITY_IDS = ["grey", "red", "orange", "yellow", "green", "blue", "purple", "white", "rainbow"];
+
+function getShipBoundsArea(ship) {
+  const cells = ship.blocks.flatMap((block) => getBlockCells(block));
+  const xs = cells.map((cell) => cell.x);
+  const ys = cells.map((cell) => cell.y);
+  return (Math.max(...xs) - Math.min(...xs) + 1) * (Math.max(...ys) - Math.min(...ys) + 1);
+}
+
+function getOccupiedCellCount(ship) {
+  return new Set(
+    ship.blocks.flatMap((block) => getBlockCells(block).map((cell) => `${cell.x},${cell.y}`))
+  ).size;
+}
+
+function getHitsToDestroy(targetBlock, attackerQuality) {
+  const attacker = createBlueprintBlock({ type: "blaster", x: 0, y: 0, quality: attackerQuality, orientation: "north" });
+  const targetHp = getBlockStats(targetBlock).hp;
+  const shotDamage = getProjectileDamageAgainstBlock(getBlockStats(attacker).damage, attacker.quality, targetBlock);
+  return Math.ceil((targetHp - 0.000001) / shotDamage);
+}
+
+function mirrorSide(side) {
+  if (side === "east") {
+    return "west";
+  }
+  if (side === "west") {
+    return "east";
+  }
+  return side;
+}
+
+function getMirroredEnemyBlockGroupKey(block) {
+  const normalize = (value) => (block.x < 0 ? mirrorSide(value) : value);
+  return [
+    block.type,
+    block.variant ?? "single",
+    Math.abs(block.x),
+    block.y,
+    normalize(block.orientation ?? "north"),
+    normalize(block.attachSide ?? "north")
+  ].join("|");
+}
 
 test("cockpit-only ship exposes open sockets for attachment", () => {
   const ship = createShipFromBlueprint(makeDefaultPlayerBlueprint());
@@ -161,13 +218,27 @@ test("builder seed only applies on first builder entry", () => {
   );
 });
 
-test("ship visual quality cycles high, medium, low and scales glow strength", () => {
+test("ship visual quality cycles high, medium, low with distinct glow profiles", () => {
+  const high = getShipVisualQualityProfile("high");
+  const medium = getShipVisualQualityProfile("medium");
+  const low = getShipVisualQualityProfile("low");
+
   assert.equal(cycleShipVisualQuality("high"), "medium");
   assert.equal(cycleShipVisualQuality("medium"), "low");
   assert.equal(cycleShipVisualQuality("low"), "high");
   assert.equal(getShipGlowMultiplier("low"), 0);
   assert.ok(getShipGlowMultiplier("medium") > 0);
   assert.ok(getShipGlowMultiplier("high") > getShipGlowMultiplier("medium"));
+  assert.equal(low.glowPasses.length, 0);
+  assert.equal(medium.glowPasses.length, 1);
+  assert.equal(high.glowPasses.length, 1);
+  assert.ok(high.detailGlowScale > medium.detailGlowScale);
+  assert.equal(low.detailGlowScale, 0);
+  assert.equal(low.blockHaloAlpha, 0);
+  assert.ok(high.blockHaloAlpha > medium.blockHaloAlpha);
+  assert.ok(high.blockHaloRadius > medium.blockHaloRadius);
+  assert.ok(high.glowPasses.every((pass) => pass.lineScale === 1));
+  assert.ok(medium.glowPasses.every((pass) => pass.lineScale === 1));
 });
 
 test("new run starts use a bare cockpit unless the builder explicitly launches a ship", () => {
@@ -183,25 +254,87 @@ test("new run starts use a bare cockpit unless the builder explicitly launches a
   assert.deepEqual(builderLaunch.map((block) => block.type), ["cockpit", "hull"]);
 });
 
-test("enemy archetype blueprints stay cockpit-connected with stable block counts", () => {
-  const expectedBlockCounts = {
-    needle: 6,
-    bulwark: 9,
-    manta: 9,
-    fortress: 22,
-    vulture: 10
-  };
+test("enemy cockpits do not get a built-in blaster", () => {
+  const enemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    team: "enemy-a",
+    kind: "enemy"
+  });
 
-  for (const [archetypeId, expectedCount] of Object.entries(expectedBlockCounts)) {
-    const blueprint = buildEnemyBlueprint(archetypeId, "blue");
+  assert.equal(getBuiltInBlaster(enemy), null);
+});
+
+test("enemy design pool exposes 28 distinct cockpit-connected ships across 4 archetypes", () => {
+  assert.equal(ENEMY_SHIP_DESIGN_DEFS.length, 28);
+  assert.equal(new Set(ENEMY_SHIP_DESIGN_DEFS.map((definition) => definition.id)).size, 28);
+  assert.deepEqual(
+    Object.fromEntries(
+      Object.entries(
+        ENEMY_SHIP_DESIGN_DEFS.reduce((counts, definition) => {
+          counts[definition.archetypeId] = (counts[definition.archetypeId] ?? 0) + 1;
+          return counts;
+        }, {})
+      ).sort(([left], [right]) => left.localeCompare(right))
+    ),
+    {
+      bulwark: 7,
+      fortress: 7,
+      manta: 7,
+      needle: 7
+    }
+  );
+
+  for (const definition of ENEMY_SHIP_DESIGN_DEFS) {
+    const blueprint = buildEnemyBlueprint(definition.id, "blue");
     const ship = createShipFromBlueprint(blueprint, { kind: "enemy" });
     const connected = findConnectedBlockIds(ship);
 
-    assert.equal(blueprint.length, expectedCount);
     assert.equal(
       ship.blocks.every((block) => block.type === "cockpit" || connected.has(block.id)),
       true
     );
+  }
+});
+
+test("enemy quality variance stays within one tier and keeps mirrored block pairs matched", () => {
+  const rolls = [0.92, 0.08, 0.5, 0.88, 0.12, 0.48, 0.91, 0.09, 0.52, 0.86, 0.14];
+  const rng = () => rolls.shift() ?? 0.5;
+  const blueprint = buildEnemyBlueprint("fortress-arsenal", "blue", { rng });
+  const nonCockpitBlocks = blueprint.filter((block) => block.type !== "cockpit");
+  const baseIndex = QUALITY_IDS.indexOf("blue");
+
+  assert.ok(nonCockpitBlocks.some((block) => block.quality === "green"));
+  assert.ok(nonCockpitBlocks.some((block) => block.quality === "purple"));
+  assert.equal(
+    nonCockpitBlocks.every((block) => Math.abs(QUALITY_IDS.indexOf(block.quality) - baseIndex) <= 1),
+    true
+  );
+
+  const blocksByGroup = nonCockpitBlocks.reduce((groups, block) => {
+    const key = getMirroredEnemyBlockGroupKey(block);
+    const next = groups.get(key) ?? [];
+    next.push(block);
+    groups.set(key, next);
+    return groups;
+  }, new Map());
+
+  assert.equal(
+    [...blocksByGroup.values()].every((group) => new Set(group.map((block) => block.quality)).size === 1),
+    true
+  );
+});
+
+test("enemy archetypes now span meaningfully different footprints within each family", () => {
+  const areasByArchetype = new Map();
+
+  for (const definition of ENEMY_SHIP_DESIGN_DEFS) {
+    const ship = createShipFromBlueprint(buildEnemyBlueprint(definition.id, "blue"), { kind: "enemy" });
+    const areas = areasByArchetype.get(definition.archetypeId) ?? new Set();
+    areas.add(getShipBoundsArea(ship));
+    areasByArchetype.set(definition.archetypeId, areas);
+  }
+
+  for (const archetypeId of ["needle", "bulwark", "manta", "fortress"]) {
+    assert.ok((areasByArchetype.get(archetypeId)?.size ?? 0) >= 2);
   }
 });
 
@@ -239,41 +372,138 @@ test("fortress blueprint closes a hull ring around its core", () => {
   }
 });
 
+test("fortress roster includes hollow outline variants instead of only filled bricks", () => {
+  const voidshell = createShipFromBlueprint(buildEnemyBlueprint("fortress-voidshell", "purple"), {
+    kind: "enemy"
+  });
+  const gatehouse = createShipFromBlueprint(buildEnemyBlueprint("fortress-gatehouse", "purple"), {
+    kind: "enemy"
+  });
+
+  assert.ok(getShipBoundsArea(voidshell) - getOccupiedCellCount(voidshell) >= 20);
+  assert.ok(getShipBoundsArea(gatehouse) - getOccupiedCellCount(gatehouse) >= 20);
+});
+
 test("early enemy archetype pool excludes the larger late-game frames", () => {
   assert.deepEqual(
     getAvailableEnemyArchetypes(1).map((definition) => definition.id),
-    ["needle", "bulwark"]
+    ["needle", "bulwark", "manta"]
   );
+  assert.deepEqual(
+    getAvailableEnemyArchetypes(2).map((definition) => definition.id),
+    ["needle", "bulwark", "manta"]
+  );
+  assert.deepEqual(
+    getAvailableEnemyArchetypes(3).map((definition) => definition.id),
+    ["needle", "bulwark", "manta", "fortress"]
+  );
+  assert.equal(getAvailableEnemyDesigns(1).length, 7);
+  assert.equal(getAvailableEnemyDesigns(2).length, 21);
+  assert.equal(getAvailableEnemyDesigns(3).length, 24);
+  assert.equal(getAvailableEnemyDesigns(4).length, 28);
+  assert.equal(chooseEnemyShipDesign("needle", 1, () => 0).id, "needle-dart");
+});
+
+test("approved small variants stay in the live pool with compact footprints", () => {
+  const expectedAreas = {
+    "needle-dart": 5,
+    "bulwark-ward": 9,
+    "manta-skiff": 9,
+    "manta-fan": 12
+  };
+
+  for (const [designId, expectedArea] of Object.entries(expectedAreas)) {
+    const ship = createShipFromBlueprint(buildEnemyBlueprint(designId, "blue"), { kind: "enemy" });
+    assert.equal(getShipBoundsArea(ship), expectedArea);
+  }
+
+  const ward = createShipFromBlueprint(buildEnemyBlueprint("bulwark-ward", "blue"), { kind: "enemy" });
+  assert.equal(ward.blocks.filter((block) => block.type === "shield").length, 0);
+});
+
+test("enemy design pool stays blaster-rich while allowing a few weak-offense ships", () => {
+  const blasterCounts = ENEMY_SHIP_DESIGN_DEFS.map((definition) => {
+    const builtShip = createShipFromBlueprint(buildEnemyBlueprint(definition.id, "blue"), {
+      kind: "enemy"
+    });
+    return builtShip.blocks.filter((block) => block.type === "blaster").length;
+  });
+  const averageBlasters = blasterCounts.reduce((sum, count) => sum + count, 0) / blasterCounts.length;
+
+  assert.ok(averageBlasters >= 2.4);
+  assert.ok(blasterCounts.filter((count) => count >= 3).length >= 12);
+  assert.ok(blasterCounts.filter((count) => count <= 1).length >= 8);
+});
+
+test("enemy fleet hits the approved mobility quotas instead of overusing sitting ducks", () => {
+  const ships = ENEMY_SHIP_DESIGN_DEFS.map((definition) =>
+    createShipFromBlueprint(buildEnemyBlueprint(definition.id, "blue"), { kind: "enemy" })
+  );
+  const lowThrustCount = ships.filter(
+    (ship) => ship.blocks.filter((block) => block.type === "thruster").length <= 1
+  ).length;
+  const zeroYawCount = ships.filter((ship) => {
+    const turnLeft = selectThrustersForInput(ship, {
+      up: false,
+      down: false,
+      left: false,
+      right: false,
+      turnLeft: true,
+      turnRight: false
+    });
+    const turnRight = selectThrustersForInput(ship, {
+      up: false,
+      down: false,
+      left: false,
+      right: false,
+      turnLeft: false,
+      turnRight: true
+    });
+
+    return Math.max(Math.abs(turnLeft.torque), Math.abs(turnRight.torque)) === 0;
+  }).length;
+  const centerlineOnlyCount = ships.filter((ship) => {
+    const thrusters = ship.blocks.filter((block) => block.type === "thruster");
+    return thrusters.length > 0 && thrusters.every((block) => block.x === 0);
+  }).length;
+
+  assert.equal(lowThrustCount, 6);
+  assert.equal(zeroYawCount, 3);
+  assert.equal(centerlineOnlyCount, 6);
 });
 
 test("approved late-game archetype-to-ai weighting stays stable", () => {
   assert.deepEqual(ENEMY_AI_PROFILE_WEIGHTS.needle, {
-    passive: 0.05,
-    cautious: 0.15,
-    opportunist: 0.2,
-    aggressive: 0.4,
-    berserker: 0.2
-  });
-  assert.deepEqual(ENEMY_AI_PROFILE_WEIGHTS.fortress, {
-    passive: 0.3,
-    cautious: 0.4,
-    opportunist: 0.15,
-    aggressive: 0.1,
+    punchingBag: 0.064286,
+    slowReacting: 0.192857,
+    wontAttackFirst: 0.192857,
+    cautious: 0.2,
+    opportunist: 0.175,
+    aggressive: 0.125,
     berserker: 0.05
   });
-  assert.equal(chooseEnemyAiProfile("needle", () => 0.6).id, "aggressive");
-  assert.equal(chooseEnemyAiProfile("fortress", () => 0.96).id, "berserker");
+  assert.deepEqual(ENEMY_AI_PROFILE_WEIGHTS.fortress, {
+    punchingBag: 0.091525,
+    slowReacting: 0.190678,
+    wontAttackFirst: 0.167797,
+    cautious: 0.254878,
+    opportunist: 0.147561,
+    aggressive: 0.093902,
+    berserker: 0.053659
+  });
+  assert.equal(chooseEnemyAiProfile("needle", () => 0.4).id, "wontAttackFirst");
+  assert.equal(chooseEnemyAiProfile("fortress", () => 0.9).id, "aggressive");
 });
 
-test("enemy director starts slow and ramps from time plus kills", () => {
+test("enemy director keeps the early game populated and ramps from time plus kills", () => {
   const earlyDirector = getEnemySpawnDirector(0, 0);
   const midDirector = getEnemySpawnDirector(90, 3);
   const lateDirector = getEnemySpawnDirector(240, 8);
 
   assert.equal(getEnemyDifficultyProgress(0, 0), 0);
   assert.equal(getEnemyProgressionLevel(0, 0), 1);
-  assert.equal(earlyDirector.activeCap, 1);
-  assert.equal(midDirector.activeCap, 2);
+  assert.equal(earlyDirector.activeCap, 3);
+  assert.equal(midDirector.activeCap, 3);
   assert.equal(lateDirector.activeCap, 3);
   assert.equal(getEnemyProgressionLevel(60, 0), 2);
   assert.ok(lateDirector.spawnInterval < earlyDirector.spawnInterval);
@@ -281,14 +511,21 @@ test("enemy director starts slow and ramps from time plus kills", () => {
   assert.ok(lateDirector.progress > midDirector.progress);
 });
 
-test("early ai weights heavily prefer passive and cautious ships", () => {
+test("soft personalities make up the majority of the enemy pool", () => {
   assert.deepEqual(getEnemyAiProfileWeights("needle", 0), ENEMY_AI_PROFILE_EARLY_WEIGHTS.needle);
   assert.deepEqual(getEnemyAiProfileWeights("bulwark", 0), ENEMY_AI_PROFILE_EARLY_WEIGHTS.bulwark);
-  assert.equal(getEnemyAiProfileWeights("needle", 0).passive, 0.8);
-  assert.equal(chooseEnemyAiProfile("needle", () => 0.5, 0).id, "passive");
-  assert.equal(chooseEnemyAiProfile("needle", () => 0.5, 1).id, "aggressive");
-  assert.ok(getEnemyAiProfileWeights("needle", 0).passive > getEnemyAiProfileWeights("needle", 1).passive);
-  assert.ok(getEnemyAiProfileWeights("needle", 0).aggressive < getEnemyAiProfileWeights("needle", 1).aggressive);
+  const earlyNeedleSoft =
+    getEnemyAiProfileWeights("needle", 0).punchingBag +
+    getEnemyAiProfileWeights("needle", 0).slowReacting +
+    getEnemyAiProfileWeights("needle", 0).wontAttackFirst;
+  const lateNeedleSoft =
+    getEnemyAiProfileWeights("needle", 1).punchingBag +
+    getEnemyAiProfileWeights("needle", 1).slowReacting +
+    getEnemyAiProfileWeights("needle", 1).wontAttackFirst;
+  assert.ok(earlyNeedleSoft >= 0.6);
+  assert.ok(Math.abs(lateNeedleSoft - 0.45) < 0.000001);
+  assert.equal(chooseEnemyAiProfile("needle", () => 0.05, 0).id, "punchingBag");
+  assert.equal(chooseEnemyAiProfile("needle", () => 0.4, 1).id, "wontAttackFirst");
 });
 
 test("enemy spawn helper always places ships outside the viewport bounds", () => {
@@ -303,6 +540,68 @@ test("enemy spawn helper always places ships outside the viewport bounds", () =>
 
   assert.equal(topSpawn.y < -60 - 300, true);
   assert.equal(rightSpawn.x > 100 + 400, true);
+});
+
+test("early spawn margin pushes passive enemies outside their retreat band", () => {
+  assert.equal(getEnemySpawnMargin(0), 460);
+  assert.equal(getEnemySpawnMargin(1), 180);
+  assert.ok(300 + getEnemySpawnMargin(0) > 720);
+});
+
+test("spawn pressure window ignores far offscreen enemies", () => {
+  const enemies = [
+    createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+      kind: "enemy",
+      x: 200,
+      y: 0
+    }),
+    createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+      kind: "enemy",
+      x: 900,
+      y: 0
+    })
+  ];
+
+  assert.equal(countShipsWithinSpawnPressureWindow(enemies, 0, 0, 800, 600), 1);
+});
+
+test("very distant enemies get recycled before they can stall the spawn loop", () => {
+  const director = getEnemySpawnDirector(240, 13);
+  const enemies = [
+    createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+      kind: "enemy",
+      x: 160,
+      y: 0
+    }),
+    createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+      kind: "enemy",
+      x: 1700,
+      y: 0
+    }),
+    createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+      kind: "enemy",
+      x: -1850,
+      y: 0
+    })
+  ];
+
+  const retained = retainEnemiesNearPlayerSpace(enemies, 0, 0, 800, 600);
+  assert.equal(retained.length, 1);
+  assert.equal(resolveEnemySpawnPressureTimer(0.05, retained.length, 0, director, 0.1).shouldSpawn, true);
+});
+
+test("spawn pressure timer refills quickly when no nearby enemies are in play", () => {
+  const director = getEnemySpawnDirector(0, 0);
+  const stalled = resolveEnemySpawnPressureTimer(6.2, 1, 0, director, 0.1);
+  const engaged = resolveEnemySpawnPressureTimer(6.2, 1, 1, director, 0.1);
+
+  assert.equal(stalled.shouldSpawn, false);
+  assert.ok(stalled.timer < engaged.timer);
+  assert.ok(stalled.timer <= 1.15);
+  assert.equal(
+    resolveEnemySpawnPressureTimer(0.05, 1, 0, director, 0.1).nextSpawnTimer <= director.spawnInterval,
+    true
+  );
 });
 
 test("opportunist ai prefers a weaker nearby target over the slightly closer healthy one", () => {
@@ -331,16 +630,18 @@ test("opportunist ai prefers a weaker nearby target over the slightly closer hea
   );
 });
 
-test("berserker pushes and fires through sloppier alignment while passive retreats", () => {
-  const passiveEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
-    id: "passive-enemy",
+test("berserker pushes and fires through sloppier alignment while punching bag stays harmless", () => {
+  const punchingBag = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "punching-bag",
+    kind: "enemy",
     x: 0,
     y: 0,
     angle: -0.26,
-    ai: { profileId: "passive", orbitSign: 1, targetId: null }
+    ai: { profileId: "punchingBag", orbitSign: 1, targetId: null }
   });
   const berserkerEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
     id: "berserker-enemy",
+    kind: "enemy",
     x: 0,
     y: 0,
     angle: -0.26,
@@ -352,15 +653,143 @@ test("berserker pushes and fires through sloppier alignment while passive retrea
     y: -500
   });
 
-  const passivePlan = resolveEnemyAiPlan(passiveEnemy, [passiveEnemy, target]);
+  const passivePlan = resolveEnemyAiPlan(punchingBag, [punchingBag, target]);
   const berserkerPlan = resolveEnemyAiPlan(berserkerEnemy, [berserkerEnemy, target]);
 
-  assert.equal(passivePlan.input.down, true);
+  assert.equal(registerEnemyProvocation(punchingBag, "target-ship", 1, () => 0), false);
   assert.equal(passivePlan.input.up, false);
+  assert.equal(passivePlan.input.down, false);
   assert.equal(passivePlan.shouldFire, false);
   assert.equal(berserkerPlan.input.up, true);
   assert.equal(berserkerPlan.input.down, false);
   assert.equal(berserkerPlan.shouldFire, true);
+});
+
+test("soft idle personalities patrol around the player instead of stalling in place", () => {
+  const punchingBag = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "idle-bag",
+    team: "enemy-idle",
+    kind: "enemy",
+    x: 620,
+    y: 540,
+    angle: 0,
+    ai: {
+      profileId: "punchingBag",
+      orbitSign: 1,
+      idlePatrolSign: 1,
+      idleSeed: 0.15,
+      now: 4
+    }
+  });
+  const player = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "player-ship",
+    team: "player",
+    kind: "player",
+    x: 0,
+    y: 0
+  });
+
+  const plan = resolveEnemyAiPlan(punchingBag, [punchingBag, player], 1 / 60);
+
+  assert.equal(plan.targetId, null);
+  assert.ok(Object.values(plan.input).some(Boolean));
+  assert.equal(plan.shouldFire, false);
+});
+
+test("slow reacting ai tracks target movement more slowly than aggressive steering", () => {
+  const slowEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "slow-enemy",
+    kind: "enemy",
+    x: 0,
+    y: 0,
+    angle: 0,
+    ai: {
+      profileId: "slowReacting",
+      orbitSign: 1,
+      targetId: "target-ship",
+      trackedShipId: "target-ship",
+      trackedX: 0,
+      trackedY: -500,
+      targetSince: -10,
+      now: 1
+    }
+  });
+  const aggressiveEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "aggressive-enemy",
+    kind: "enemy",
+    x: 0,
+    y: 0,
+    angle: 0,
+    ai: {
+      profileId: "aggressive",
+      orbitSign: 1,
+      targetId: "target-ship",
+      trackedShipId: "target-ship",
+      trackedX: 0,
+      trackedY: -500,
+      targetSince: -10,
+      now: 1
+    }
+  });
+  const target = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "target-ship",
+    x: 360,
+    y: -500
+  });
+
+  const slowPlan = resolveEnemyAiPlan(slowEnemy, [slowEnemy, target], 1 / 60);
+  const aggressivePlan = resolveEnemyAiPlan(aggressiveEnemy, [aggressiveEnemy, target], 1 / 60);
+
+  assert.equal(slowPlan.input.turnRight, true);
+  assert.equal(aggressivePlan.input.turnRight, true);
+  assert.ok(aggressiveEnemy.ai.trackedX > slowEnemy.ai.trackedX);
+});
+
+test("won't attack first can open on enemies but still refuses to attack the player first", () => {
+  const neutralEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "neutral-enemy",
+    team: "enemy-neutral",
+    kind: "enemy",
+    x: 0,
+    y: 0,
+    ai: { profileId: "wontAttackFirst", orbitSign: 1, now: 2 }
+  });
+  const rivalEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "rival-enemy",
+    team: "enemy-rival",
+    kind: "enemy",
+    x: 120,
+    y: 0
+  });
+  const player = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "player-ship",
+    team: "player",
+    kind: "player",
+    x: 80,
+    y: 0
+  });
+
+  assert.equal(chooseEnemyTarget(neutralEnemy, [neutralEnemy, rivalEnemy, player])?.id, "rival-enemy");
+  assert.equal(registerEnemyProvocation(neutralEnemy, "player-ship", 2, () => 0), true);
+  neutralEnemy.ai.now = 2.8;
+  assert.equal(chooseEnemyTarget(neutralEnemy, [neutralEnemy, rivalEnemy, player])?.id, "player-ship");
+});
+
+test("enemy quality progression can now reach rainbow in very late runs", () => {
+  assert.equal(getEnemyQualityForLevel(14), "white");
+  assert.equal(getEnemyQualityForLevel(16), "rainbow");
+});
+
+test("slow reacting now always enters retaliation state when provoked", () => {
+  const slowEnemy = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    id: "slow-enemy",
+    kind: "enemy",
+    ai: { profileId: "slowReacting", now: 3 }
+  });
+
+  assert.equal(registerEnemyProvocation(slowEnemy, "player-ship", 3, () => 0.99), true);
+  assert.equal(slowEnemy.ai.provokedById, "player-ship");
+  assert.equal(slowEnemy.ai.provokedUntil > 3, true);
 });
 
 test("free-for-all targeting picks the nearest other ship, not just the player", () => {
@@ -411,6 +840,30 @@ test("alive ship pairing includes enemy-enemy collisions", () => {
     "player-ship:enemy-b",
     "enemy-a:enemy-b"
   ]);
+});
+
+test("ship collision overlap reports penetration depth for clipped ships, including yawed contacts", () => {
+  const leftShip = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    x: 0,
+    y: 0
+  });
+  const rightShip = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    x: CELL_SIZE * 0.62,
+    y: 0
+  });
+  rightShip.angle = Math.PI * 0.25;
+
+  const overlap = getShipCollisionOverlap(leftShip, rightShip);
+  const cellOverlap = getShipCellOverlap(
+    leftShip,
+    getBlockCells(leftShip.blocks[0])[0],
+    rightShip,
+    getBlockCells(rightShip.blocks[0])[0]
+  );
+  assert.ok(overlap);
+  assert.ok(cellOverlap);
+  assert.ok(overlap.penetration > 0);
+  assert.ok(overlap.normalX > 0);
 });
 
 test("ship death salvage floors surviving block hp before dropping scrap", () => {
@@ -736,20 +1189,77 @@ test("thruster quality gains diminish while thrust keeps increasing", () => {
   }
 });
 
-test("same-tier hull durability steps up by quality", () => {
+test("quality matchup pass keeps same-tier hulls at seven hits and speeds up real overmatch", () => {
+  const expectedHits = [
+    [7, 9, 12, 15, 19, 24, 29, 36, 46],
+    [4, 7, 9, 12, 15, 19, 24, 30, 39],
+    [2, 4, 7, 9, 12, 15, 19, 24, 32],
+    [1, 2, 4, 7, 9, 12, 15, 20, 26],
+    [1, 1, 2, 4, 7, 9, 12, 15, 21],
+    [1, 1, 1, 2, 4, 7, 9, 13, 16],
+    [1, 1, 1, 1, 2, 4, 7, 10, 13],
+    [1, 1, 1, 1, 1, 2, 4, 7, 10],
+    [1, 1, 1, 1, 1, 1, 2, 4, 7]
+  ];
+
+  for (let attackerIndex = 0; attackerIndex < QUALITY_IDS.length; attackerIndex += 1) {
+    const attackerQuality = QUALITY_IDS[attackerIndex];
+    for (let defenderIndex = 0; defenderIndex < QUALITY_IDS.length; defenderIndex += 1) {
+      const defenderQuality = QUALITY_IDS[defenderIndex];
+      const hits = getHitsToDestroy(
+        createBlueprintBlock({ type: "hull", x: 0, y: 0, quality: defenderQuality }),
+        attackerQuality
+      );
+      assert.equal(hits, expectedHits[attackerIndex][defenderIndex]);
+    }
+  }
+});
+
+test("same-tier larger hulls and shields stay only slightly tougher than hull 1x1", () => {
+  for (const quality of ["red", "blue", "rainbow"]) {
+    assert.equal(
+      getHitsToDestroy(createBlueprintBlock({ type: "hull", x: 0, y: 0, quality, variant: "single" }), quality),
+      7
+    );
+    assert.equal(
+      getHitsToDestroy(createBlueprintBlock({ type: "hull", x: 0, y: 0, quality, variant: "double" }), quality),
+      8
+    );
+    assert.equal(
+      getHitsToDestroy(createBlueprintBlock({ type: "hull", x: 0, y: 0, quality, variant: "triple" }), quality),
+      9
+    );
+    assert.equal(
+      getHitsToDestroy(createBlueprintBlock({ type: "blaster", x: 0, y: 0, quality, orientation: "north" }), quality),
+      6
+    );
+    assert.equal(
+      getHitsToDestroy(createBlueprintBlock({ type: "thruster", x: 0, y: 0, quality, orientation: "north" }), quality),
+      6
+    );
+    assert.equal(
+      getHitsToDestroy(createBlueprintBlock({ type: "shield", x: 0, y: 0, quality, orientation: "north" }), quality),
+      9
+    );
+  }
+});
+
+test("cockpit now folds faster to higher-quality blasters", () => {
   const expectedHits = {
-    red: 5,
-    orange: 10,
-    yellow: 15,
-    green: 20
+    grey: 10,
+    red: 9,
+    orange: 8,
+    yellow: 8,
+    green: 7,
+    blue: 6,
+    purple: 6,
+    white: 5,
+    rainbow: 5
   };
 
+  const cockpit = createBlueprintBlock({ type: "cockpit", x: 0, y: 0 });
   for (const [quality, hits] of Object.entries(expectedHits)) {
-    const hullHp = getBlockStats(createBlueprintBlock({ type: "hull", x: 0, y: 0, quality })).hp;
-    const blasterDamage = getBlockStats(
-      createBlueprintBlock({ type: "blaster", x: 0, y: 0, quality, orientation: "north" })
-    ).damage;
-    assert.ok(Math.abs(hullHp / blasterDamage - hits) < 0.000001);
+    assert.equal(getHitsToDestroy(cockpit, quality), hits);
   }
 });
 
@@ -766,8 +1276,12 @@ test("blaster cadence, speed, and range scale on the compressed early-game curve
   const rainbow = getBlockStats(
     createBlueprintBlock({ type: "blaster", x: 0, y: 0, quality: "rainbow", orientation: "north" })
   );
-  const ship = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })]);
-  const builtIn = getBlockStats(getBuiltInBlaster(ship));
+  const ship = createShipFromBlueprint([createBlueprintBlock({ type: "cockpit", x: 0, y: 0 })], {
+    team: "player",
+    kind: "player"
+  });
+  const builtInBlaster = getBuiltInBlaster(ship);
+  const builtIn = getBlockStats(builtInBlaster);
 
   assert.ok(grey.cooldown > red.cooldown);
   assert.ok(red.cooldown > green.cooldown);
@@ -787,9 +1301,19 @@ test("blaster cadence, speed, and range scale on the compressed early-game curve
   assert.ok(greenRange < rainbowRange);
   assert.ok(Math.abs(greyRange - redRange * (0.21 / 0.26)) < 0.000001);
   assert.ok(Math.abs(rainbowRange - greenRange * (0.61 / 0.41)) < 0.000001);
+  assert.equal(builtInBlaster.quality, "red");
   assert.ok(Math.abs(builtIn.cooldown - red.cooldown * 1.05) < 0.000001);
   assert.ok(Math.abs(builtIn.speed - grey.speed) < 25);
   assert.ok(Math.abs(builtIn.speed * builtIn.ttl - greyRange) < 12);
+});
+
+test("dual blaster keeps both projectiles parallel", () => {
+  const dual = getBlockStats(
+    createBlueprintBlock({ type: "blaster", x: 0, y: 0, quality: "red", variant: "dual", orientation: "north" })
+  );
+
+  assert.deepEqual(dual.spread, [0, 0]);
+  assert.deepEqual(dual.offsets, [-8, 8]);
 });
 
 test("snap candidate selection prefers the orientation chosen by rotation", () => {
@@ -982,7 +1506,10 @@ test("occupying cockpit sides removes the matching built-in systems", () => {
     createBlueprintBlock({ type: "hull", x: 0, y: -1, quality: "red", attachSide: "south" }),
     createBlueprintBlock({ type: "hull", x: 1, y: 0, quality: "red", attachSide: "west" }),
     createBlueprintBlock({ type: "hull", x: 0, y: 1, quality: "red", attachSide: "north" })
-  ]);
+  ], {
+    team: "player",
+    kind: "player"
+  });
 
   assert.equal(getBuiltInBlaster(ship), null);
 

@@ -12,21 +12,22 @@
 
 ## Objective
 
-Upgrade the current enemy system so the runtime has clear combat identity instead of one generic foe. The output must preserve the existing salvage-and-rebuild loop, but replace the old enemy template pool and one-size-fits-all pursuit logic with the approved ship archetypes and weighted AI personalities.
+Revamp the current enemy AI so the runtime stays free-for-all and survivable without leaning on an empty early game. The output must preserve the existing salvage-and-rebuild loop, keep the expanded legal ship pool, and replace the old combat-seeking `Passive` bucket with softer personalities that genuinely ignore, delay, or fail at attacking the player.
 
 ## Requested Change
 
-Implement the approved enemy roster and behavior matrix:
+Implement the approved enemy roster and replace the AI model with a softer-majority engagement matrix:
 
 - `Needle`
 - `Bulwark`
 - `Manta`
 - `Fortress`
-- `Vulture`
 
-Each archetype should remain buildable under the current socket / attachment rules, and each spawn should also roll one of the approved AI personalities:
+Each concrete ship design should remain buildable under the current socket / attachment rules, should still read as one of the `5` approved archetypes, and each spawn should also roll one of these AI personalities:
 
-- `Passive`
+- `Punching Bag`
+- `Slow Reacting`
+- `Won't Attack First`
 - `Cautious`
 - `Opportunist`
 - `Aggressive`
@@ -44,10 +45,12 @@ Each archetype should remain buildable under the current socket / attachment rul
 ## In Scope
 
 - Enemy blueprint generation
+- Enemy-design variant generation within each archetype
 - Enemy spawn metadata
 - Runtime AI decision-making
-- Enemy-archetype documentation
-- Deterministic tests for blueprint validity and AI behavior differences
+- Provocation / retaliation state
+- Enemy-archetype / design-pool documentation
+- Deterministic tests for provocation, soft-personality behavior, roster size, and AI behavior differences
 - Harness overlay refresh for the current brownfield loop
 
 ## Out Of Scope
@@ -82,8 +85,9 @@ Each archetype should remain buildable under the current socket / attachment rul
 
 ## Required Outputs
 
-- Implemented archetype-based enemy generator
-- Implemented weighted AI personality system
+- Implemented archetype-based enemy generator with `28` distinct legal ship designs
+- Implemented weighted AI personality system with a `~70%` soft-personality majority
+- Increased enemy blaster availability through ship design
 - Deterministic automated coverage
 - Updated runtime docs and harness overlay docs
 
@@ -91,6 +95,8 @@ Each archetype should remain buildable under the current socket / attachment rul
 
 - Stay within the current part set
 - Keep archetypes buildable under live socket / connectivity rules
+- Keep the expanded ship pool legible as archetype-inspired variants instead of random unrelated hulls
+- The shipped roster should use `4` archetypes with `7` designs each, favor symmetrical layouts, and keep only a small minority of low-yaw or low-thrust outliers
 - Preserve existing combat, salvage, and builder behavior outside the enemy-system rewrite
 - Keep the solution small enough for the current browser-first runtime
 
@@ -100,7 +106,7 @@ The owner may decide alone:
 
 - archetype unlock pacing across levels
 - exact per-archetype spawn weights
-- exact AI threshold tuning, provided the approved identities stay legible
+- exact AI threshold tuning, provided the approved soft-vs-hostile identities stay legible
 
 The owner must return to the user if:
 
@@ -110,9 +116,9 @@ The owner must return to the user if:
 
 ## Done When
 
-- Spawned enemies come from the approved `5` archetypes
-- Spawned enemies roll the approved `5` AI personalities through tested weighting rules
-- The logic tests cover blueprint validity and at least one clear behavior contrast between personalities
+- Spawned enemies come from the approved `4` archetypes through `28` distinct legal ship designs
+- Spawned enemies roll the approved soft-majority AI personalities through tested weighting rules
+- The logic tests cover blueprint validity across the widened design pool, provocation / retaliation rules, and clear behavior contrast between soft and hostile personalities
 - README and project docs reflect the new runtime rules
 
 ## Next Owner
