@@ -25,7 +25,7 @@
 
 - [x] Check the current repo for Pages workflow/config state.
 - [x] Add an Actions-based GitHub Pages deploy that publishes the playable site files only.
-- [ ] Push the workflow and verify the first Pages deployment.
+- [x] Push the workflow and verify the first Pages deployment.
 
 ## Correction Round: Enemy Quality Variance Pass
 
@@ -589,7 +589,9 @@
 
 ## Review: GitHub Pages
 
-- Pending.
+- Added an Actions-based Pages workflow in `.github/workflows/deploy-pages.yml` that publishes the playable static bundle instead of the whole repo tree.
+- The initial workflow failed because the repository did not have a Pages site yet, so Pages was created explicitly through the GitHub API with `build_type=workflow`.
+- The deployment rerun succeeded, and the live site is now reachable at [daviswang.github.io/neon-blaster-x](https://daviswang.github.io/neon-blaster-x/).
 
 ## Review: Repo Push Prep
 
