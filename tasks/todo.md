@@ -15,6 +15,12 @@
 - [x] Add targeted source comments for non-obvious runtime contracts.
 - [x] Re-run validation before pushing the doc-sync pass.
 
+## Correction Round: Player Death Line Art
+
+- [x] Trace the current player-loss and effects path.
+- [x] Add a small line-art death animation that plays for about `2s`.
+- [x] Refresh the runtime notes for the new loss presentation and re-run validation.
+
 ## Correction Round: Enemy Quality Variance Pass
 
 - [x] Refresh the existing-project intake and create the current work order for the mixed-quality enemy pass.
@@ -569,6 +575,11 @@
 - Re-read the current runtime plus the live regression suite and corrected the docs where they had drifted from behavior, especially around overlapping-loot pickup precedence, cockpit regen, delayed loss flow, the `Q` visual-quality toggle, and the difference between title/retry starts versus builder launches.
 - Added concise source comments around the matching non-obvious helpers in `src/ship.js`, so the runtime contracts are easier for a fresh agent to trace without re-deriving them from tests.
 - `npm test` passed with `69` passing tests, and `node --check src/ship.js` passed after the doc-sync pass.
+
+## Review: Player Death Line Art
+
+- Player cockpit death now emits a dedicated `~2s` neon line-art breakup effect during the existing pending-loss window instead of only flashing one short burst.
+- The effect reuses the ship's own block silhouettes as drifting fragments, so the loss read stays in the same visual language as the rest of the game.
 
 ## Review: Repo Push Prep
 

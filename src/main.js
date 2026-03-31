@@ -126,6 +126,7 @@ const DRAG_COLLISION_PASSES = 3;
 const SELF_HIT_GRACE = 0.09;
 const DETACHED_LOOSE_DAMAGE_GRACE = 0.32;
 const SHIP_DEATH_SALVAGE_DAMAGE_GRACE = 2.4;
+const PLAYER_DEATH_ANIMATION_TTL = 2;
 
 const state = {
   scene: "title",
@@ -774,16 +775,60 @@ function finishDrag() {
 }
 
 function makeEffect(type, x, y, options = {}) {
+  const ttl = options.ttl ?? 0.28;
   return {
     id: `${type}-${Math.random().toString(16).slice(2)}`,
     type,
     x,
     y,
-    ttl: options.ttl ?? 0.28,
-    life: options.ttl ?? 0.28,
+    ...options,
+    ttl,
+    life: options.life ?? ttl,
     radius: options.radius ?? 18,
     color: options.color ?? "#6ef7ff"
   };
+}
+
+function makePlayerDeathEffect(ship) {
+  // The loss panel is intentionally delayed, so the player cockpit gets a brief
+  // line-art breakup beat that reuses the ship's own block silhouettes first.
+  const fragments = ship.blocks.map((block, index) => {
+    const world = getBlockWorldPosition(ship, block);
+    const relativeX = world.x - ship.x;
+    const relativeY = world.y - ship.y;
+    const fallbackAngle = ship.angle - Math.PI * 0.5 + index * 1.17;
+    const fallbackVector = { x: Math.cos(fallbackAngle), y: Math.sin(fallbackAngle) };
+    const outward =
+      Math.abs(relativeX) > 0.0001 || Math.abs(relativeY) > 0.0001
+        ? normalize(relativeX, relativeY)
+        : fallbackVector;
+    const tangent = { x: -outward.y, y: outward.x };
+    const driftSpeed = 44 + hash2D(block.x + 17, block.y - 9) * 52;
+    const tangentDrift = (hash2D(block.x - 11, block.y + 23) - 0.5) * 30;
+    const spin = (hash2D(block.x + 41, block.y + 7) - 0.5) * 2.4;
+    return {
+      block: {
+        ...block,
+        active: false,
+        flash: 0
+      },
+      color: getBlockColor(block, state.time),
+      offsetX: relativeX,
+      offsetY: relativeY,
+      velocityX: outward.x * driftSpeed + tangent.x * tangentDrift,
+      velocityY: outward.y * driftSpeed + tangent.y * tangentDrift,
+      spin,
+      wobblePhase: hash2D(block.x + 3, block.y + 29) * Math.PI * 2
+    };
+  });
+
+  return makeEffect("player-death", ship.x, ship.y, {
+    ttl: PLAYER_DEATH_ANIMATION_TTL,
+    radius: 68,
+    color: "#ff8fb8",
+    angle: ship.angle,
+    fragments
+  });
 }
 
 function reflectBulletFromShield(bullet, normalX, normalY, reflectBoost, nextTeam, nextOwnerId) {
@@ -862,10 +907,14 @@ function cleanupDestroyedLooseBlocks() {
 
 function destroyShipBlock(ship, block, bulletDamage = 0) {
   if (block.type === "cockpit") {
+    const deathBlocks = ship.blocks.map((entry) => ({ ...entry }));
     ship.alive = false;
     const salvage = prepareShipDeathSalvageBlocks(ship);
     ship.blocks = ship.blocks.filter((entry) => entry.type === "cockpit");
     addLooseBlocksFromShip(ship, salvage, { reason: "ship-death" });
+    if (ship.kind === "player") {
+      state.game.effects.push(makePlayerDeathEffect({ ...ship, blocks: deathBlocks }));
+    }
     state.game.effects.push(makeEffect("burst", ship.x, ship.y, { radius: 54, ttl: 0.45, color: "#ff5f7f" }));
     if (ship.kind === "enemy") {
       state.game.kills += 1;
@@ -1765,6 +1814,10 @@ function drawEffects() {
   for (const effect of state.game?.effects ?? []) {
     const screen = worldToScreen(effect.x, effect.y);
     const progress = 1 - effect.ttl / effect.life;
+    if (effect.type === "player-death") {
+      drawPlayerDeathEffect(effect, screen, progress);
+      continue;
+    }
     const radius = effect.radius * (0.6 + progress);
     ctx.strokeStyle = colorWithAlpha(effect.color, 0.7 * (1 - progress));
     ctx.lineWidth = 2;
@@ -1773,6 +1826,47 @@ function drawEffects() {
     ctx.beginPath();
     ctx.arc(screen.x, screen.y, radius, 0, Math.PI * 2);
     ctx.stroke();
+  }
+}
+
+function drawPlayerDeathEffect(effect, screen, progress) {
+  const fade = 1 - progress;
+  const eased = 1 - Math.pow(1 - progress, 2);
+
+  ctx.save();
+  ctx.strokeStyle = colorWithAlpha(effect.color, 0.8 * fade);
+  ctx.lineWidth = 2.2;
+  ctx.shadowColor = colorWithAlpha(effect.color, 0.3 * fade);
+  ctx.shadowBlur = 18;
+  ctx.beginPath();
+  ctx.arc(screen.x, screen.y, effect.radius * (0.42 + eased * 0.95), 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(screen.x - 10 - eased * 18, screen.y);
+  ctx.lineTo(screen.x + 10 + eased * 18, screen.y);
+  ctx.moveTo(screen.x, screen.y - 10 - eased * 18);
+  ctx.lineTo(screen.x, screen.y + 10 + eased * 18);
+  ctx.stroke();
+  ctx.restore();
+
+  for (const fragment of effect.fragments ?? []) {
+    const wobble = Math.sin(fragment.wobblePhase + progress * Math.PI * 2.2) * 3.5 * fade;
+    const fragmentX = screen.x + fragment.offsetX + fragment.velocityX * eased - fragment.velocityY * 0.015 * wobble;
+    const fragmentY = screen.y + fragment.offsetY + fragment.velocityY * eased + fragment.velocityX * 0.015 * wobble;
+    const shrink = lerp(1, 0.72, progress);
+    ctx.save();
+    ctx.translate(fragmentX, fragmentY);
+    ctx.rotate(effect.angle + getRenderAngleForBlock(fragment.block) + fragment.spin * eased);
+    ctx.scale(shrink, shrink);
+    drawBlockShapeOnContext(ctx, fragment.block, fragment.color, 1, {
+      time: state.time,
+      glowScale: 0.55 * fade,
+      shadowBoost: 1.1,
+      shadowBlur: 18,
+      strokeAlphaScale: fade,
+      fillAlpha: 0
+    });
+    ctx.restore();
   }
 }
 

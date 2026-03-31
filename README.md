@@ -73,6 +73,7 @@ The runtime now rolls from `28` distinct legal enemy ship designs spread across 
 - New title / retry runs always start from the cockpit-only blueprint; launching from the builder uses the current builder ship instead.
 - Cockpits regenerate gradually while the ship is alive, reaching full health over roughly `120s` if left undamaged.
 - Player death enters a short pending-loss state, so the game-over panel appears about `3s` after cockpit destruction instead of on the exact death frame.
+- Player cockpit death now also plays a short neon line-art breakup animation that lasts about `2s` inside that pending-loss window.
 - Pressing `Q` cycles `High`, `Medium`, and `Low` ship-visual quality. This is rendering-only: it changes glow / halo intensity, not gameplay.
 - Enemy pressure now comes more from personality mix than sparseness: the opening is more populated, and the roster still skews soft, but provoked soft ships now counterattack more reliably and truly inert `Punching Bag` ships are less common than before.
 - Visible enemy pressure now allows up to `3` other ships in the active viewport instead of widening to `4` later.
