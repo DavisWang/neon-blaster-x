@@ -32,6 +32,7 @@
 - [x] Rename the HUD status label from `Hull Status` to `Spaceship Status`.
 - [x] Shrink the top HUD down to only the two required stat buckets: spaceship status and run stats.
 - [x] Add a simple title-screen `How to Play` panel with image cards and move the gameplay directions there.
+- [x] Replace the placeholder how-to art with real gameplay captures and trim the extra attachment sentence from the panel copy.
 - [x] Re-run automated checks and a browser sanity pass for the title/how-to/builder shell.
 
 ## Correction Round: Enemy Quality Variance Pass

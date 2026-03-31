@@ -295,26 +295,20 @@ h2 {
 
 .howto-visual {
   margin-bottom: 12px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
   border: 1px solid rgba(110, 247, 255, 0.14);
   background:
     radial-gradient(circle at 50% 15%, rgba(110, 247, 255, 0.12), transparent 42%),
     linear-gradient(180deg, rgba(10, 18, 32, 0.98), rgba(5, 9, 17, 0.98));
 }
 
-.howto-visual svg {
+.howto-visual img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
-}
-
-.howto-visual rect,
-.howto-visual circle,
-.howto-visual path {
-  fill: none;
-  stroke: rgba(110, 247, 255, 0.92);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  object-fit: cover;
+  object-position: center;
 }
 
 .builder-notes {
