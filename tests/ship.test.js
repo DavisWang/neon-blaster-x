@@ -7,6 +7,7 @@ import {
   advancePendingGameOver,
   applyCockpitRegen,
   attachLooseBlock,
+  buildShipDesignExport,
   buildEnemyBlueprint,
   canAttachLooseBlock,
   canDamageLooseBlock,
@@ -23,6 +24,7 @@ import {
   ENEMY_AI_PROFILE_EARLY_WEIGHTS,
   ENEMY_AI_PROFILE_WEIGHTS,
   ENEMY_SHIP_DESIGN_DEFS,
+  generateEnemyLoadoutForDesign,
   getAliveShipPairs,
   getBlockAtLocalPoint,
   getEnemyAiProfileWeights,
@@ -128,6 +130,37 @@ test("cockpit-only ship exposes open sockets for attachment", () => {
       { x: 1, y: 0, side: "east" }
     ]
   );
+});
+
+test("ship design export emits a stable prompt-ready builder schema without runtime ids", () => {
+  const blueprint = [
+    createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
+    createBlueprintBlock({ type: "blaster", x: 0, y: -1, quality: "blue", orientation: "north", variant: "spread" }),
+    createBlueprintBlock({ type: "hull", x: -1, y: 1, quality: "purple", variant: "single" }),
+    createBlueprintBlock({ type: "thruster", x: 1, y: 2, quality: "green", orientation: "south" })
+  ];
+  const exported = buildShipDesignExport(blueprint, { source: "builder" });
+
+  assert.equal(exported.format, "nbx-ship-design-v1");
+  assert.equal(exported.source, "builder");
+  assert.deepEqual(exported.cockpit, { x: 0, y: 0 });
+  assert.deepEqual(exported.bounds, { minX: -1, maxX: 1, minY: -1, maxY: 2, width: 3, height: 4 });
+  assert.deepEqual(exported.counts, {
+    blocks: 4,
+    occupiedCells: 4,
+    byType: { cockpit: 1, hull: 1, blaster: 1, thruster: 1, shield: 0 }
+  });
+  assert.equal(exported.blocks[0].type, "cockpit");
+  assert.equal(exported.blocks.some((block) => "id" in block), false);
+  assert.deepEqual(exported.blocks[1], {
+    type: "blaster",
+    x: 0,
+    y: -1,
+    quality: "blue",
+    variant: "spread",
+    orientation: "north",
+    attachSide: "south"
+  });
 });
 
 test("asymmetric ships yaw under forward thrust because torque uses center of mass", () => {
@@ -318,22 +351,35 @@ test("enemy design pool exposes 28 distinct cockpit-connected ships across 4 arc
   }
 });
 
-test("fortress boss pool adds a late-game custom warheart without disturbing the standard 28-ship roster", () => {
-  assert.equal(ENEMY_BOSS_SHIP_DESIGN_DEFS.length, 1);
+test("boss pool adds late-game custom bosses without disturbing the standard 28-ship roster", () => {
+  assert.equal(ENEMY_BOSS_SHIP_DESIGN_DEFS.length, 2);
   assert.equal(ENEMY_BOSS_SHIP_DESIGN_DEFS[0].id, "fortress-warheart");
+  assert.equal(ENEMY_BOSS_SHIP_DESIGN_DEFS[1].id, "manta-nightwing");
   assert.equal(getAvailableEnemyDesigns(5).some((definition) => definition.id === "fortress-warheart"), false);
   assert.equal(getAvailableEnemyDesigns(6).some((definition) => definition.id === "fortress-warheart"), true);
+  assert.equal(getAvailableEnemyDesigns(5).some((definition) => definition.id === "manta-nightwing"), false);
+  assert.equal(getAvailableEnemyDesigns(6).some((definition) => definition.id === "manta-nightwing"), true);
 
-  const boss = createShipFromBlueprint(buildEnemyBlueprint("fortress-warheart", "purple"), { kind: "enemy" });
-  const connected = findConnectedBlockIds(boss);
-
+  const warheart = createShipFromBlueprint(buildEnemyBlueprint("fortress-warheart", "purple"), { kind: "enemy" });
+  const warheartConnected = findConnectedBlockIds(warheart);
   assert.equal(
-    boss.blocks.every((block) => block.type === "cockpit" || connected.has(block.id)),
+    warheart.blocks.every((block) => block.type === "cockpit" || warheartConnected.has(block.id)),
     true
   );
-  assert.equal(getShipBoundsArea(boss), 88);
-  assert.equal(boss.blocks.filter((block) => block.type === "thruster").length, 17);
-  assert.equal(boss.blocks.filter((block) => block.type === "blaster").length, 7);
+  assert.equal(getShipBoundsArea(warheart), 63);
+  assert.equal(warheart.blocks.filter((block) => block.type === "thruster").length, 6);
+  assert.equal(warheart.blocks.filter((block) => block.type === "blaster").length, 24);
+
+  const nightwing = createShipFromBlueprint(buildEnemyBlueprint("manta-nightwing", "purple"), { kind: "enemy" });
+  const nightwingConnected = findConnectedBlockIds(nightwing);
+  assert.equal(
+    nightwing.blocks.every((block) => block.type === "cockpit" || nightwingConnected.has(block.id)),
+    true
+  );
+  assert.equal(getShipBoundsArea(nightwing), 27);
+  assert.equal(nightwing.blocks.filter((block) => block.type === "thruster").length, 4);
+  assert.equal(nightwing.blocks.filter((block) => block.type === "blaster").length, 9);
+  assert.equal(nightwing.blocks.filter((block) => block.type === "shield").length, 3);
 });
 
 test("enemy quality variance stays within one tier and keeps mirrored block pairs matched", () => {
@@ -378,6 +424,19 @@ test("fortress boss ai weights stay fortress-derived but skew harder into aggres
   assert.ok(bossWeights.aggressive > bossWeights.cautious);
   assert.ok(bossSoft < fortressSoft);
   assert.equal(chooseEnemyAiProfile("fortress", () => 0.76, 1, "fortress-warheart").id, "aggressive");
+});
+
+test("design-targeted enemy loadouts can generate a specific boss by design id", () => {
+  const rolls = [0.76, 0.2, 0.8, 0.33, 0.91, 0.12, 0.88, 0.41];
+  const rng = () => rolls.shift() ?? 0.5;
+  const loadout = generateEnemyLoadoutForDesign("fortress-warheart", 6, rng, 1, "purple");
+
+  assert.equal(loadout.archetypeId, "fortress");
+  assert.equal(loadout.designId, "fortress-warheart");
+  assert.equal(loadout.aiProfileId, "aggressive");
+  assert.equal(loadout.quality, "purple");
+  assert.equal(loadout.blueprint.filter((block) => block.type === "thruster").length, 6);
+  assert.equal(loadout.blueprint.filter((block) => block.type === "blaster").length, 24);
 });
 
 test("enemy archetypes now span meaningfully different footprints within each family", () => {

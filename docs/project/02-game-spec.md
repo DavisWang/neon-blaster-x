@@ -83,7 +83,7 @@ Every ship is built from 1x1 block units unless a block type explicitly spans mu
 - Combatants are free-for-all by default; enemies should be able to fight each other instead of only focusing the player.
 - Only the player cockpit should expose the built-in forward blaster; enemy cockpits should need attached weapon parts to shoot.
 - Enemy ships should spawn from a readable roster of validated archetypes: `Needle`, `Bulwark`, `Manta`, and `Fortress`.
-- Those archetypes should fan out into a larger modular design pool, so the runtime shows roughly `20-30` distinct legal enemy ships instead of one blueprint per archetype; the current shipped target is `29` total designs: `28` standard ships plus `Warheart`, a late custom fortress boss.
+- Those archetypes should fan out into a larger modular design pool, so the runtime shows roughly `20-30` distinct legal enemy ships instead of one blueprint per archetype; the current shipped target is `30` total designs: `28` standard ships plus two late custom bosses (`Warheart` fortress, `Nightwing` manta).
 - The designs within each archetype should still vary materially in footprint, thrust layout, yaw authority, and weapon density instead of reading like one hull with minor gun swaps.
 - `Fortress` variants may include large hollow-outline builds as long as they remain legal and cockpit-connected.
 - Custom boss ships may override the base archetype's AI weighting, but they should start from that archetype's distribution and then bias it rather than replacing it wholesale.
@@ -134,7 +134,7 @@ Every ship is built from 1x1 block units unless a block type explicitly spans mu
 - one playable title screen
 - one gameplay mode
 - one minimal builder or salvage attachment loop
-- four enemy ship archetypes built from the current part set, expanded into `28` standard legal designs plus `Warheart`, a custom fortress boss
+- four enemy ship archetypes built from the current part set, expanded into `28` standard legal designs plus two late custom bosses (`Warheart`, `Nightwing`)
 - seven AI personalities with a weighted soft-majority free-for-all mapping
 - one shared difficulty ramp that widens over time plus kills without relying mainly on sparse early spawns, while keeping the visible enemy cap at `3`
 - one loss condition

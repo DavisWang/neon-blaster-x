@@ -14,7 +14,7 @@ This repo is the current playable build of that loop. It is not just a concept d
 | Player ship | cockpit-only start, built-in cockpit thrust/fire rules, live stat-bearing ship assembly |
 | Salvage loop | loose block pickup, drag attachment, snap rotation, mounted-part detach, persistent death-drop loot |
 | Combat | free-for-all bullets, shield reflection, collision damage, self-hit grace, per-block damage/destruction |
-| Enemy roster | `28` standard enemy designs plus `Warheart`, a late custom fortress boss, across `Needle`, `Bulwark`, `Manta`, and `Fortress` |
+| Enemy roster | `28` standard enemy designs plus `Warheart` and `Nightwing` late custom bosses, across `Needle`, `Bulwark`, `Manta`, and `Fortress` |
 | Enemy behavior | `7` AI profiles from `Punching Bag` to `Berserker`, with provocation and retaliation rules |
 | Progression | elapsed-time-plus-kills spawn director, per-design unlocks, mixed enemy block quality up to `rainbow` |
 | Ship building | `Hull 1x1`, `Hull 1x2`, `Hull 1x3`, blasters, thrusters, shields, socket-aware connectivity |
@@ -40,10 +40,11 @@ This repo is the current playable build of that loop. It is not just a concept d
 - Pressing `Q` cycles ship-rendering glow quality without changing gameplay.
 - A small corner toggle now mutes or re-enables both music and SFX.
 - Audio now adds a chill `~30s` ambient loop plus soft melodic blaster and destruction feedback.
+- The builder can now copy the exact current ship as prompt-ready `nbx-ship-design-v1` JSON for future custom enemy requests.
 
 ## Enemy Roster
 
-The runtime currently rolls from `29` distinct legal enemy designs across these `4` archetypes: the standard `28`-ship fleet plus `Warheart`, a late custom fortress boss. Each spawn gets one progression-driven base quality, while mirrored non-cockpit block pairs can vary within base quality plus or minus `1`.
+The runtime currently rolls from `30` distinct legal enemy designs across these `4` archetypes: the standard `28`-ship fleet plus two late custom bosses, `Warheart` (fortress) and `Nightwing` (manta). Each spawn gets one progression-driven base quality, while mirrored non-cockpit block pairs can vary within base quality plus or minus `1`.
 
 | Archetype | Read | Role tendency |
 | --- | --- | --- |
@@ -52,7 +53,7 @@ The runtime currently rolls from `29` distinct legal enemy designs across these 
 | `Manta` | gliders, nets, and wing-heavy skirmishers | orbit pressure and area denial |
 | `Fortress` | dense bastions and hollow outer rings | slow walls and heavy anchors |
 
-`Warheart` inherits fortress AI weighting, but its boss-specific distribution is pulled harder toward `Aggressive` and `Berserker` so it reads like a true anchor threat instead of just a larger passive wall.
+`Warheart` inherits fortress AI weighting and `Nightwing` inherits manta AI weighting, but both bosses have their distributions pulled harder toward `Aggressive` and `Berserker` so they read as true endgame threats instead of larger passive ships.
 
 ## Enemy AI Profiles
 
@@ -88,6 +89,7 @@ Open:
 | Run / Builder | `Space` | fire |
 | Run / Builder | `Q` | cycle ship glow quality: `High` -> `Medium` -> `Low` |
 | Any shell | corner `Audio On/Off` button | toggle music and SFX together |
+| Builder | `Copy Ship Spec` button | copy the current ship layout as standardized `nbx-ship-design-v1` JSON |
 | Run / Builder | Mouse drag on loose salvage | pick up and move salvage |
 | Builder | Mouse drag on mounted non-cockpit part | detach and immediately drag that part |
 | Builder | Right-click on mounted non-cockpit part | quick detach |

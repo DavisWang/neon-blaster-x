@@ -58,6 +58,19 @@
 - [x] Add deterministic coverage for boss blueprint validity, late gating, and boss-specific AI weighting.
 - [x] Refresh only the request-affected runtime docs and change tracking, then re-run targeted validation.
 
+## Correction Round: Warheart Redesign + Nightwing Boss
+
+- [x] Update `Warheart` hull design from a builder-exported `nbx-ship-design-v1` spec.
+- [x] Add `Nightwing` as a second late custom boss under the manta archetype with the same aggressive AI multipliers as `Warheart`.
+- [x] Remove the temporary `B` debug boss summon from code, HUD hints, and docs.
+- [x] Update all affected docs, tests, and change tracking.
+
+## Correction Round: Builder Ship Export
+
+- [x] Refresh the harness overlay and scope the builder-export request around the existing builder instead of a new authoring tool.
+- [x] Add a builder-side `Copy Ship Spec` action that exports the exact current ship as standardized `nbx-ship-design-v1` JSON.
+- [x] Add deterministic coverage for the export schema and refresh only the request-affected runtime notes.
+
 ## Correction Round: Audio Pass
 
 - [x] Refresh the existing-project intake and current work order for the audio request.

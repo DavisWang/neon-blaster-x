@@ -3,7 +3,7 @@
 ## Header
 
 - Project: Neon Blaster X
-- Work order ID: NBX-006
+- Work order ID: NBX-007
 - Requester: Davis Wang
 - Owner: Producer
 - Project mode: Existing project
@@ -12,58 +12,46 @@
 
 ## Objective
 
-Bring the repo into release-ready alignment without changing the shipped game loop. The output of this pass is a coherent, current documentation and test story for the existing browser game, plus a pushed GitHub state that matches the live code.
+Add a builder-driven export path for exact ship layouts without destabilizing the current game. The outcome of this pass is a user-facing builder action that copies the current ship as a stable, prompt-ready `nbx-ship-design-v1` payload, so future custom enemy ships can be built in the browser and handed back without screenshot interpretation errors.
 
 ## Requested Change
 
-Refresh the current repo around the now-finished game:
+Implement a builder export workflow for custom ship authoring:
 
-- read the current runtime and tests as source of truth
-- update the harness overlay docs for the current release-sync loop
-- update README and stale project docs so they describe the shipped gameplay, logic, and scope accurately
-- add or refresh tests only where current behavior lacks matching deterministic coverage
-- fix minor documentation-surface drift that conflicts with the shipped UX
-- stage, commit, and push the synced repo state to GitHub
+- add a builder-side action that exports the exact current ship design
+- standardize the export into one stable schema that preserves the real block layout
+- make the exported payload easy to paste back into Codex for future enemy and boss requests
+- keep the feature compatible with the current builder flow instead of requiring a separate external authoring tool
 
 ## Existing Behavior To Preserve
 
 - Browser-first delivery and current local run/test flow
-- Shared cockpit-only start/reset behavior and builder-only rainbow seed behavior
-- Current title, run, builder, and game-over state flow
-- Current combat, salvage, enemy roster, and free-for-all rules
-- Current neon line-art look and rendering-only `Q` quality toggle
+- Current builder interactions: attach, detach, rotate, reset, and launch
+- Current ship blueprint semantics and block-placement rules
+- Current run, combat, and spawn behavior
 
 ## In Scope
 
-- Existing-project intake and current work order refresh
-- README and request-affected project-doc refresh
-- Deterministic test sync for shipped gameplay/audio rules
-- Minor shell wording cleanup where the shipped HTML drifted from the approved repo language
-- Git staging, commit, and push
+- Standardized ship-design export formatting in `src/ship.js`
+- Builder sidebar export button, clipboard flow, and status messaging
+- Deterministic regression coverage for the export contract
+- Request-affected docs and change tracking
 
 ## Out Of Scope
 
-- New gameplay systems, balance rewrites, or roster changes
-- New art pipelines, asset packs, or toolchain changes
-- Broader UX redesign beyond request-driven drift cleanup
-- Rewriting the full artifact chain when an artifact is already current enough
+- Ship-design import or round-trip editing from exported JSON
+- Enemy ingestion pipelines that automatically convert exports into live enemy definitions
+- Backend save slots, cloud storage, or file-based persistence
+- Combat, builder physics, or roster rebalance work
 
 ## Inputs
 
 - `docs/project/00-existing-project-intake.md`
 - `README.md`
-- `docs/project/02-game-spec.md`
-- `docs/project/05-build-note.md`
-- `docs/project/06-test-verdict.md`
-- `docs/project/07-mock-player-memo.md`
-- `docs/project/08-release-backlog-summary.md`
-- `docs/project/09-future-directions.md`
-- `docs/project/10-session-change-log.md`
-- `run.html`
 - `index.html`
+- `run.html`
 - `builder.html`
 - `styles.css`
-- `src/audio.js`
 - `src/main.js`
 - `src/ship.js`
 - `tests/ship.test.js`
@@ -72,59 +60,54 @@ Refresh the current repo around the now-finished game:
 
 | Artifact | Status | Notes |
 | --- | --- | --- |
-| `docs/project/00-existing-project-intake.md` | `reusable` | refreshed for the current release-sync loop |
+| `docs/project/00-existing-project-intake.md` | `reusable` | refreshed for the builder-export request |
 | `docs/project/01-work-order.md` | `reusable` | this file is the active scope-control artifact |
-| `docs/project/01-producer-work-order.md` | `out_of_scope` | prior brownfield work order; keep as historical reference only |
-| `docs/project/02-game-spec.md` | `refresh_required` | needs a final shipped-state wording pass |
-| `docs/project/05-build-note.md` | `refresh_required` | should present release-sync evidence instead of an open review handoff |
-| `docs/project/06-test-verdict.md` | `refresh_required` | stale review state conflicts with the current request |
-| `docs/project/07-mock-player-memo.md` | `refresh_required` | should match the current finished-game framing |
-| `docs/project/08-release-backlog-summary.md` | `refresh_required` | release call must align with the current ship-ready request |
-| `docs/project/09-future-directions.md` | `reusable` | future backlog remains valid without rewrite |
-| `docs/project/10-session-change-log.md` | `refresh_required` | needs the release-sync entry |
-| `README.md` | `refresh_required` | should reflect current behavior, logic, scope, and release framing |
-| `run.html` | `refresh_required` | compact HUD wording drift |
-| `index.html` / `builder.html` / `styles.css` | `reusable` | current shell styling and controls already match the intended direction |
-| `src/audio.js` | `reusable` | shipped browser audio implementation |
-| `src/main.js` / `src/ship.js` | `reusable` | source of truth for current game logic |
-| `tests/ship.test.js` | `refresh_required` | release docs and current runtime expectations should stay synchronized |
+| `docs/project/02-game-spec.md` | `out_of_scope` | no core game rule or platform assumption is changing |
+| `docs/project/05-build-note.md` | `refresh_required` | should describe the builder export utility |
+| `docs/project/10-session-change-log.md` | `refresh_required` | needs the builder-export round recorded |
+| `README.md` | `refresh_required` | should expose the new builder export workflow |
+| `index.html` / `run.html` / `builder.html` | `refresh_required` | shared builder sidebar needs the export action |
+| `styles.css` | `refresh_required` | needs status styling for the new action |
+| `src/main.js` | `refresh_required` | UI wiring and clipboard behavior live here |
+| `src/ship.js` | `refresh_required` | exact ship-spec formatting belongs next to blueprint serialization |
+| `tests/ship.test.js` | `refresh_required` | missing export-schema coverage |
 
 ## Required Outputs
 
-- Refreshed intake and current work order for the final release-sync pass
-- README and stale project docs that match the shipped game behavior and scope
-- Deterministic tests aligned with the current runtime
-- A clean repo state committed and pushed to GitHub
+- A builder action that copies the current ship as a prompt-ready standardized export
+- A stable `nbx-ship-design-v1` schema that preserves exact block layout without runtime ids
+- Deterministic automated coverage for the export contract
+- Updated intake/work order plus request-affected runtime docs
 
 ## Constraints
 
-- Preserve shipped gameplay behavior unless the current docs are wrong
-- Run a targeted loop only on stale or request-affected areas
-- Treat the current repo code as source of truth over older doc language
-- Keep the browser-first run/test path unchanged
-- Do not stop before the synced state is validated and pushed unless a contract-defined escalation is required
+- Preserve the exact current block layout; do not export a lossy silhouette summary
+- Strip runtime-only ids and keep the schema stable enough for future Codex handoff
+- Keep the workflow browser-local and clipboard-first
+- Do not add a second ship-authoring system outside the existing builder
+- Keep the change narrowly scoped to the builder/export problem
 
 ## Escalation Boundary
 
 The owner may decide alone:
 
-- which stale docs need refresh versus reuse
-- what minor wording-only shell cleanup is safe
-- whether targeted test additions are sufficient versus broader test rewrites
+- the exact export schema shape, as long as it preserves exact rebuildable block data
+- the button wording and lightweight status messaging
+- whether clipboard fallback uses a manual-copy dialog when browser permissions block automatic copy
 
 The owner must return to the user if:
 
-- the push cannot complete due credentials, remote access, or another external blocker
-- the repo shows severe drift that would require a broader rewrite than the targeted loop allows
-- unowned conflicting local changes make a safe sync impossible without direction
+- the requested workflow requires a full import pipeline or external storage system
+- the current builder cannot represent the required enemy layouts without broader system changes
+- browser clipboard restrictions make a practical local export path impossible
 
 ## Done When
 
-- the release-facing docs match the current runtime and shipped scope
-- any missing deterministic coverage for current behavior has been added
-- `npm test` passes
-- the repo state is committed and pushed to GitHub
+- the builder can copy the current ship as a standardized ship-design payload
+- the exported payload preserves exact block data and omits runtime-only ids
+- deterministic export coverage passes under `npm test`
+- request-affected docs reflect the new workflow
 
 ## Next Owner
 
-- Producer
+- Game Developer

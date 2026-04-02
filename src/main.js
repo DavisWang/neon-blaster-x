@@ -41,8 +41,10 @@ import {
   createBlueprintBlock,
   createShipFromBlueprint,
   ejectDisconnectedBlocks,
+  formatShipDesignExport,
   generateEnemyBlueprint,
   generateEnemyLoadout,
+  generateEnemyLoadoutForDesign,
   getEnemySpawnMargin,
   getEnemySpawnDirector,
   getOffscreenSpawnPosition,
@@ -113,9 +115,11 @@ const closeHowToButton = document.querySelector("#close-howto");
 const retryRunButton = document.querySelector("#retry-run");
 const returnTitleButton = document.querySelector("#return-title");
 const launchFromBuilderButton = document.querySelector("#launch-from-builder");
+const exportBuilderDesignButton = document.querySelector("#export-builder-design");
 const resetBuilderButton = document.querySelector("#reset-builder");
 const backToTitleButton = document.querySelector("#back-to-title");
 const audioToggleButton = document.querySelector("#audio-toggle");
+const builderExportStatus = document.querySelector("#builder-export-status");
 
 const qualityPalette = document.querySelector("#quality-palette");
 const blockPalette = document.querySelector("#block-palette");
@@ -131,6 +135,8 @@ const SELF_HIT_GRACE = 0.09;
 const DETACHED_LOOSE_DAMAGE_GRACE = 0.32;
 const SHIP_DEATH_SALVAGE_DAMAGE_GRACE = 2.4;
 const PLAYER_DEATH_ANIMATION_TTL = 2;
+const BUILDER_EXPORT_STATUS_DURATION_MS = 3200;
+let builderExportStatusTimer = 0;
 
 const state = {
   scene: "title",
@@ -437,6 +443,66 @@ function syncAudioToggle() {
   audioToggleButton.textContent = enabled ? "Audio On" : "Audio Off";
   audioToggleButton.setAttribute("aria-pressed", String(enabled));
   audioToggleButton.dataset.enabled = enabled ? "true" : "false";
+}
+
+function setBuilderExportStatus(message = "", stateName = "idle") {
+  if (!builderExportStatus) {
+    return;
+  }
+
+  builderExportStatus.textContent = message;
+  builderExportStatus.dataset.state = stateName;
+  window.clearTimeout(builderExportStatusTimer);
+  if (!message) {
+    return;
+  }
+
+  builderExportStatusTimer = window.setTimeout(() => {
+    builderExportStatus.textContent = "";
+    builderExportStatus.dataset.state = "idle";
+  }, BUILDER_EXPORT_STATUS_DURATION_MS);
+}
+
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "true");
+  textarea.style.position = "absolute";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textarea);
+
+  if (!copied) {
+    throw new Error("Clipboard copy failed");
+  }
+}
+
+async function exportBuilderDesign() {
+  if (!state.game?.player) {
+    setBuilderExportStatus("No builder ship available to export yet.", "error");
+    return;
+  }
+
+  state.playerBlueprint = serializeShipToBlueprint(state.game.player);
+  const exportText = formatShipDesignExport(state.playerBlueprint, {
+    source: state.scene === "builder" ? "builder" : "builder-sidebar"
+  });
+
+  try {
+    await copyTextToClipboard(exportText);
+    setBuilderExportStatus("Copied `nbx-ship-design-v1` JSON to the clipboard.", "success");
+  } catch (error) {
+    window.prompt("Copy ship design JSON:", exportText);
+    setBuilderExportStatus("Clipboard was blocked, so the JSON was opened for manual copy.", "warning");
+  }
 }
 
 function buildPalettes() {
@@ -1107,9 +1173,41 @@ function updateEnemyAi(enemy, dt) {
   fireShipWeapons(enemy, plan.shouldFire);
 }
 
-function spawnEnemy() {
+function getBlueprintBounds(blueprint) {
+  const cells = blueprint.flatMap((block) => getBlockCells(block));
+  if (cells.length === 0) {
+    return { minX: 0, maxX: 0, minY: 0, maxY: 0, width: 1, height: 1 };
+  }
+
+  const xs = cells.map((cell) => cell.x);
+  const ys = cells.map((cell) => cell.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+
+  return {
+    minX,
+    maxX,
+    minY,
+    maxY,
+    width: maxX - minX + 1,
+    height: maxY - minY + 1
+  };
+}
+
+function spawnEnemy(options = {}) {
   const enemyDirector = getEnemySpawnDirector(state.game.elapsed, state.game.kills);
-  const loadout = generateEnemyLoadout(enemyDirector.level, Math.random, enemyDirector.aiAggression);
+  const aggressionProgress = options.aggressionProgress ?? enemyDirector.aiAggression;
+  const loadout = options.designId
+    ? generateEnemyLoadoutForDesign(
+        options.designId,
+        options.level ?? enemyDirector.level,
+        Math.random,
+        aggressionProgress,
+        options.quality ?? null
+      )
+    : generateEnemyLoadout(enemyDirector.level, Math.random, aggressionProgress);
   const spawn = getOffscreenSpawnPosition(
     state.camera.x,
     state.camera.y,
@@ -2036,6 +2134,7 @@ launchFromBuilderButton.addEventListener("click", () => {
   }
   startRun({ useCurrentBlueprint: true });
 });
+exportBuilderDesignButton?.addEventListener("click", exportBuilderDesign);
 resetBuilderButton.addEventListener("click", resetBuilderShip);
 backToTitleButton.addEventListener("click", returnToTitle);
 
