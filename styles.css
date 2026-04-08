@@ -64,11 +64,17 @@ button:active {
   display: block;
 }
 
-.audio-toggle {
+.corner-controls {
   position: absolute;
   top: 14px;
   left: 14px;
   z-index: 12;
+  display: flex;
+  gap: 8px;
+}
+
+.audio-toggle,
+.lang-toggle {
   padding: 8px 10px;
   border-radius: 999px;
   background: rgba(6, 12, 22, 0.72);
@@ -141,6 +147,26 @@ button:active {
 
 .sidebar-group {
   margin-top: 22px;
+}
+
+.builder-export-status {
+  min-height: 1.25rem;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.builder-export-status[data-state="success"] {
+  color: var(--cyan-strong);
+}
+
+.builder-export-status[data-state="warning"] {
+  color: var(--amber);
+}
+
+.builder-export-status[data-state="error"] {
+  color: var(--pink);
 }
 
 .sidebar-group h3 {

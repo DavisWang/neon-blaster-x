@@ -9,26 +9,29 @@
   <body>
     <main class="app-shell">
       <canvas id="game-canvas" width="1440" height="900" aria-label="Neon Blaster X game canvas"></canvas>
-      <button id="audio-toggle" class="audio-toggle" type="button" aria-pressed="true">Audio On</button>
+      <div class="corner-controls">
+        <button id="audio-toggle" class="audio-toggle" type="button" aria-pressed="true">Audio On</button>
+        <button id="lang-toggle" class="lang-toggle" type="button" data-i18n="lang.label">EN</button>
+      </div>
 
       <section id="title-screen" class="panel panel-center">
-        <p class="eyebrow">Pwner Studios presents</p>
+        <p class="eyebrow" data-i18n="title.presents">Pwner Studios presents</p>
         <h1>Neon Blaster X</h1>
-        <p class="subtitle">
+        <p class="subtitle" data-i18n="title.subtitle">
           A neon salvage shooter about tearing ships apart and rebuilding your own in real time.
         </p>
         <div class="button-row">
-          <button id="start-run" class="primary-button">New Game</button>
-          <button id="open-builder" class="secondary-button">Spaceship Builder</button>
-          <button id="open-howto" class="secondary-button">How to Play</button>
+          <button id="start-run" class="primary-button" data-i18n="title.newGame">New Game</button>
+          <button id="open-builder" class="secondary-button" data-i18n="title.builder">Spaceship Builder</button>
+          <button id="open-howto" class="secondary-button" data-i18n="title.howToPlay">How to Play</button>
         </div>
-        <footer class="footer-note">By Pwner Studios</footer>
+        <footer class="footer-note" data-i18n="title.footer">By Pwner Studios</footer>
       </section>
 
       <section id="how-to-screen" class="panel panel-center panel-howto hidden">
-        <p class="eyebrow">How to Play</p>
-        <h2>Steal Parts. Stay Alive.</h2>
-        <p class="subtitle">
+        <p class="eyebrow" data-i18n="howto.eyebrow">How to Play</p>
+        <h2 data-i18n="howto.headline">Steal Parts. Stay Alive.</h2>
+        <p class="subtitle" data-i18n="howto.subtitle">
           Start as a bare cockpit, tear enemy ships apart, and rebuild faster than the next fight can overwhelm you.
         </p>
         <div class="howto-grid">
@@ -36,37 +39,37 @@
             <div class="howto-visual">
               <img src="./public/howto/a.png" alt="Neon ship combat artwork used for the fly and shoot how-to card." />
             </div>
-            <h3>Fly + Shoot</h3>
-            <p>Use <code>WASD</code> to move and turn. Press <code>Space</code> to fire.</p>
+            <h3 data-i18n="howto.flyShoot">Fly + Shoot</h3>
+            <p data-i18n-html="howto.flyShootDesc">Use <code>WASD</code> to move and turn. Press <code>Space</code> to fire.</p>
           </article>
           <article class="howto-card">
             <div class="howto-visual">
               <img src="./public/howto/c.png" alt="Neon ship artwork used for the rebuild live how-to card." />
             </div>
-            <h3>Rebuild Live</h3>
-            <p>Mouse click/drag to attach/detach parts.</p>
+            <h3 data-i18n="howto.rebuild">Rebuild Live</h3>
+            <p data-i18n="howto.rebuildDesc">Mouse click/drag to attach/detach parts.</p>
           </article>
           <article class="howto-card">
             <div class="howto-visual">
               <img src="./public/howto/b.png" alt="Neon block layout artwork used for the rotate and glow how-to card." />
             </div>
-            <h3>Rotate + Glow</h3>
-            <p>Press <code>R</code> to rotate the dragged part before you drop it. Press <code>Q</code> to cycle glow quality and preview the live glow look.</p>
+            <h3 data-i18n="howto.rotate">Rotate + Glow</h3>
+            <p data-i18n-html="howto.rotateDesc">Press <code>R</code> to rotate the dragged part before you drop it. Press <code>Q</code> to cycle glow quality and preview the live glow look.</p>
           </article>
         </div>
         <div class="button-row">
-          <button id="start-run-howto" class="primary-button">Start Run</button>
-          <button id="close-howto" class="secondary-button">Back</button>
+          <button id="start-run-howto" class="primary-button" data-i18n="howto.startRun">Start Run</button>
+          <button id="close-howto" class="secondary-button" data-i18n="howto.back">Back</button>
         </div>
       </section>
 
       <section id="hud" class="panel hud hidden">
         <div class="hud-column">
-          <div class="hud-label">Spaceship Status</div>
+          <div class="hud-label" data-i18n="hud.shipStatus">Spaceship Status</div>
           <div id="hud-health" class="hud-value">Cockpit 100%</div>
         </div>
         <div class="hud-column">
-          <div class="hud-label">Run Stats</div>
+          <div class="hud-label" data-i18n="hud.runStats">Run Stats</div>
           <div id="hud-score" class="hud-value">Kills 0 | Scrap 0</div>
         </div>
       </section>
@@ -74,44 +77,47 @@
       <section id="builder-sidebar" class="panel sidebar hidden">
         <div class="sidebar-head">
           <div>
-            <p class="eyebrow">Builder Sandbox</p>
-            <h2>Ship Builder</h2>
+            <p class="eyebrow" data-i18n="builder.eyebrow">Builder Sandbox</p>
+            <h2 data-i18n="builder.title">Ship Builder</h2>
           </div>
           <div class="sidebar-actions">
-            <button id="launch-from-builder" class="primary-button">Launch Run</button>
-            <button id="reset-builder" class="secondary-button">Reset Ship</button>
-            <button id="back-to-title" class="secondary-button">Title</button>
+            <button id="launch-from-builder" class="primary-button" data-i18n="builder.launchRun">Launch Run</button>
+            <button id="export-builder-design" class="secondary-button" data-i18n="builder.copySpec">Copy Ship Spec</button>
+            <button id="reset-builder" class="secondary-button" data-i18n="builder.resetShip">Reset Ship</button>
+            <button id="back-to-title" class="secondary-button" data-i18n="builder.titleBtn">Title</button>
           </div>
         </div>
+        <p id="builder-export-status" class="builder-export-status" aria-live="polite"></p>
 
         <div class="sidebar-group">
-          <h3>Quality</h3>
+          <h3 data-i18n="builder.qualityHeading">Quality</h3>
           <div id="quality-palette" class="palette-grid palette-grid-small"></div>
         </div>
 
         <div class="sidebar-group">
-          <h3>Blocks</h3>
+          <h3 data-i18n="builder.blocksHeading">Blocks</h3>
           <div id="block-palette" class="palette-grid"></div>
         </div>
 
         <div class="sidebar-group">
-          <h3>Builder Notes</h3>
+          <h3 data-i18n="builder.notesHeading">Builder Notes</h3>
           <ul class="builder-notes">
-            <li>Cyan squares on the ship are open mount points. Drop a part onto one to snap it in.</li>
-            <li>Hull 1x2 and 1x3 pieces extend straight out from the socket they connect to.</li>
-            <li>Press `R` while dragging blasters, thrusters, or shields to change their facing before you drop them.</li>
-            <li>Drag any mounted non-cockpit part off the ship to detach it, or right-click it for a quick detach.</li>
+            <li data-i18n="builder.note1">Cyan squares on the ship are open mount points. Drop a part onto one to snap it in.</li>
+            <li data-i18n="builder.note2">Hull 1x2 and 1x3 pieces extend straight out from the socket they connect to.</li>
+            <li data-i18n="builder.note3">Press `R` while dragging blasters, thrusters, or shields to change their facing before you drop them.</li>
+            <li data-i18n="builder.note4">Drag any mounted non-cockpit part off the ship to detach it, or right-click it for a quick detach.</li>
+            <li data-i18n="builder.note5">Use `Copy Ship Spec` to export the exact ship layout as `nbx-ship-design-v1` JSON for future enemy-design requests.</li>
           </ul>
         </div>
       </section>
 
       <section id="game-over" class="panel panel-center hidden">
-        <p class="eyebrow">Run Lost</p>
-        <h2>Cockpit Destroyed</h2>
+        <p class="eyebrow" data-i18n="gameover.eyebrow">Run Lost</p>
+        <h2 data-i18n="gameover.headline">Cockpit Destroyed</h2>
         <p id="game-over-stats" class="subtitle">Kills 0 | Scrap attached 0</p>
         <div class="button-row">
-          <button id="retry-run" class="primary-button">Retry</button>
-          <button id="return-title" class="secondary-button">Title</button>
+          <button id="retry-run" class="primary-button" data-i18n="gameover.retry">Retry</button>
+          <button id="return-title" class="secondary-button" data-i18n="gameover.title">Title</button>
         </div>
       </section>
     </main>

@@ -28,6 +28,7 @@ import {
   rotate,
   wrapAngle
 } from "./math.js";
+import { t, getPaletteI18nKey, initLang, toggleLang, setOnLangChange } from "./i18n.js";
 import {
   advancePendingGameOver,
   applyCockpitRegen,
@@ -119,6 +120,7 @@ const exportBuilderDesignButton = document.querySelector("#export-builder-design
 const resetBuilderButton = document.querySelector("#reset-builder");
 const backToTitleButton = document.querySelector("#back-to-title");
 const audioToggleButton = document.querySelector("#audio-toggle");
+const langToggleButton = document.querySelector("#lang-toggle");
 const builderExportStatus = document.querySelector("#builder-export-status");
 
 const qualityPalette = document.querySelector("#quality-palette");
@@ -417,6 +419,7 @@ function showScene(scene) {
   builderSidebar.classList.toggle("hidden", scene !== "builder");
   hud.classList.toggle("hidden", scene === "title");
   gameOverPanel.classList.toggle("hidden", !state.game?.gameOver);
+  langToggleButton?.classList.toggle("hidden", scene !== "title");
 }
 
 function syncHud() {
@@ -426,11 +429,11 @@ function syncHud() {
 
   const cockpit = getCockpit(state.game.player);
   const cockpitPct = cockpit ? Math.round((cockpit.hp / cockpit.maxHp) * 100) : 0;
-  hudHealth.textContent = `Cockpit ${cockpitPct}% | Blocks ${state.game.player.blocks.length}`;
-  hudScore.textContent = `Kills ${state.game.kills} | Scrap ${state.game.scrapAttached}`;
+  hudHealth.textContent = t("hud.health", { pct: cockpitPct, count: state.game.player.blocks.length });
+  hudScore.textContent = t("hud.score", { kills: state.game.kills, scrap: state.game.scrapAttached });
 
   if (state.game.gameOver) {
-    gameOverStats.textContent = `Kills ${state.game.kills} | Scrap attached ${state.game.scrapAttached}`;
+    gameOverStats.textContent = t("gameover.stats", { kills: state.game.kills, scrap: state.game.scrapAttached });
   }
 }
 
@@ -440,7 +443,7 @@ function syncAudioToggle() {
   }
 
   const enabled = audio.isEnabled();
-  audioToggleButton.textContent = enabled ? "Audio On" : "Audio Off";
+  audioToggleButton.textContent = enabled ? t("audio.on") : t("audio.off");
   audioToggleButton.setAttribute("aria-pressed", String(enabled));
   audioToggleButton.dataset.enabled = enabled ? "true" : "false";
 }
@@ -487,7 +490,7 @@ async function copyTextToClipboard(text) {
 
 async function exportBuilderDesign() {
   if (!state.game?.player) {
-    setBuilderExportStatus("No builder ship available to export yet.", "error");
+    setBuilderExportStatus(t("builder.exportNone"), "error");
     return;
   }
 
@@ -498,10 +501,10 @@ async function exportBuilderDesign() {
 
   try {
     await copyTextToClipboard(exportText);
-    setBuilderExportStatus("Copied `nbx-ship-design-v1` JSON to the clipboard.", "success");
+    setBuilderExportStatus(t("builder.exportSuccess"), "success");
   } catch (error) {
-    window.prompt("Copy ship design JSON:", exportText);
-    setBuilderExportStatus("Clipboard was blocked, so the JSON was opened for manual copy.", "warning");
+    window.prompt(t("builder.exportPrompt"), exportText);
+    setBuilderExportStatus(t("builder.exportFallback"), "warning");
   }
 }
 
@@ -513,7 +516,7 @@ function buildPalettes() {
   for (const tier of QUALITY_TIERS) {
     const button = document.createElement("button");
     button.className = "palette-button";
-    button.textContent = tier.label;
+    button.textContent = t("quality." + tier.id);
     button.style.borderColor = colorWithAlpha(tier.color, 0.55);
     button.style.boxShadow = `0 0 16px ${colorWithAlpha(tier.color, 0.18)}`;
     button.addEventListener("click", () => {
@@ -533,9 +536,10 @@ function buildPalettes() {
     preview.height = 60;
     swatch.appendChild(preview);
 
+    const i18nKey = getPaletteI18nKey(entry);
     const meta = document.createElement("span");
     meta.className = "palette-meta";
-    meta.innerHTML = `${entry.label}<small>${entry.detail}</small>`;
+    meta.innerHTML = `${t(i18nKey)}<small>${t(i18nKey + ".detail")}</small>`;
 
     button.append(swatch, meta);
     palettePreviewCanvases.set(button, { entry, preview });
@@ -2128,6 +2132,9 @@ audioToggleButton?.addEventListener("click", async () => {
   await audio.toggleEnabled();
   syncAudioToggle();
 });
+langToggleButton?.addEventListener("click", () => {
+  toggleLang();
+});
 launchFromBuilderButton.addEventListener("click", () => {
   if (state.game?.player) {
     state.playerBlueprint = serializeShipToBlueprint(state.game.player);
@@ -2238,8 +2245,12 @@ window.addEventListener("keyup", (event) => {
 });
 
 resizeCanvas();
-buildPalettes();
-syncAudioToggle();
+setOnLangChange(() => {
+  buildPalettes();
+  syncHud();
+  syncAudioToggle();
+});
+initLang();
 if (autoMode === "run") {
   startRun();
 } else if (autoMode === "builder") {
