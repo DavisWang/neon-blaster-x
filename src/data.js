@@ -10,6 +10,18 @@ export const SOCKET_SNAP_DISTANCE = 78;
 export const LOOSE_PICK_RADIUS = 28;
 export const COLLISION_DAMAGE_SCALE = 0.015;
 
+/** Cockpit self-heal and nanoweave neighbor-heal time base (seconds for 0→full at nominal rate). */
+export const COCKPIT_REGEN_SECONDS = 120;
+/** Neighbor HP per second = (maxHp / COCKPIT_REGEN_SECONDS) * this fraction. */
+export const NANOWEAVE_HEAL_RATE_FRACTION = 0.5;
+/** Nanoweave hull HP vs same-length standard hull (length factors applied in ship.js). */
+export const NANOWEAVE_HULL_DURABILITY_SCALE = 0.55;
+/** Welding-spark VFX: random interval between bursts while repair is active (seconds). */
+export const NANOWEAVE_HEAL_SPARK_MIN_INTERVAL = 2;
+export const NANOWEAVE_HEAL_SPARK_MAX_INTERVAL = 3;
+/** Length of one spark burst (seconds); alpha fades linearly over this window. */
+export const NANOWEAVE_HEAL_SPARK_BURST_S = 0.16;
+
 export const SIDE_ORDER = ["north", "east", "south", "west"];
 
 export const SIDE_VECTORS = {
@@ -77,6 +89,9 @@ export const PALETTE_BLOCKS = [
   { type: "hull", variant: "single", label: "Hull 1x1", detail: "Single-cell frame" },
   { type: "hull", variant: "double", label: "Hull 1x2", detail: "Two-cell spine" },
   { type: "hull", variant: "triple", label: "Hull 1x3", detail: "Three-cell spine" },
+  { type: "hull", variant: "nanoweave_single", label: "Nanoweave 1x1", detail: "Fragile; slowly heals neighbors" },
+  { type: "hull", variant: "nanoweave_double", label: "Nanoweave 1x2", detail: "Fragile spine; slowly heals neighbors" },
+  { type: "hull", variant: "nanoweave_triple", label: "Nanoweave 1x3", detail: "Fragile spine; slowly heals neighbors" },
   { type: "blaster", variant: "single", label: "Blaster", detail: "Single forward shot" },
   { type: "blaster", variant: "dual", label: "Dual Blaster", detail: "Twin forward shots" },
   { type: "blaster", variant: "spread", label: "3-Way Blaster", detail: "Fan spread shot" },

@@ -7,6 +7,7 @@ import {
   HALF_CELL,
   LOOSE_DRAG,
   LOOSE_PICK_RADIUS,
+  NANOWEAVE_HEAL_SPARK_BURST_S,
   PALETTE_BLOCKS,
   QUALITY_TIERS,
   QUALITY_BY_ID,
@@ -29,9 +30,11 @@ import {
   wrapAngle
 } from "./math.js";
 import { t, getPaletteI18nKey, initLang, toggleLang, setOnLangChange } from "./i18n.js";
+import { getNanoweaveHullInsets, computeNanoweaveLattice } from "./nanoweaveLattice.js";
 import {
   advancePendingGameOver,
   applyCockpitRegen,
+  applyNanoweaveRepair,
   attachLooseBlock,
   canAttachLooseBlock,
   canDamageLooseBlock,
@@ -66,6 +69,7 @@ import {
   getBlockRenderOffset,
   getHullLength,
   getInertia,
+  isNanoweaveHull,
   getMass,
   getOpenSockets,
   getQuality,
@@ -88,6 +92,7 @@ import {
   serializeShipToBlueprint,
   sideToAngle,
   shouldBulletHitLooseBlock,
+  tickNanoweaveHealSparks,
   worldToLocal
 } from "./ship.js";
 
@@ -176,9 +181,20 @@ const state = {
 const audio = createAudioDirector();
 const QUALITY_INDEX_BY_ID = Object.fromEntries(QUALITY_TIERS.map((tier, index) => [tier.id, index]));
 
+const COLOR_ALPHA_CACHE_MAX = 512;
+const colorAlphaCache = new Map();
+
 function colorWithAlpha(color, alpha) {
+  const a = clamp(alpha, 0, 1);
   if (color.startsWith("hsl")) {
-    return color.replace(")", ` / ${clamp(alpha, 0, 1)})`).replace("hsl(", "hsl(");
+    return color.replace(")", ` / ${a})`).replace("hsl(", "hsl(");
+  }
+
+  const q = Math.round(a * 1000);
+  const cacheKey = `${color}|${q}`;
+  const cached = colorAlphaCache.get(cacheKey);
+  if (cached !== undefined) {
+    return cached;
   }
 
   const hex = color.replace("#", "");
@@ -187,7 +203,14 @@ function colorWithAlpha(color, alpha) {
   const r = (value >> 16) & 255;
   const g = (value >> 8) & 255;
   const b = value & 255;
-  return `rgba(${r}, ${g}, ${b}, ${clamp(alpha, 0, 1)})`;
+  const out = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+  if (colorAlphaCache.size >= COLOR_ALPHA_CACHE_MAX) {
+    const firstKey = colorAlphaCache.keys().next().value;
+    colorAlphaCache.delete(firstKey);
+  }
+  colorAlphaCache.set(cacheKey, out);
+  return out;
 }
 
 function getBlockColor(block, time) {
@@ -423,17 +446,30 @@ function showScene(scene) {
 }
 
 function syncHud() {
+  if (state.scene === "title") {
+    return;
+  }
   if (!state.game?.player) {
     return;
   }
 
   const cockpit = getCockpit(state.game.player);
   const cockpitPct = cockpit ? Math.round((cockpit.hp / cockpit.maxHp) * 100) : 0;
-  hudHealth.textContent = t("hud.health", { pct: cockpitPct, count: state.game.player.blocks.length });
-  hudScore.textContent = t("hud.score", { kills: state.game.kills, scrap: state.game.scrapAttached });
+  const healthText = t("hud.health", { pct: cockpitPct, count: state.game.player.blocks.length });
+  if (hudHealth.textContent !== healthText) {
+    hudHealth.textContent = healthText;
+  }
+
+  const scoreText = t("hud.score", { kills: state.game.kills, scrap: state.game.scrapAttached });
+  if (hudScore.textContent !== scoreText) {
+    hudScore.textContent = scoreText;
+  }
 
   if (state.game.gameOver) {
-    gameOverStats.textContent = t("gameover.stats", { kills: state.game.kills, scrap: state.game.scrapAttached });
+    const overText = t("gameover.stats", { kills: state.game.kills, scrap: state.game.scrapAttached });
+    if (gameOverStats.textContent !== overText) {
+      gameOverStats.textContent = overText;
+    }
   }
 }
 
@@ -539,7 +575,12 @@ function buildPalettes() {
     const i18nKey = getPaletteI18nKey(entry);
     const meta = document.createElement("span");
     meta.className = "palette-meta";
-    meta.innerHTML = `${t(i18nKey)}<small>${t(i18nKey + ".detail")}</small>`;
+    const titleEl = document.createElement("span");
+    titleEl.className = "palette-meta__title";
+    titleEl.textContent = t(i18nKey);
+    const detailEl = document.createElement("small");
+    detailEl.textContent = t(i18nKey + ".detail");
+    meta.append(titleEl, detailEl);
 
     button.append(swatch, meta);
     palettePreviewCanvases.set(button, { entry, preview });
@@ -1575,11 +1616,15 @@ function updateGame(dt) {
     }
   } else if (!state.game.gameOver) {
     applyCockpitRegen(state.game.player, dt);
+    applyNanoweaveRepair(state.game.player, dt);
+    tickNanoweaveHealSparks(state.game.player, state.game.elapsed);
     updateShipPhysics(state.game.player, state.input, dt);
     fireShipWeapons(state.game.player, state.input.fire);
     maybeSpawnEnemies(dt);
     for (const enemy of state.game.enemies) {
       applyCockpitRegen(enemy, dt);
+      applyNanoweaveRepair(enemy, dt);
+      tickNanoweaveHealSparks(enemy, state.game.elapsed);
       updateEnemyAi(enemy, dt);
     }
     updateBullets(dt);
@@ -1593,13 +1638,19 @@ function updateGame(dt) {
   syncHud();
 }
 
+let skyGradientCache = null;
+let skyGradientHeight = -1;
+
 function drawBackground(cameraX, cameraY) {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const gradient = ctx.createLinearGradient(0, 0, 0, height);
-  gradient.addColorStop(0, "#07101d");
-  gradient.addColorStop(1, "#01040a");
-  ctx.fillStyle = gradient;
+  if (height !== skyGradientHeight || !skyGradientCache) {
+    skyGradientCache = ctx.createLinearGradient(0, 0, 0, height);
+    skyGradientCache.addColorStop(0, "#07101d");
+    skyGradientCache.addColorStop(1, "#01040a");
+    skyGradientHeight = height;
+  }
+  ctx.fillStyle = skyGradientCache;
   ctx.fillRect(0, 0, width, height);
 
   ctx.strokeStyle = "rgba(110, 247, 255, 0.05)";
@@ -1607,18 +1658,16 @@ function drawBackground(cameraX, cameraY) {
   const grid = 120;
   const startX = ((-cameraX + width * 0.5) % grid + grid) % grid;
   const startY = ((-cameraY + height * 0.5) % grid + grid) % grid;
+  ctx.beginPath();
   for (let x = startX; x < width; x += grid) {
-    ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x, height);
-    ctx.stroke();
   }
   for (let y = startY; y < height; y += grid) {
-    ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(width, y);
-    ctx.stroke();
   }
+  ctx.stroke();
 
   const tile = 180;
   const minX = Math.floor((cameraX - width * 0.5) / tile) - 1;
@@ -1626,19 +1675,162 @@ function drawBackground(cameraX, cameraY) {
   const minY = Math.floor((cameraY - height * 0.5) / tile) - 1;
   const maxY = Math.ceil((cameraY + height * 0.5) / tile) + 1;
 
+  // Two passes, two fillStyle values, fillRect instead of arc+fill (same look at this scale).
+  ctx.fillStyle = "rgba(110, 247, 255, 0.35)";
   for (let tx = minX; tx <= maxX; tx += 1) {
     for (let ty = minY; ty <= maxY; ty += 1) {
       const bright = hash2D(tx, ty);
+      if (bright > 0.8) {
+        continue;
+      }
       const worldX = tx * tile + hash2D(tx + 2, ty + 7) * tile;
       const worldY = ty * tile + hash2D(tx - 5, ty + 3) * tile;
       const screen = worldToScreen(worldX, worldY);
       const size = bright > 0.82 ? 2.6 : bright > 0.55 ? 1.6 : 1;
-      ctx.fillStyle = bright > 0.8 ? "rgba(255, 255, 255, 0.85)" : "rgba(110, 247, 255, 0.35)";
-      ctx.beginPath();
-      ctx.arc(screen.x, screen.y, size, 0, Math.PI * 2);
-      ctx.fill();
+      const d = size * 2;
+      ctx.fillRect(screen.x - size, screen.y - size, d, d);
     }
   }
+  ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+  for (let tx = minX; tx <= maxX; tx += 1) {
+    for (let ty = minY; ty <= maxY; ty += 1) {
+      const bright = hash2D(tx, ty);
+      if (bright <= 0.8) {
+        continue;
+      }
+      const worldX = tx * tile + hash2D(tx + 2, ty + 7) * tile;
+      const worldY = ty * tile + hash2D(tx - 5, ty + 3) * tile;
+      const screen = worldToScreen(worldX, worldY);
+      const size = bright > 0.82 ? 2.6 : bright > 0.55 ? 1.6 : 1;
+      const d = size * 2;
+      ctx.fillRect(screen.x - size, screen.y - size, d, d);
+    }
+  }
+}
+
+function drawNanoweaveHullLattice(
+  drawCtx,
+  hullWidth,
+  hullHeight,
+  color,
+  baseAlpha,
+  lineScale,
+  insetX,
+  insetY,
+  hullLength
+) {
+  const left = -hullWidth * 0.5;
+  const top = -hullHeight * 0.5;
+  const lattice = computeNanoweaveLattice(hullWidth, hullHeight, lineScale, insetX, insetY, hullLength);
+  const { centers, armX, armY, lineWidth } = lattice;
+
+  drawCtx.save();
+  drawCtx.beginPath();
+  drawCtx.rect(left, top, hullWidth, hullHeight);
+  drawCtx.clip();
+  drawCtx.shadowBlur = 0;
+  drawCtx.lineWidth = lineWidth;
+  drawCtx.lineCap = "round";
+  drawCtx.lineJoin = "round";
+  drawCtx.strokeStyle = colorWithAlpha(color, clamp(baseAlpha * 0.58, 0.12, 0.92));
+
+  for (const { x, y } of centers) {
+    drawCtx.beginPath();
+    drawCtx.moveTo(x - armX, y - armY);
+    drawCtx.lineTo(x + armX, y + armY);
+    drawCtx.stroke();
+    drawCtx.beginPath();
+    drawCtx.moveTo(x + armX, y - armY);
+    drawCtx.lineTo(x - armX, y + armY);
+    drawCtx.stroke();
+  }
+  drawCtx.restore();
+}
+
+function getNanoweaveHealSparkFade(block, gameElapsed) {
+  if (block.nanoweaveSparkBurstUntil == null || gameElapsed >= block.nanoweaveSparkBurstUntil) {
+    return 0;
+  }
+  const remaining = block.nanoweaveSparkBurstUntil - gameElapsed;
+  return clamp(remaining / NANOWEAVE_HEAL_SPARK_BURST_S, 0, 1);
+}
+
+function drawNanoweaveHealSparksOnBlock(drawCtx, block, fade, effectTime) {
+  if (fade <= 0.02) {
+    return;
+  }
+  const seed = block.x * 12.9898 + block.y * 78.233 + (block.id?.length ?? 0) * 0.1;
+  const pickEdge = (t) => {
+    const u = t - Math.floor(t);
+    if (block.type === "hull") {
+      const hullW = HALF_CELL * 1.44;
+      const hullH = hullW + CELL_SIZE * (getHullLength(block) - 1);
+      const hw2 = hullW * 0.5;
+      const hh2 = hullH * 0.5;
+      const perimeter = 2 * (hullW + hullH);
+      let d = u * perimeter;
+      if (d < hullW) {
+        return { x: -hw2 + d, y: -hh2 };
+      }
+      d -= hullW;
+      if (d < hullH) {
+        return { x: hw2, y: -hh2 + d };
+      }
+      d -= hullH;
+      if (d < hullW) {
+        return { x: hw2 - d, y: hh2 };
+      }
+      return { x: -hw2, y: hh2 - (d - hullW) };
+    }
+    let w = 11;
+    let h = 13;
+    if (block.type === "blaster") {
+      w = 10;
+      h = 16;
+    } else if (block.type === "thruster") {
+      w = 11;
+      h = 12;
+    } else if (block.type === "shield") {
+      w = 11;
+      h = 10;
+    }
+    const perimeter = 2 * (w * 2 + h * 2);
+    let d = u * perimeter;
+    if (d < w * 2) {
+      return { x: -w + d, y: -h };
+    }
+    d -= w * 2;
+    if (d < h * 2) {
+      return { x: w, y: -h + d };
+    }
+    d -= h * 2;
+    if (d < w * 2) {
+      return { x: w - d, y: h };
+    }
+    return { x: -w, y: h - (d - w * 2) };
+  };
+
+  drawCtx.save();
+  drawCtx.shadowBlur = 0;
+  const n = 7;
+  for (let i = 0; i < n; i += 1) {
+    const t = seed * 0.01 + i * 0.618 + effectTime * 0.8;
+    const p = pickEdge((Math.sin(t * 3.1) * 0.5 + 0.5 + i * 0.07) % 1);
+    const len = 3 + (i % 3) * 2;
+    const ang = t * 4.2 + i;
+    const a = fade * (0.45 + (i % 4) * 0.12);
+    drawCtx.strokeStyle = colorWithAlpha(i % 2 === 0 ? "#fff8e6" : "#7cf0ff", a);
+    drawCtx.lineWidth = 1.2;
+    drawCtx.beginPath();
+    drawCtx.moveTo(p.x, p.y);
+    drawCtx.lineTo(p.x + Math.cos(ang) * len, p.y + Math.sin(ang) * len);
+    drawCtx.stroke();
+    drawCtx.beginPath();
+    drawCtx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+    drawCtx.fillStyle = colorWithAlpha("#ffffff", a * 0.85);
+    drawCtx.fill();
+  }
+  drawCtx.restore();
 }
 
 function drawBlockShapeOnContext(drawCtx, block, color, hpRatio, options = {}) {
@@ -1687,12 +1879,27 @@ function drawBlockShapeOnContext(drawCtx, block, color, hpRatio, options = {}) {
     drawCtx.rect(-hullWidth * 0.5, -hullHeight * 0.5, hullWidth, hullHeight);
     drawCtx.fill();
     drawCtx.stroke();
-    drawCtx.beginPath();
-    drawCtx.moveTo(-hullWidth * 0.5 + insetX, -hullHeight * 0.5 + insetY);
-    drawCtx.lineTo(hullWidth * 0.5 - insetX, hullHeight * 0.5 - insetY);
-    drawCtx.moveTo(-hullWidth * 0.5 + insetX, hullHeight * 0.5 - insetY);
-    drawCtx.lineTo(hullWidth * 0.5 - insetX, -hullHeight * 0.5 + insetY);
-    drawCtx.stroke();
+    if (isNanoweaveHull(block)) {
+      const nwInsets = getNanoweaveHullInsets(hullWidth, hullHeight);
+      drawNanoweaveHullLattice(
+        drawCtx,
+        hullWidth,
+        hullHeight,
+        color,
+        alpha,
+        lineScale,
+        nwInsets.insetX,
+        nwInsets.insetY,
+        hullLength
+      );
+    } else {
+      drawCtx.beginPath();
+      drawCtx.moveTo(-hullWidth * 0.5 + insetX, -hullHeight * 0.5 + insetY);
+      drawCtx.lineTo(hullWidth * 0.5 - insetX, hullHeight * 0.5 - insetY);
+      drawCtx.moveTo(-hullWidth * 0.5 + insetX, hullHeight * 0.5 - insetY);
+      drawCtx.lineTo(hullWidth * 0.5 - insetX, -hullHeight * 0.5 + insetY);
+      drawCtx.stroke();
+    }
     if (hullLength > 1) {
       const centerOffset = (hullLength - 1) * CELL_SIZE * 0.5;
       drawCtx.beginPath();
@@ -1804,6 +2011,7 @@ function drawShipHalo(screenX, screenY, color, alpha, radius) {
 
 function drawShip(ship, isPlayer = false) {
   const shipVisualProfile = getShipVisualQualityProfile(state.visualQuality);
+  const gameElapsed = state.game?.elapsed ?? 0;
   for (const block of ship.blocks) {
     const world = getBlockWorldPosition(ship, block);
     const screen = worldToScreen(world.x, world.y);
@@ -1827,6 +2035,10 @@ function drawShip(ship, isPlayer = false) {
       shadowBoost: 0,
       shadowBlur: 0
     });
+    const sparkFade = getNanoweaveHealSparkFade(block, gameElapsed);
+    if (sparkFade > 0.02) {
+      drawNanoweaveHealSparksOnBlock(ctx, block, sparkFade, state.time);
+    }
     ctx.restore();
   }
 
@@ -2080,7 +2292,9 @@ function drawTitlePreview() {
 }
 
 function render() {
-  refreshPalettePreviews();
+  if (state.scene === "builder") {
+    refreshPalettePreviews();
+  }
   const cameraX = state.game ? state.camera.x : 0;
   const cameraY = state.game ? state.camera.y : 0;
   drawBackground(cameraX, cameraY);

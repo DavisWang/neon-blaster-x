@@ -1,11 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { CELL_SIZE } from "../src/data.js";
+import { CELL_SIZE, COCKPIT_REGEN_SECONDS, NANOWEAVE_HEAL_RATE_FRACTION } from "../src/data.js";
 import { getAmbientLoopDuration, getAmbientLoopEvents, getQualityFrequency } from "../src/audio.js";
 
 import {
   advancePendingGameOver,
   applyCockpitRegen,
+  applyNanoweaveRepair,
   attachLooseBlock,
   buildShipDesignExport,
   buildEnemyBlueprint,
@@ -40,6 +41,7 @@ import {
   getOffscreenSpawnPosition,
   findConnectedBlockIds,
   getMass,
+  getHullLength,
   getShipDeathSalvageSpawnState,
   getBlockStats,
   getBuiltInBlaster,
@@ -49,6 +51,7 @@ import {
   getShipGlowMultiplier,
   getShipVisualQualityProfile,
   getOpenSockets,
+  isNanoweaveHull,
   pickNearestOtherShip,
   prepareShipDeathSalvageBlocks,
   registerEnemyProvocation,
@@ -66,7 +69,8 @@ import {
   resolveRunBlueprint,
   resolveShipBoardPointerAction,
   shouldBulletHitLooseBlock,
-  selectThrustersForInput
+  selectThrustersForInput,
+  tickNanoweaveHealSparks
 } from "../src/ship.js";
 
 const QUALITY_IDS = ["grey", "red", "orange", "yellow", "green", "blue", "purple", "white", "rainbow"];
@@ -1062,10 +1066,199 @@ test("cockpit regen restores health on a 120-second full refill slope", () => {
 
   cockpit.hp = 0;
   applyCockpitRegen(ship, 1);
-  assert.ok(Math.abs(cockpit.hp - cockpit.maxHp / 120) < 0.000001);
+  assert.ok(Math.abs(cockpit.hp - cockpit.maxHp / COCKPIT_REGEN_SECONDS) < 0.000001);
 
   applyCockpitRegen(ship, 119);
   assert.ok(Math.abs(cockpit.hp - cockpit.maxHp) < 0.000001);
+});
+
+test("nanoweave hull length and durability factor match spine size", () => {
+  const dbl = createBlueprintBlock({
+    type: "hull",
+    variant: "nanoweave_double",
+    x: 0,
+    y: 0,
+    quality: "red",
+    orientation: "north"
+  });
+  assert.equal(getHullLength(dbl), 2);
+  assert.ok(isNanoweaveHull(dbl));
+  const nwHp = getBlockStats(dbl).hp;
+  const stdHp = getBlockStats({ ...dbl, variant: "double" }).hp;
+  assert.ok(Math.abs(nwHp / stdHp - 0.55) < 0.001);
+});
+
+test("nanoweave repair heals adjacent standard hull at half cockpit fractional rate", () => {
+  const ship = createShipFromBlueprint([
+    createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 1,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "single",
+      x: 2,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    })
+  ]);
+  const hull = ship.blocks.find((b) => b.type === "hull" && b.variant === "single");
+  hull.hp = 20;
+  const before = hull.hp;
+  applyNanoweaveRepair(ship, 1);
+  const expected =
+    before + hull.maxHp * (NANOWEAVE_HEAL_RATE_FRACTION / COCKPIT_REGEN_SECONDS) * 1;
+  assert.ok(Math.abs(hull.hp - expected) < 0.0001);
+});
+
+test("nanoweave does not heal a module that only shares a grid edge without attach bond", () => {
+  const ship = createShipFromBlueprint([
+    createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 1,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "single",
+      x: 2,
+      y: -1,
+      quality: "red",
+      orientation: "east",
+      attachSide: "south"
+    }),
+    createBlueprintBlock({
+      type: "thruster",
+      x: 2,
+      y: 0,
+      quality: "red",
+      orientation: "north",
+      attachSide: "north"
+    })
+  ]);
+  const thruster = ship.blocks.find((b) => b.type === "thruster");
+  thruster.hp = 8;
+  applyNanoweaveRepair(ship, 5);
+  assert.equal(thruster.hp, 8);
+});
+
+test("nanoweave does not repair another nanoweave hull", () => {
+  const ship = createShipFromBlueprint([
+    createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 1,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 2,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    })
+  ]);
+  const inner = ship.blocks.find((b) => b.x === 2);
+  inner.hp = 5;
+  applyNanoweaveRepair(ship, 3);
+  assert.equal(inner.hp, 5);
+});
+
+test("two nanoweaves flanking one hull do not double heal rate", () => {
+  const ship = createShipFromBlueprint([
+    createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 1,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "single",
+      x: 2,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 3,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    })
+  ]);
+  const hull = ship.blocks.find((b) => b.type === "hull" && b.variant === "single");
+  hull.hp = 30;
+  applyNanoweaveRepair(ship, 1);
+  const delta = hull.hp - 30;
+  const expected = hull.maxHp * (NANOWEAVE_HEAL_RATE_FRACTION / COCKPIT_REGEN_SECONDS);
+  assert.ok(Math.abs(delta - expected) < 0.0001);
+});
+
+test("enemy hull build steps can roll nanoweave when rng forces under 1/6", () => {
+  const blueprint = buildEnemyBlueprint("needle-sting", "red", { rng: () => 0 });
+  const hullBlocks = blueprint.filter((b) => b.type === "hull");
+  assert.ok(hullBlocks.some((b) => String(b.variant ?? "").startsWith("nanoweave_")));
+});
+
+test("tickNanoweaveHealSparks schedules burst while target is heal-eligible", () => {
+  const ship = createShipFromBlueprint([
+    createBlueprintBlock({ type: "cockpit", x: 0, y: 0 }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "nanoweave_single",
+      x: 1,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    }),
+    createBlueprintBlock({
+      type: "hull",
+      variant: "single",
+      x: 2,
+      y: 0,
+      quality: "red",
+      orientation: "east",
+      attachSide: "west"
+    })
+  ]);
+  const hull = ship.blocks.find((b) => b.type === "hull" && b.variant === "single");
+  hull.hp = 10;
+  let t = 0;
+  const rng = () => 0;
+  tickNanoweaveHealSparks(ship, t, rng);
+  assert.ok(hull.nextNanoweaveSparkAt != null);
+  t = hull.nextNanoweaveSparkAt + 0.001;
+  tickNanoweaveHealSparks(ship, t, rng);
+  assert.ok(hull.nanoweaveSparkBurstUntil != null && hull.nanoweaveSparkBurstUntil > t);
 });
 
 test("pending game over waits three seconds before flipping the panel state", () => {

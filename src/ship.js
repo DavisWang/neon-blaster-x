@@ -1,4 +1,19 @@
-import { BLOCK_DEFS, CELL_SIZE, HALF_CELL, MAX_ENEMIES, QUALITY_BY_ID, QUALITY_TIERS, SIDE_ORDER, SIDE_VECTORS } from "./data.js";
+import {
+  BLOCK_DEFS,
+  CELL_SIZE,
+  COCKPIT_REGEN_SECONDS,
+  HALF_CELL,
+  MAX_ENEMIES,
+  NANOWEAVE_HEAL_RATE_FRACTION,
+  NANOWEAVE_HEAL_SPARK_BURST_S,
+  NANOWEAVE_HEAL_SPARK_MAX_INTERVAL,
+  NANOWEAVE_HEAL_SPARK_MIN_INTERVAL,
+  NANOWEAVE_HULL_DURABILITY_SCALE,
+  QUALITY_BY_ID,
+  QUALITY_TIERS,
+  SIDE_ORDER,
+  SIDE_VECTORS
+} from "./data.js";
 import { clamp, dot, length, lerp, normalize, rotate, wrapAngle } from "./math.js";
 
 let nextBlockId = 1;
@@ -7,7 +22,6 @@ const COCKPIT_BUILTIN_THRUST = 1200;
 const COCKPIT_BUILTIN_REVERSE_THRUST = 700;
 const COCKPIT_BUILTIN_TORQUE = 11000;
 const SIDE_THRUSTER_YAW_ARM = CELL_SIZE * 0.75;
-const COCKPIT_REGEN_SECONDS = 120;
 const BLASTER_BASE_TTL = 1.35;
 const BUILT_IN_BLASTER_RANGE_MULTIPLIER = 0.85;
 const BUILT_IN_BLASTER_SPEED_MULTIPLIER = 0.9;
@@ -16,10 +30,14 @@ const SHIP_DEATH_SALVAGE_HP_FLOOR_RATIO = 0.85;
 const SHIP_DEATH_SALVAGE_EJECT_OFFSET = CELL_SIZE * 0.55;
 const SHIP_DEATH_SALVAGE_EJECT_SPEED = 60;
 const SHIP_VISUAL_QUALITY_ORDER = ["high", "medium", "low"];
+const NW_DUR = NANOWEAVE_HULL_DURABILITY_SCALE;
 const HULL_DURABILITY_FACTORS = {
   single: 1,
   double: 1.14,
-  triple: 1.28
+  triple: 1.28,
+  nanoweave_single: NW_DUR * 1,
+  nanoweave_double: NW_DUR * 1.14,
+  nanoweave_triple: NW_DUR * 1.28
 };
 const QUALITY_INDEX_BY_ID = Object.fromEntries(QUALITY_TIERS.map((tier, index) => [tier.id, index]));
 const QUALITY_MATCHUP_DAMAGE_MULTIPLIERS = {
@@ -165,7 +183,9 @@ export function materializeBlock(block) {
     hp: clampValue(block.hp ?? maxHp, 0, maxHp),
     cooldown: 0,
     active: false,
-    flash: 0
+    flash: 0,
+    nextNanoweaveSparkAt: null,
+    nanoweaveSparkBurstUntil: null
   };
 }
 
@@ -380,6 +400,10 @@ export function getProjectileDamageAgainstBlock(baseDamage, attackerQualityId, b
   return damage;
 }
 
+export function isNanoweaveHull(block) {
+  return block?.type === "hull" && String(block.variant ?? "").startsWith("nanoweave_");
+}
+
 export function getHullLength(block) {
   if (block.type !== "hull") {
     return 1;
@@ -387,7 +411,10 @@ export function getHullLength(block) {
   return {
     single: 1,
     double: 2,
-    triple: 3
+    triple: 3,
+    nanoweave_single: 1,
+    nanoweave_double: 2,
+    nanoweave_triple: 3
   }[block.variant ?? "single"] ?? 1;
 }
 
@@ -716,7 +743,7 @@ export function getBlockPlacementForSocket(looseBlock, socket) {
 
   if (looseBlock.type === "hull") {
     return {
-      orientation: looseBlock.variant === "single" ? looseBlock.orientation : socket.side,
+      orientation: getHullLength(looseBlock) === 1 ? looseBlock.orientation : socket.side,
       attachSide: oppositeSide(socket.side)
     };
   }
@@ -1063,6 +1090,107 @@ export function applyCockpitRegen(ship, dt, secondsToFull = COCKPIT_REGEN_SECOND
   cockpit.maxHp = maxHp;
   cockpit.hp = Math.min(maxHp, cockpit.hp + (maxHp / secondsToFull) * dt);
   return cockpit;
+}
+
+function blockTouchesLivingAttachedNanoweave(block, occupied, cellSets) {
+  for (const cell of getBlockCells(block)) {
+    for (const side of SIDE_ORDER) {
+      const vector = SIDE_VECTORS[side];
+      const neighbor = occupied.get(`${cell.x + vector.x},${cell.y + vector.y}`);
+      if (
+        neighbor &&
+        neighbor.id !== block.id &&
+        isNanoweaveHull(neighbor) &&
+        neighbor.hp > 0 &&
+        !neighbor.destroyed &&
+        blocksConnectAcrossBoundary(block, neighbor, cell, side, cellSets)
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export function canReceiveNanoweaveHeal(block, ship, occupied = null) {
+  if (!block || block.destroyed) {
+    return false;
+  }
+  if (block.type === "cockpit" || isNanoweaveHull(block)) {
+    return false;
+  }
+  if (block.hp >= block.maxHp) {
+    return false;
+  }
+  const map = occupied ?? getOccupiedMap(ship);
+  const cellSets = new Map(ship.blocks.map((b) => [b.id, getBlockCellSet(b)]));
+  return blockTouchesLivingAttachedNanoweave(block, map, cellSets);
+}
+
+export function applyNanoweaveRepair(ship, dt) {
+  if (!ship?.alive || dt <= 0) {
+    return;
+  }
+
+  const occupied = getOccupiedMap(ship);
+  const cellSets = new Map(ship.blocks.map((b) => [b.id, getBlockCellSet(b)]));
+  const neighborsById = new Map();
+
+  for (const block of ship.blocks) {
+    if (!isNanoweaveHull(block) || block.hp <= 0 || block.destroyed) {
+      continue;
+    }
+    for (const cell of getBlockCells(block)) {
+      for (const side of SIDE_ORDER) {
+        const vector = SIDE_VECTORS[side];
+        const neighbor = occupied.get(`${cell.x + vector.x},${cell.y + vector.y}`);
+        if (!neighbor || neighbor.id === block.id) {
+          continue;
+        }
+        if (!blocksConnectAcrossBoundary(block, neighbor, cell, side, cellSets)) {
+          continue;
+        }
+        if (neighbor.type === "cockpit" || isNanoweaveHull(neighbor)) {
+          continue;
+        }
+        if (neighbor.destroyed || neighbor.hp >= neighbor.maxHp) {
+          continue;
+        }
+        neighborsById.set(neighbor.id, neighbor);
+      }
+    }
+  }
+
+  const rateMul = (NANOWEAVE_HEAL_RATE_FRACTION / COCKPIT_REGEN_SECONDS) * dt;
+  for (const neighbor of neighborsById.values()) {
+    const maxHp = neighbor.maxHp ?? getBlockStats(neighbor).hp;
+    neighbor.maxHp = maxHp;
+    neighbor.hp = Math.min(maxHp, neighbor.hp + maxHp * rateMul);
+  }
+}
+
+export function tickNanoweaveHealSparks(ship, elapsed, rng = Math.random) {
+  if (!ship?.alive) {
+    return;
+  }
+
+  const occupied = getOccupiedMap(ship);
+  const span = NANOWEAVE_HEAL_SPARK_MAX_INTERVAL - NANOWEAVE_HEAL_SPARK_MIN_INTERVAL;
+
+  for (const block of ship.blocks) {
+    if (!canReceiveNanoweaveHeal(block, ship, occupied)) {
+      block.nextNanoweaveSparkAt = null;
+      block.nanoweaveSparkBurstUntil = null;
+      continue;
+    }
+    if (block.nextNanoweaveSparkAt == null) {
+      block.nextNanoweaveSparkAt = elapsed + NANOWEAVE_HEAL_SPARK_MIN_INTERVAL + rng() * span;
+    }
+    if (elapsed >= block.nextNanoweaveSparkAt) {
+      block.nanoweaveSparkBurstUntil = elapsed + NANOWEAVE_HEAL_SPARK_BURST_S;
+      block.nextNanoweaveSparkAt = elapsed + NANOWEAVE_HEAL_SPARK_MIN_INTERVAL + rng() * span;
+    }
+  }
 }
 
 function getBlockMassFactor(block) {
@@ -2310,13 +2438,29 @@ function buildEnemyBlueprintFromSteps(buildSteps, quality, removeBlocks = [], op
       throw new Error(`Missing socket for enemy step ${step.type} at ${JSON.stringify(step.socket)}`);
     }
 
+    let variant = step.variant ?? "single";
+    if (
+      step.type === "hull" &&
+      !step.noNanoweaveRoll &&
+      typeof options.rng === "function" &&
+      (variant === "single" || variant === "double" || variant === "triple") &&
+      options.rng() < 1 / 6
+    ) {
+      variant =
+        variant === "double"
+          ? "nanoweave_double"
+          : variant === "triple"
+            ? "nanoweave_triple"
+            : "nanoweave_single";
+    }
+
     const looseBlock = createBlueprintBlock({
       type: step.type,
       x: 0,
       y: 0,
       quality: stepQualities[index] ?? quality,
       orientation: step.orientation ?? "north",
-      variant: step.variant ?? "single"
+      variant
     });
     const placed = attachLooseBlock(ship, looseBlock, socket);
 
